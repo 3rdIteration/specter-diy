@@ -1,11 +1,4 @@
-23748704502792537
-7312P0225A13LF
-AMPHENOL_7312P0225A13LF
-
-
-0
-10
-10
+23743532980868791
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -64658,6 +64651,13 @@ Yellow 5381 Series LED
 0
 2
 2
+Library
+AMPHENOL_SFV12R-2STE1HLF
+
+
+0
+14
+14
 Module
 A20_OLINUXINO_LIME2
 A20 Olinuxino LIME2, 1.2GHz, 512-1024MB RAM, Micro-SD, NAND or eMMC, 1000Mbit Ethernet
@@ -96634,24 +96634,3 @@ Varistor VF
 0
 2
 2
-footprints
-QFN24_4x4x0.8_STM
-
-ST8034HNQR 
-0
-25
-25
-footprints
-QFN24_4x4x0.8_STM-L
-
-ST8034HNQR 
-0
-25
-25
-footprints
-QFN24_4x4x0.8_STM-M
-
-ST8034HNQR 
-0
-25
-25
