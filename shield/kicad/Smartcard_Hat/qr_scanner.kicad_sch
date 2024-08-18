@@ -1059,6 +1059,16 @@
 	)
 	(wire
 		(pts
+			(xy 124.46 101.6) (xy 172.72 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "155dd513-aa0e-48ca-8ed1-96330876cae8")
+	)
+	(wire
+		(pts
 			(xy 137.16 73.66) (xy 137.16 76.2)
 		)
 		(stroke
@@ -1096,16 +1106,6 @@
 			(type default)
 		)
 		(uuid "30311e93-f9e9-49c2-bc3f-1f80b50bcebc")
-	)
-	(wire
-		(pts
-			(xy 127 101.6) (xy 172.72 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "36cff77e-8328-4c01-bdb8-8c19025a1341")
 	)
 	(wire
 		(pts
@@ -1199,7 +1199,7 @@
 	)
 	(wire
 		(pts
-			(xy 116.84 91.44) (xy 146.05 91.44)
+			(xy 119.38 91.44) (xy 146.05 91.44)
 		)
 		(stroke
 			(width 0)
@@ -1257,49 +1257,93 @@
 		)
 		(uuid "f8587737-682a-4355-9d6c-21abce2b7ff4")
 	)
-	(label "QR_UART_RX"
-		(at 119.38 88.9 90)
+	(global_label "UC_BEEP"
+		(shape input)
+		(at 124.46 101.6 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right)
 		)
-		(uuid "ba8ce085-6616-4787-9622-83c171658f78")
+		(uuid "8893c74b-b46c-44f7-a75b-199b052f003e")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 112.9736 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
 	)
-	(label "QR_TRIG"
-		(at 124.46 104.14 90)
+	(global_label "QR_TRIG"
+		(shape input)
+		(at 124.46 104.14 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right)
 		)
-		(uuid "bd9ca6b8-67a6-49b4-bae9-1d6a1e89ba14")
+		(uuid "9fe6335f-df8b-4d00-a1d3-dbe78b9f67e7")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 113.6992 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
 	)
-	(label "QR_BEEP"
-		(at 127 101.6 90)
+	(global_label "QR_UART_TX"
+		(shape input)
+		(at 119.38 91.44 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right)
 		)
-		(uuid "c86a45b8-59fe-458e-9772-7f399c7a8737")
+		(uuid "fb7cc7ff-6afb-4b7d-984a-6392b74a0292")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 104.9302 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
 	)
-	(label "QR_UART_TX"
-		(at 116.84 91.44 90)
+	(global_label "QR_UART_RX"
+		(shape input)
+		(at 119.38 88.9 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right)
 		)
-		(uuid "e70c1f0e-8922-4001-b657-ac6462a03e1b")
+		(uuid "ffa074ab-efae-43b8-8506-f8478b64d9f4")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 104.6278 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Device:R_US")

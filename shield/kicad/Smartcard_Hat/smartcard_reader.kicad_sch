@@ -1927,12 +1927,6 @@
 		(uuid "022b7431-916d-44b9-87fe-23bbaf12f568")
 	)
 	(junction
-		(at 104.14 86.36)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "0ced96cd-087a-4f07-ba3d-33e549fd5318")
-	)
-	(junction
 		(at 71.12 93.98)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1963,6 +1957,12 @@
 		(uuid "34b4ae56-089a-454c-862c-b03997cfbb2e")
 	)
 	(junction
+		(at 104.14 86.36)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4a61110f-2809-4e8b-a880-24c51e3d424b")
+	)
+	(junction
 		(at 187.96 123.19)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1979,12 +1979,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "56609d92-632c-4e1a-90de-9fde76050671")
-	)
-	(junction
-		(at 114.3 83.82)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "6b5bb046-433b-413d-9228-8a0d72ef371e")
 	)
 	(junction
 		(at 163.83 45.72)
@@ -2053,6 +2047,12 @@
 		(uuid "ceff2f19-ca0e-48f8-a838-5bbb94e6ea2f")
 	)
 	(junction
+		(at 114.3 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e80d9770-0803-4050-ba1f-f157f9780217")
+	)
+	(junction
 		(at 133.35 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2084,7 +2084,7 @@
 	)
 	(wire
 		(pts
-			(xy 53.34 86.36) (xy 104.14 86.36)
+			(xy 53.34 86.36) (xy 57.15 86.36)
 		)
 		(stroke
 			(width 0)
@@ -2214,6 +2214,16 @@
 	)
 	(wire
 		(pts
+			(xy 53.34 83.82) (xy 114.3 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "27e1277c-9d4e-4ea2-aba1-30ce3e50b9a7")
+	)
+	(wire
+		(pts
 			(xy 67.31 110.49) (xy 67.31 104.14)
 		)
 		(stroke
@@ -2254,16 +2264,6 @@
 	)
 	(wire
 		(pts
-			(xy 64.77 83.82) (xy 114.3 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "36746079-90a5-4f4f-a9ca-c693edfafe40")
-	)
-	(wire
-		(pts
 			(xy 182.88 68.58) (xy 182.88 83.82)
 		)
 		(stroke
@@ -2271,6 +2271,16 @@
 			(type default)
 		)
 		(uuid "389cc75a-7e05-409f-bec6-40a1716cca52")
+	)
+	(wire
+		(pts
+			(xy 64.77 86.36) (xy 104.14 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a8475b0-e601-4e64-9eb5-cd38cf138ecb")
 	)
 	(wire
 		(pts
@@ -2574,16 +2584,6 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 86.36) (xy 125.73 86.36)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7c5dd676-f2fd-413f-967e-40339e1b1b8e")
-	)
-	(wire
-		(pts
 			(xy 220.98 93.98) (xy 215.9 93.98)
 		)
 		(stroke
@@ -2734,6 +2734,16 @@
 	)
 	(wire
 		(pts
+			(xy 104.14 86.36) (xy 125.73 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a81ec7b5-8884-496a-b5e7-1919a431942d")
+	)
+	(wire
+		(pts
 			(xy 214.63 68.58) (xy 208.28 68.58)
 		)
 		(stroke
@@ -2841,16 +2851,6 @@
 			(type default)
 		)
 		(uuid "c24d7822-f3a1-4d5b-b63f-c08d9de5b8f7")
-	)
-	(wire
-		(pts
-			(xy 53.34 83.82) (xy 57.15 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c914855a-d17b-49b0-bf38-d4aabb224db7")
 	)
 	(wire
 		(pts
@@ -4133,7 +4133,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_US")
-		(at 60.96 83.82 90)
+		(at 60.96 86.36 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4142,14 +4142,6 @@
 		(fields_autoplaced yes)
 		(uuid "71dbd4d2-a572-4c37-bf84-959eb83fffa6")
 		(property "Reference" "R36"
-			(at 60.96 77.47 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "200R"
 			(at 60.96 80.01 90)
 			(effects
 				(font
@@ -4157,8 +4149,16 @@
 				)
 			)
 		)
+		(property "Value" "200R"
+			(at 60.96 82.55 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
-			(at 61.214 82.804 90)
+			(at 61.214 85.344 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4167,7 +4167,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 60.96 83.82 0)
+			(at 60.96 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4176,7 +4176,7 @@
 			)
 		)
 		(property "Description" "Resistor, US symbol"
-			(at 60.96 83.82 0)
+			(at 60.96 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5791,7 +5791,7 @@
 				)
 			)
 		)
-		(property "Footprint" "QFN24_4x4x0.8_STM"
+		(property "Footprint" "Library:QFN24_4x4x0.8_STM"
 			(at 152.908 94.488 0)
 			(effects
 				(font

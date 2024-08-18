@@ -1788,50 +1788,6 @@
 		)
 		(uuid "48b6ad0a-f56e-4bb0-a78a-2873e4a66860")
 	)
-	(label "QR_TRIG"
-		(at 160.02 107.95 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "605a6cec-bdfa-4b92-b1bd-46dbaf9dd607")
-	)
-	(label "UC_BEEP"
-		(at 160.02 110.49 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "73818996-1713-42ab-92ea-b439a1bf9f92")
-	)
-	(label "QR_UART_RX"
-		(at 160.02 105.41 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "c9a31b7c-a26f-4b20-a6f8-29cffba58e5b")
-	)
-	(label "QR_UART_TX"
-		(at 160.02 102.87 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "eeb429d9-fa33-4830-8562-158cae3170d6")
-	)
 	(global_label "SC_VCC_SEL2"
 		(shape input)
 		(at 129.54 106.68 180)
@@ -1898,6 +1854,28 @@
 			)
 		)
 	)
+	(global_label "QR_UART_RX"
+		(shape input)
+		(at 160.02 105.41 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3c62243d-1dff-48a0-b0b0-e1b85057c1af")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 174.7722 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "SC_AUX1"
 		(shape input)
 		(at 160.02 118.11 0)
@@ -1955,6 +1933,28 @@
 		(uuid "5dc4af46-250b-4985-abef-e75c3275b74d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 177.7355 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "QR_TRIG"
+		(shape input)
+		(at 160.02 107.95 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "60402418-ccba-4b89-8965-0d365dbc57b9")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 170.7808 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2048,6 +2048,50 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "UC_BEEP"
+		(shape input)
+		(at 160.02 110.49 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c1293279-ea9e-43f0-802e-4d2df9035117")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 171.5064 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "QR_UART_TX"
+		(shape input)
+		(at 160.02 102.87 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f14b538d-9014-4ef4-9147-c62171a00325")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 174.4698 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -2232,7 +2276,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical_SMD_Pin1Left"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical_SMD_Pin1Right"
 			(at 161.29 66.04 0)
 			(effects
 				(font
@@ -2323,7 +2367,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical_SMD_Pin1Left"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical_SMD_Pin1Right"
 			(at 134.62 104.14 0)
 			(effects
 				(font
@@ -2530,7 +2574,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical_SMD_Pin1Left"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical_SMD_Pin1Right"
 			(at 134.62 68.58 0)
 			(effects
 				(font
@@ -2813,7 +2857,7 @@
 				(hide yes)
 			)
 		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical_SMD_Pin1Left"
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x08_P2.54mm_Vertical_SMD_Pin1Right"
 			(at 154.94 110.49 0)
 			(effects
 				(font
