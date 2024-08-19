@@ -2324,7 +2324,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 91.44) (xy 210.82 91.44)
+			(xy 181.61 91.44) (xy 220.98 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2554,7 +2554,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 101.6) (xy 118.11 101.6)
+			(xy 115.57 101.6) (xy 125.73 101.6)
 		)
 		(stroke
 			(width 0)
@@ -2791,16 +2791,6 @@
 			(type default)
 		)
 		(uuid "af799c88-582b-484c-a6d7-ac00df5551af")
-	)
-	(wire
-		(pts
-			(xy 218.44 91.44) (xy 220.98 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b89858b3-a227-4047-b1d5-abb2c0a1e90b")
 	)
 	(wire
 		(pts
@@ -3406,74 +3396,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_US")
-		(at 214.63 91.44 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1618eea8-43e5-4bfe-98d8-7b432f93dffe")
-		(property "Reference" "R1000"
-			(at 214.63 85.09 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 214.63 87.63 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 214.884 90.424 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 214.63 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, US symbol"
-			(at 214.63 91.44 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ff491b56-9f10-4dc7-9b26-1bc1641bb906")
-		)
-		(pin "2"
-			(uuid "d906a997-e93e-4379-b814-3dd524b223f7")
-		)
-		(instances
-			(project "Smartcard_Hat"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/b93ee573-e5a5-4e8b-bced-8a93bd527c9a"
-					(reference "R1000")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C")
 		(at 224.79 72.39 0)
 		(unit 1)
@@ -3875,74 +3797,6 @@
 			(project ""
 				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/b93ee573-e5a5-4e8b-bced-8a93bd527c9a"
 					(reference "#PWR09")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_US")
-		(at 121.92 101.6 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "49ccf5cb-016b-405f-b16e-6a4332705faa")
-		(property "Reference" "R1001"
-			(at 121.92 95.25 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "0R"
-			(at 121.92 97.79 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder"
-			(at 122.174 100.584 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, US symbol"
-			(at 121.92 101.6 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d84c48ea-cd56-44f9-8be0-6ace8334f2ea")
-		)
-		(pin "2"
-			(uuid "d1f2c5ce-8f0b-4848-9f90-041bee9a060e")
-		)
-		(instances
-			(project "Smartcard_Hat"
-				(path "/e63e39d7-6ac0-4ffd-8aa3-1841a4541b55/b93ee573-e5a5-4e8b-bced-8a93bd527c9a"
-					(reference "R1001")
 					(unit 1)
 				)
 			)
