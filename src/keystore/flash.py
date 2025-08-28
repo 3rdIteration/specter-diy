@@ -12,7 +12,10 @@ from binascii import hexlify, unhexlify
 from rng import get_random_bytes
 from embit import ec, bip39, bip32
 from helpers import tagged_hash
-from gui.screens import Alert, PinScreen, Menu, MnemonicScreen, InputScreen
+try:
+    from gui.screens import Alert, PinScreen, Menu, MnemonicScreen, InputScreen
+except Exception:  # GUI backend not available
+    Alert = PinScreen = Menu = MnemonicScreen = InputScreen = object
 
 
 class FlashKeyStore(RAMKeyStore):
@@ -284,7 +287,7 @@ class FlashKeyStore(RAMKeyStore):
             files.sort()
             for file in files:
                 displayname = file.replace(self.fileprefix(path), "")
-                if displayname is "":
+                if displayname == "":
                     displayname = "Default"
                 else:
                     displayname = displayname[1:]  # strip first character
