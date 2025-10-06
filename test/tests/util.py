@@ -1,7 +1,22 @@
-from keystore.ram import RAMKeyStore
-from app import BaseApp
-from apps.wallets import App as WalletsApp
 import platform
+
+try:
+    from keystore.ram import RAMKeyStore
+except ImportError as exc:
+    RAMKeyStore = None
+    _keystore_import_error = exc
+else:
+    _keystore_import_error = None
+
+try:
+    from app import BaseApp
+    from apps.wallets import App as WalletsApp
+except ImportError as exc:
+    BaseApp = None
+    WalletsApp = None
+    _wallets_import_error = exc
+else:
+    _wallets_import_error = None
 
 TEST_DIR = "testdir"
 
@@ -28,6 +43,8 @@ async def communicate(*args, **kwargs):
 
 def get_keystore(mnemonic="ability "*11+"acid", password=""):
     """Returns a dummy keystore"""
+    if RAMKeyStore is None:
+        raise RuntimeError(f"Keystore utilities unavailable: {_keystore_import_error}")
     platform.maybe_mkdir(TEST_DIR)
     platform.maybe_mkdir(TEST_DIR+"/keystore")
     ks = RAMKeyStore()
@@ -41,6 +58,8 @@ def get_keystore(mnemonic="ability "*11+"acid", password=""):
     return ks
 
 def get_wallets_app(keystore, network):
+    if WalletsApp is None or BaseApp is None:
+        raise RuntimeError(f"Wallet app utilities unavailable: {_wallets_import_error}")
     platform.maybe_mkdir(TEST_DIR)
     platform.maybe_mkdir(TEST_DIR+"/wallets")
     platform.maybe_mkdir(TEST_DIR+"/tmp")

@@ -1,6 +1,5 @@
 from app import BaseApp
-from gui.screens import Menu, InputScreen, Prompt, TransactionScreen
-from .screens import WalletScreen, ConfirmWalletScreen
+from typing import TYPE_CHECKING
 
 import platform
 import os
@@ -17,6 +16,10 @@ from bcur import bcur_decode_stream
 from helpers import a2b_base64_stream, b2a_base64_stream
 import gc
 import json
+
+if TYPE_CHECKING:
+    from .screens import WalletScreen, ConfirmWalletScreen
+    from gui.screens import Alert, PinScreen, Prompt, Menu, QRAlert, TransactionScreen
 
 SIGN_PSBT = 0x01
 ADD_WALLET = 0x02
@@ -99,6 +102,8 @@ class WalletManager(BaseApp):
             return hexlify(psbtout.script_pubkey.data).decode()
 
     async def menu(self, show_screen):
+        from gui.screens import Menu, Prompt, InputScreen
+
         buttons = [(None, "Your wallets")]
         buttons += [(w, w.name) for w in self.wallets if not w.is_watchonly]
         if len(buttons) != (len(self.wallets)+1):
@@ -193,6 +198,9 @@ class WalletManager(BaseApp):
         return None, None
 
     async def process_host_command(self, stream, show_screen):
+        from gui.screens import Prompt, QRAlert
+        from .screens import WalletScreen, ConfirmWalletScreen
+
         platform.delete_recursively(self.tempdir)
         cmd, stream = self.parse_stream(stream)
         if cmd == SIGN_PSBT:
@@ -321,6 +329,8 @@ class WalletManager(BaseApp):
             return self.tempdir+"/signed_raw"
 
     async def confirm_transaction(self, wallets, meta, show_screen):
+        from gui.screens import Prompt
+
         """
         Checks parsed metadata, asks user about unclear options:
         - sign with provided sighashes or only with default?
@@ -357,6 +367,8 @@ class WalletManager(BaseApp):
         return dict(sighash=sighash)
 
     async def confirm_transaction_final(self, wallets, meta, show_screen):
+        from gui.screens import TransactionScreen
+
         # build title for the tx screen
         spends = []
         unit = "BTC" if self.network == "main" else "tBTC"
@@ -371,6 +383,8 @@ class WalletManager(BaseApp):
         return await show_screen(TransactionScreen(title, meta))
 
     async def confirm_wallets(self, wallets, show_screen):
+        from gui.screens import Prompt
+
         # check if any inputs belong to unknown wallets
         # wallets is a dict: {wallet: amount}
         if None not in wallets:
@@ -391,6 +405,8 @@ class WalletManager(BaseApp):
         return { "name": SIGHASH_NAMES[sighash], "warning": "" }
 
     async def confirm_sighashes(self, meta, show_screen):
+        from gui.screens import Prompt
+
         """
         Checks if custom sighashes are used, warns the user and asks for confirmation.
         Returns one of the options:
@@ -433,6 +449,9 @@ class WalletManager(BaseApp):
         return self.DEFAULT_SIGHASH
 
     async def confirm_new_wallet(self, w, show_screen):
+        from gui.screens import Prompt
+        from .screens import ConfirmWalletScreen
+
         keys = w.get_key_dicts(self.network)
         for k in keys:
             k["mine"] = self.keystore.owns(k["key"])
@@ -481,6 +500,8 @@ class WalletManager(BaseApp):
 
         w, (idx, branch_idx) = self.find_wallet_from_address(address, paths=paths)
         if show_screen is not None:
+            from .screens import WalletScreen
+
             await show_screen(
                 WalletScreen(w, self.network, idx, branch_index=branch_idx)
             )

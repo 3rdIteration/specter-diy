@@ -1,5 +1,37 @@
 from io import BytesIO
 from unittest import TestCase
+import os
+import sys
+import types
+
+
+if "apps.wallets" not in sys.modules:
+    wallets_pkg = types.ModuleType("apps.wallets")
+    wallets_pkg.__path__ = [os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "src", "apps", "wallets"))]
+    wallets_pkg.__package__ = "apps.wallets"
+    sys.modules["apps.wallets"] = wallets_pkg
+
+if "apps.wallets.wallet" not in sys.modules:
+    wallet_stub = types.ModuleType("apps.wallets.wallet")
+
+    class WalletError(Exception):
+        pass
+
+    class Wallet:
+        pass
+
+    wallet_stub.WalletError = WalletError
+    wallet_stub.Wallet = Wallet
+    sys.modules["apps.wallets.wallet"] = wallet_stub
+
+if "bcur" not in sys.modules:
+    bcur_stub = types.ModuleType("bcur")
+
+    def bcur_decode_stream(*args, **kwargs):
+        raise NotImplementedError("bcur decoding is not available in tests")
+
+    bcur_stub.bcur_decode_stream = bcur_decode_stream
+    sys.modules["bcur"] = bcur_stub
 
 from apps.wallets.manager import WalletManager, ADD_WALLET
 
