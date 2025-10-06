@@ -152,7 +152,10 @@ class WalletManager(BaseApp):
             elif prefix == b"listwallets":
                 return LIST_WALLETS, stream
             else:
-                return None, None
+                # treat unknown prefixes as data payloads
+                stream.seek(0)
+        else:
+            stream.seek(0)
         # if not - we get data any without prefix
         # trying to detect type:
         # probably base64-encoded PSBT

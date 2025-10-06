@@ -184,6 +184,28 @@ class WalletManagerParseStreamTest(TestCase):
         self.assertEqual(parsed_stream.tell(), 0)
         self.assertEqual(parsed_stream.read(), payload)
 
+    def test_parse_stream_detects_wallet_import_without_prefix(self):
+        payload = f"My multisig&{DOC_MULTISIG_DESCRIPTOR}".encode()
+        stream = BytesIO(payload)
+
+        command, parsed_stream = self.manager.parse_stream(stream)
+
+        self.assertEqual(command, ADD_WALLET)
+        self.assertIs(parsed_stream, stream)
+        self.assertEqual(parsed_stream.tell(), 0)
+        self.assertEqual(parsed_stream.read(), payload)
+
+    def test_parse_stream_detects_raw_descriptor_without_name(self):
+        payload = DOC_MULTISIG_DESCRIPTOR.encode()
+        stream = BytesIO(payload)
+
+        command, parsed_stream = self.manager.parse_stream(stream)
+
+        self.assertEqual(command, ADD_WALLET)
+        self.assertIs(parsed_stream, stream)
+        self.assertEqual(parsed_stream.tell(), 0)
+        self.assertEqual(parsed_stream.read(), payload)
+
 
 class WalletManagerParseWalletTest(TestCase):
     def setUp(self):
@@ -197,6 +219,12 @@ class WalletManagerParseWalletTest(TestCase):
         wallet = self.manager.parse_wallet(f"My multisig&{DOC_MULTISIG_DESCRIPTOR}")
 
         self.assertEqual(wallet.name, "My multisig")
+        self.assertIn("sortedmulti", str(wallet.descriptor))
+
+    def test_parse_wallet_parses_descriptor_without_name(self):
+        wallet = self.manager.parse_wallet(DOC_MULTISIG_DESCRIPTOR)
+
+        self.assertEqual(wallet.name, "Untitled")
         self.assertIn("sortedmulti", str(wallet.descriptor))
 
     def test_parse_wallet_rejects_duplicate_descriptors(self):
