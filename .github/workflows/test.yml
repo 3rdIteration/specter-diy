@@ -23,3 +23,7 @@ jobs:
             python3
       - name: Run tests
         run: make test
+      - name: Run wallet manager unit tests
+        run: |
+          PYTHONPATH=src:test/tests \
+            python3 -m unittest discover -s test/tests -p 'test_wallet_manager.py'
