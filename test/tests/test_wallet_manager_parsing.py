@@ -1,8 +1,10 @@
 from unittest import TestCase
 from io import BytesIO
+import gc
 
 from .util import get_keystore, get_wallets_app, clear_testdir
 from apps.wallets.manager import ADD_WALLET, SIGN_PSBT, VERIFY_ADDRESS
+from .test_sign import PSBTS
 
 DOC_DESCRIPTOR = (
     "wsh(sortedmulti(2,"
@@ -15,9 +17,7 @@ DOC_ADDWALLET_COMMAND = "addwallet " + DOC_NAMED_DESCRIPTOR
 DOC_ADDRESS_REQUEST = (
     "bitcoin:bcrt1qd3mtrhysk3k4w6fmu7ayjvwk6q98c2dpf0p4x87zauu8rcgq5dzq73tyrx?index=2"
 )
-DOC_BASE64_PSBT = (
-    "cHNidP8BAHECAAAAAWzGfenb3RfMnjMnbG3ma7oQc2hXxtwJfVVmgrnWm+4UAQAAAAD9////AtYbLAQAAAAAFgAUrNujDLwLZgayRWvplXj9l9JCeCWAlpgAAAAAABYAFCwSoUTerJLG437IpfbWF8DgWx6kAAAAAAABAHECAAAAAYWnVTba+0vAveezgcq1RYQ/kgJWaR18whFlaiyB21+IAQAAAAD9////AoCWmAAAAAAAFgAULBKhRN6sksbjfsil9tYXwOBbHqTkssQEAAAAABYAFB8nluuilYNXa/NkD0Yl26S/P0uNAAAAAAEBH+SyxAQAAAAAFgAUHyeW66KVg1dr82QPRiXbpL8/S40iBgIaiZEUrL8SsjMa8kjotFVJqjhEQ9YTjOUqkhEyemGmNhj7fB8RVAAAgAEAAIAAAACAAQAAAAIAAAAAIgID2bmiDcc2vHCuHg7T/C0YXLPanHBaS665367wqdHd9AgY+3wfEVQAAIABAACAAAAAgAEAAAAEAAAAAAA="
-)
+DOC_BASE64_PSBT = PSBTS["wpkh"][0]
 
 
 class WalletManagerParsingTest(TestCase):
@@ -29,6 +29,7 @@ class WalletManagerParsingTest(TestCase):
 
     def tearDown(self):
         clear_testdir()
+        gc.collect()
 
     def _parse_command(self, data):
         stream = BytesIO(data)
