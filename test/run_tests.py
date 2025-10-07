@@ -63,4 +63,9 @@ except ImportError:  # pragma: no cover - MicroPython may not expose package-sty
             pass
 
 clear_testdir()
-unittest.main(test_module)
+
+kwargs = {}
+if not is_micropython:
+    kwargs['verbosity'] = 2
+
+unittest.main(test_module, **kwargs)
