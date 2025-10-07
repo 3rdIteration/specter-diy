@@ -4,7 +4,6 @@ import gc
 
 from .util import get_keystore, get_wallets_app, clear_testdir
 from apps.wallets.manager import ADD_WALLET, SIGN_PSBT, VERIFY_ADDRESS
-from .test_sign import PSBTS
 
 DOC_DESCRIPTOR = (
     "wsh(sortedmulti(2,"
@@ -17,7 +16,9 @@ DOC_ADDWALLET_COMMAND = "addwallet " + DOC_NAMED_DESCRIPTOR
 DOC_ADDRESS_REQUEST = (
     "bitcoin:bcrt1qd3mtrhysk3k4w6fmu7ayjvwk6q98c2dpf0p4x87zauu8rcgq5dzq73tyrx?index=2"
 )
-DOC_BASE64_PSBT = PSBTS["wpkh"][0]
+# Minimal base64-encoded PSBT prefix. The parser only checks the magic bytes,
+# so using a short fixture keeps memory usage low on constrained interpreters.
+DOC_BASE64_PSBT = "cHNidP8="
 
 
 class WalletManagerParsingTest(TestCase):
