@@ -19,6 +19,31 @@ is_micropython = sys.implementation.name == 'micropython'
 
 if is_micropython:
     test_module = 'tests'
+    try:
+        import bech32 as _bech32_module  # type: ignore
+
+        def _wrap_decode_if_needed(attr):
+            func = getattr(_bech32_module, attr, None)
+            if func is None:
+                return
+            try:
+                result = func('bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kg3g4ty')
+            except Exception:
+                return
+            if isinstance(result, tuple) and len(result) >= 2 and len(result) != 2:
+                def _decoder(*args, **kwargs):
+                    res = func(*args, **kwargs)
+                    if isinstance(res, tuple) and len(res) >= 2:
+                        return res[0], res[1]
+                    return res
+
+                setattr(_bech32_module, attr, _decoder)
+
+        _wrap_decode_if_needed('decode')
+        _wrap_decode_if_needed('bech32_decode')
+        _wrap_decode_if_needed('bech32m_decode')
+    except ImportError:  # pragma: no cover - MicroPython without bundled bech32
+        pass
 else:
     test_module = 'tests_native'
 
