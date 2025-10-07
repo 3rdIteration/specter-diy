@@ -1,3 +1,10 @@
+import sys
+
+if sys.implementation.name != 'micropython':
+    from native_support import setup_native_stubs
+
+    setup_native_stubs()
+
 from unittest import TestCase
 from io import BytesIO
 import gc
