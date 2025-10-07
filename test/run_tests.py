@@ -29,8 +29,17 @@ if is_micropython:
 
             def _decoder(*args, **kwargs):
                 res = func(*args, **kwargs)
-                if isinstance(res, tuple) and len(res) > 2:
-                    return res[0], res[1]
+                length = 0
+                try:
+                    length = len(res)  # type: ignore[arg-type]
+                except Exception:  # pragma: no cover - objects without length
+                    return res
+
+                if length > 2:
+                    try:
+                        return res[0], res[1]  # type: ignore[index]
+                    except Exception:  # pragma: no cover - sequence protocol violations
+                        pass
                 return res
 
             setattr(_bech32_module, attr, _decoder)
