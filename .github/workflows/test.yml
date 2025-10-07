@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt -r test/integration/requirements.txt
       - name: Run native unit tests
         working-directory: test
         run: |

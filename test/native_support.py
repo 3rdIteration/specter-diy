@@ -187,7 +187,15 @@ def setup_native_stubs():
 
         BaseApp.get_prefix = _native_get_prefix
 
-    from apps.wallets.wallet import Wallet as _Wallet
+    try:
+        from apps.wallets.wallet import Wallet as _Wallet
+    except ModuleNotFoundError as exc:
+        if exc.name == "embit":
+            raise ModuleNotFoundError(
+                "Native test suite requires the 'embit' package. "
+                "Install it with 'pip install -r test/integration/requirements.txt'."
+            ) from exc
+        raise
 
     if not hasattr(_Wallet, '_native_original_from_descriptor'):
         _Wallet._native_original_from_descriptor = _Wallet.from_descriptor
