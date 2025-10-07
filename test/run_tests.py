@@ -1,6 +1,7 @@
 import sys
 
 # Ensure our local modules shadow similarly named stdlib modules (e.g. platform)
+sys.path.insert(0, '.')
 sys.path.insert(0, '../src')
 sys.path.insert(0, '../f469-disco/libs/common')
 sys.path.insert(0, '../f469-disco/libs/unix')
@@ -21,7 +22,20 @@ if is_micropython:
 else:
     test_module = 'tests_native'
 
-from tests import util
+try:
+    from tests.util import clear_testdir
+except ImportError:  # pragma: no cover - MicroPython may not expose package-style imports
+    try:
+        import platform
 
-util.clear_testdir()
+        def clear_testdir():
+            try:
+                platform.delete_recursively('testdir', include_self=True)
+            except Exception:
+                pass
+    except Exception:  # pragma: no cover - fallback for extremely constrained ports
+        def clear_testdir():
+            pass
+
+clear_testdir()
 unittest.main(test_module)
