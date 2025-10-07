@@ -9,7 +9,7 @@ from unittest import TestCase
 from io import BytesIO
 import gc
 
-from .util import get_keystore, get_wallets_app, clear_testdir
+from tests.util import get_keystore, get_wallets_app, clear_testdir
 from apps.wallets.manager import ADD_WALLET, SIGN_PSBT, VERIFY_ADDRESS
 
 DOC_DESCRIPTOR = (
