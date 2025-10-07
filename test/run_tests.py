@@ -13,16 +13,15 @@ if sys.implementation.name != 'micropython':
     setup_native_stubs()
 
 import unittest
-import importlib.util
 
-if sys.implementation.name == 'micropython':
+is_micropython = sys.implementation.name == 'micropython'
+
+if is_micropython:
     test_module = 'tests'
 else:
     test_module = 'tests_native'
 
-util_spec = importlib.util.spec_from_file_location('tests.util', 'tests/util.py')
-util = importlib.util.module_from_spec(util_spec)
-util_spec.loader.exec_module(util)
+from tests import util
 
 util.clear_testdir()
 unittest.main(test_module)
