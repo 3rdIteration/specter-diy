@@ -1,3 +1,4 @@
+import importlib
 import importlib.util
 import pathlib
 import sys
@@ -207,7 +208,12 @@ def _load_module(name: str, path: pathlib.Path) -> types.ModuleType:
 pyb_path = REPO / "f469-disco" / "libs" / "unix" / "pyb.py"
 pyb_module = _load_module("pyb", pyb_path)
 
+_stdlib_platform = importlib.import_module("platform")
 platform_module = _load_module("platform", SRC / "platform.py")
+
+for _missing_attr in ("architecture",):
+    if not hasattr(platform_module, _missing_attr):
+        setattr(platform_module, _missing_attr, getattr(_stdlib_platform, _missing_attr))
 
 # Prepare test package namespace without executing package __init__ files
 TEST_PACKAGE = types.ModuleType("test")
