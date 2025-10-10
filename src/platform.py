@@ -11,6 +11,11 @@ try:
 except:
     import config_default as config
 
+try:
+    from git_info import REPOSITORY as _REPO, BRANCH as _BRANCH, COMMIT as _COMMIT, SHORT_COMMIT as _SHORT
+except ImportError:
+    _REPO = _BRANCH = _COMMIT = _SHORT = None
+
 if not simulator:
     import sdram
     sdram.init()
@@ -131,6 +136,15 @@ def get_version() -> str:
         return ver
     except:
         return "unknown"
+
+
+def get_git_info() -> dict:
+    return {
+        "repository": _REPO or "unknown",
+        "branch": _BRANCH or "unknown",
+        "commit": _COMMIT or "unknown",
+        "short_commit": _SHORT or (_COMMIT[:7] if _COMMIT else "unknown"),
+    }
 
 def mount_sdram():
     path = fpath("/ramdisk")

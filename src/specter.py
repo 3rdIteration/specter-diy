@@ -10,6 +10,7 @@ from platform import (
     maybe_mkdir,
     wipe,
     get_version,
+    get_git_info,
     get_battery_status,
 )
 from hosts import Host, HostError
@@ -199,6 +200,7 @@ class Specter:
         if self.keystore.is_key_saved and self.keystore.load_button:
             buttons.append((2, self.keystore.load_button))
         buttons += [(None, "Settings"), (3, "Device settings")]
+        buttons.append((4, "About"))
         # wait for menu selection
         menuitem = await self.gui.menu(buttons)
 
@@ -226,6 +228,8 @@ class Specter:
             return self.mainmenu
         elif menuitem == 3:
             await self.update_devsettings()
+        elif menuitem == 4:
+            await self.show_about()
         elif menuitem == 777:
             return await self.import_mnemonic()
         # lock device
@@ -543,6 +547,17 @@ class Specter:
             else:
                 print(menuitem)
                 raise SpecterError("Not implemented")
+
+    async def show_about(self):
+        info = get_git_info()
+        commit = info.get("short_commit") or info.get("commit", "unknown")
+        message = (
+            f"Firmware version: {get_version()}\n"
+            f"Repository: {info.get('repository', 'unknown')}\n"
+            f"Branch: {info.get('branch', 'unknown')}\n"
+            f"Commit: {commit}"
+        )
+        await self.gui.alert("About Specter-DIY", message, button_text="Close")
 
     @property
     def fingerprint(self):
