@@ -330,6 +330,7 @@ class WalletManager(BaseApp):
 
         start_idx = 0
         branches = wallet.descriptor.num_branches
+        gui_loader = getattr(self.show_loader, "__self__", None)
         while True:
             end_idx = start_idx + batch_size - 1
             self.show_loader(
@@ -348,7 +349,8 @@ class WalletManager(BaseApp):
                     if found is not None:
                         break
             finally:
-                self.hide_loader()
+                if gui_loader is not None and hasattr(gui_loader, "hide_loader"):
+                    gui_loader.hide_loader()
 
             if found is not None:
                 idx, branch_idx = found
@@ -359,16 +361,15 @@ class WalletManager(BaseApp):
                 )
                 return True
 
+            message = (
+                "The address %s was not found between indexes %d and %d.\n\n"
+                "Check the next %d addresses?"
+                % (addr_to_check, start_idx, end_idx, batch_size)
+            )
             cont = await show_screen(
                 Prompt(
                     "Address not found",
-                    "The address %s was not found between indexes %d and %d.\n\n"
-                    "Check the next %d addresses?" % (
-                        addr_to_check,
-                        start_idx,
-                        end_idx,
-                        batch_size,
-                    ),
+                    message,
                     confirm_text="Next %d" % batch_size,
                     cancel_text="Abort",
                 )
