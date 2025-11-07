@@ -117,11 +117,36 @@ To build custom bootloader and firmware that you will be able to sign check out 
 
 To build an open firmware (no bootloader and signature verifications) run `make disco`. It also produces the `bin/specter-diy.bin` image ready for flashing via the board's virtual drive or external programming tools.
 
-To build a simulator run `make unix` - it will compile a micropython simulator for mac/unix and store it under `bin/micropython_unix`.
+### Flashing the firmware with OpenOCD
 
-To launch a simulator either run `bin/micropython_unix simulate.py` or simly run `make simulate`.
+You can flash both official release images and locally built development binaries with the ST-LINK debugger that is built into the STM32F469 Discovery board. The examples below use the OpenOCD board configuration that ships with OpenOCD (`board/stm32f469i-disco.cfg`).
 
-If something is not working you can clean up with `make clean`
+1. Connect the Discovery board to your computer using the ST-LINK USB port and ensure that no other debug session is active.
+2. Start OpenOCD from the root of the repository (or the directory where the firmware image is located):
+
+   ```sh
+   # Flash an official release image that you have downloaded
+   openocd -f board/stm32f469i-disco.cfg \
+           -c "program /path/to/specter-diy-vX.Y.Z.bin 0x08000000 verify reset exit"
+
+   # Flash a development build produced by `make disco`
+   openocd -f board/stm32f469i-disco.cfg \
+           -c "program bin/specter-diy.bin 0x08000000 verify reset exit"
+   ```
+
+   The `0x08000000` address is the start of the internal flash memory where the firmware resides. The `verify` option checks that the contents were written correctly, `reset` restarts the MCU, and `exit` terminates OpenOCD once flashing is complete.
+
+3. Wait for OpenOCD to report a successful `verified` status. The board will reboot automatically and start the newly flashed firmware.
+
+If you encounter permission issues on Linux, ensure your user is in the `dialout` (or distribution-specific) group that grants access to USB devices, or run the command with elevated privileges.
+
+### How to build and run the simulator
+
+Build the simulator with `make unix`—this compiles the MicroPython simulator for macOS and Linux and stores it under `bin/micropython_unix`.
+
+Launch the simulator by running `bin/micropython_unix simulate.py`, or simply run `make simulate`.
+
+If something is not working you can clean up with `make clean`.
 
 ## Run Unittests
 
