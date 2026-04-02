@@ -1,0 +1,13 @@
+# MCU settings
+MCU_SERIES = u5
+CMSIS_MCU = STM32U5G9xx
+MICROPY_FLOAT_IMPL = single
+AF_FILE = $(BOARD_DIR)/stm32u5g9_af.csv
+
+LD_FILES = $(BOARD_DIR)/stm32u5g9dk2.ld boards/common_basic.ld
+TEXT0_ADDR = 0x08000000
+
+# MicroPython settings
+MICROPY_HW_ENABLE_ISR_UART_FLASH_FUNCS_IN_RAM = 1
+MICROPY_PY_USSL = 1
+MICROPY_SSL_MBEDTLS = 1

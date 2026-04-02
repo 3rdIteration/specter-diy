@@ -21,6 +21,17 @@ try:
 except:
     import config_default as config
 
+# Detect which board we're running on
+# DK2 board name is set in mpconfigboard.h
+_board_name = ""
+if not simulator:
+    try:
+        _board_name = os.uname().machine
+    except:
+        pass
+
+is_dk2 = "STM32U5G9" in _board_name or "U5G9J-DK2" in _board_name
+
 if not simulator:
     import sdram
     import stm
@@ -128,7 +139,9 @@ if simulator:
     sdcard = SDCard(None, None)
 else:
     storage_root = ""
-    sdcard = SDCard(pyb.SDCard(), pyb.LED(4))
+    # DK2 has only 2 LEDs; use LED2 for SD activity indicator
+    sd_led = pyb.LED(2) if is_dk2 else pyb.LED(4)
+    sdcard = SDCard(pyb.SDCard(), sd_led)
 
 def get_git_info():
     """Return repository metadata embedded into the firmware build."""
@@ -313,6 +326,7 @@ def delete_recursively(path, include_self=False):
 
 
 if not simulator:
+    # DK2 uses UART3 ("YB") for ST-Link debug; F469 also uses "YB"
     stlk = pyb.UART("YB", 9600)
 
 def enable_usb():
@@ -359,11 +373,17 @@ def reboot():
 
 def wipe():
     """
-    Blocks map in disco board
+    Blocks map in disco board (F469):
     0: MBR
     1   - 255:   reserved
     256 - 447:   internal flash
     448 - 33215: QSPI
+
+    Blocks map in DK2 (U5G9):
+    0: MBR
+    1   - 255:   reserved
+    256 - 1023:  internal flash (4 MB, larger sectors)
+    OSPI: not yet mapped (future Octo-SPI integration)
     """
     # delete files normally in simulator
     try:
@@ -374,15 +394,29 @@ def wipe():
     # on real hardware overwrite flash with random data
     if not simulator:
         os.umount("/flash")
-        os.umount("/qspi")
+        try:
+            os.umount("/qspi")
+        except:
+            pass  # /qspi may not be mounted on DK2 yet
         f = pyb.Flash()
         block_size = f.ioctl(5, None)
-        # wipe internal flash with random bytes
-        for i in range(256, 450):
-            b = os.urandom(block_size)
-            f.writeblocks(i, b)
-            del b
-            gc.collect()
+        if is_dk2:
+            # DK2: 4 MB internal flash with larger sectors
+            # Block range depends on the flash block size reported by the driver.
+            # Wipe all user-data blocks beyond the reserved area.
+            num_blocks = f.ioctl(4, None)  # total number of blocks
+            for i in range(256, num_blocks):
+                b = os.urandom(block_size)
+                f.writeblocks(i, b)
+                del b
+                gc.collect()
+        else:
+            # F469: wipe internal flash + QSPI range
+            for i in range(256, 450):
+                b = os.urandom(block_size)
+                f.writeblocks(i, b)
+                del b
+                gc.collect()
     # mpy will reformat fs on reboot
     reboot()
 

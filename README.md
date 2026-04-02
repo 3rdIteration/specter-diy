@@ -11,6 +11,13 @@
 The idea of the project is to build a hardware wallet from off-the-shelf components.
 Even though we have [an extension board](./shield) that puts everything in a nice form-factor and helps you to avoid any soldering, we will continue supporting and maintaining compatibility with standard components.
 
+### Supported Boards
+
+| Board | MCU | Status |
+|-------|-----|--------|
+| [STM32F469I-DISCO](https://www.st.com/en/evaluation-tools/32f469idiscovery.html) | Cortex-M4, 180 MHz, 2 MB Flash | Primary, fully supported |
+| [STM32U5G9J-DK2](https://www.st.com/en/evaluation-tools/stm32u5g9j-dk2.html) | Cortex-M33, 160 MHz, 4 MB Flash | New, see [docs/dk2.md](./docs/dk2.md) |
+
 We also want to keep the project flexible such that it can work on any other set of components with minimal changes. Maybe you want to make a hardware wallet on a different architecture (RISC-V?), with an audio modem as a communication channel - you should be able to do it. It should be easy to add or change functionality of Specter and we try to abstract logical modules as much as we can.
 
 QR codes are a default way for Specter to communicate with the host. QR codes are pretty convenient and allow the user to be in control of the data transmission - every QR code has a very limited capacity and communication happens unidirectionally. And it's airgapped - you don't need to connect the wallet to the computer at any time.
@@ -34,6 +41,7 @@ All the docs are stored in the [`docs/`](./docs) folder:
 - [`shopping.md`](./docs/shopping.md) explains what to buy
 - [`assembly.md`](./docs/assembly.md) shows how to put everything together.
 - [`quickstart.md`](./docs/quickstart.md) guides you through the initial steps how to get firmware on the board
+- [`dk2.md`](./docs/dk2.md) describes how to build and run Specter-DIY on the STM32U5G9J-DK2 Discovery Kit
 - [`reproducible-build.md`](./docs/reproducible-build.md) describes how to build the initial firmware and upgrade files with the same hash as in the release using Docker
 - [`build.md`](./docs/build.md) describes how to build the firmware and the simulator yourself
 - [`security.md`](./docs/security.md) explains possible attack vectors and security model of the project

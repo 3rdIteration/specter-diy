@@ -34,6 +34,12 @@ jobs:
       - name: Build STM32F469 Discovery firmware
         run: nix develop -c make disco
 
+      - name: Build STM32U5G9J-DK2 firmware
+        # DK2 build requires STM32U5 HAL support in the MicroPython submodule.
+        # Allow failure until f469-disco submodule is updated with U5 HAL/CMSIS.
+        continue-on-error: true
+        run: nix develop -c make dk2
+
       - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -41,3 +47,5 @@ jobs:
           path: |
             bin/specter-diy.bin
             bin/specter-diy.hex
+            bin/specter-diy-dk2.bin
+            bin/specter-diy-dk2.hex

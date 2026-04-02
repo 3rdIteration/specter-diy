@@ -1,5 +1,7 @@
 TARGET_DIR = bin
 BOARD ?= STM32F469DISC
+BOARD_DK2 ?= STM32U5G9J_DK2
+BOARD_DIR_DK2 ?= ../../../../boards/$(BOARD_DK2)
 FLAVOR ?= SPECTER
 USER_C_MODULES ?= ../../../usermods
 MPY_DIR ?= f469-disco/micropython
@@ -9,6 +11,7 @@ else
     MPY_CFLAGS ?=
 endif
 FROZEN_MANIFEST_DISCO ?= ../../../../manifests/disco.py
+FROZEN_MANIFEST_DK2 ?= ../../../../manifests/dk2.py
 FROZEN_MANIFEST_DEBUG ?= ../../../../manifests/debug.py
 FROZEN_MANIFEST_UNIX ?= ../../../../manifests/unix.py
 DEBUG ?= 0
@@ -70,6 +73,24 @@ debug: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32 git-info
         $(TARGET_DIR)/debug.hex
 
 
+# STM32U5G9J-DK2 board with bitcoin library
+dk2: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
+	@echo Building DK2 firmware
+	make -C $(MPY_DIR)/ports/stm32 \
+        BOARD=$(BOARD_DK2) \
+        BOARD_DIR=$(BOARD_DIR_DK2) \
+        FLAVOR=$(FLAVOR) \
+        USER_C_MODULES=$(USER_C_MODULES) \
+        FROZEN_MANIFEST=$(FROZEN_MANIFEST_DK2) \
+        DEBUG=$(DEBUG) \
+        CFLAGS_EXTRA="$(MPY_CFLAGS)" && \
+	arm-none-eabi-objcopy -O binary \
+        $(MPY_DIR)/ports/stm32/build-$(BOARD_DK2)/firmware.elf \
+        $(TARGET_DIR)/specter-diy-dk2.bin && \
+	cp $(MPY_DIR)/ports/stm32/build-$(BOARD_DK2)/firmware.hex \
+        $(TARGET_DIR)/specter-diy-dk2.hex
+
+
 # unixport (simulator)
 unix: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/unix git-info
 	@echo Building binary with frozen files
@@ -85,7 +106,7 @@ simulate: unix
 test: unix
 	cd test && ../$(TARGET_DIR)/micropython_unix run_tests.py
 
-all: mpy-cross disco unix
+all: mpy-cross disco dk2 unix
 
 clean:
 	rm -rf $(TARGET_DIR)
@@ -97,5 +118,10 @@ clean:
 		BOARD=$(BOARD) \
 		USER_C_MODULES=$(USER_C_MODULES) \
 		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) clean
+	make -C $(MPY_DIR)/ports/stm32 \
+		BOARD=$(BOARD_DK2) \
+		BOARD_DIR=$(BOARD_DIR_DK2) \
+		USER_C_MODULES=$(USER_C_MODULES) \
+		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DK2) clean
 
 .PHONY: all clean git-info
