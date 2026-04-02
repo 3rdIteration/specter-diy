@@ -1,6 +1,7 @@
 TARGET_DIR = bin
 BOARD ?= STM32F469DISC
 BOARD_DK2 ?= STM32U5G9J_DK2
+BOARD_DIR_DK2 ?= ../../../../boards/$(BOARD_DK2)
 FLAVOR ?= SPECTER
 USER_C_MODULES ?= ../../../usermods
 MPY_DIR ?= f469-disco/micropython
@@ -77,6 +78,7 @@ dk2: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
 	@echo Building DK2 firmware
 	make -C $(MPY_DIR)/ports/stm32 \
         BOARD=$(BOARD_DK2) \
+        BOARD_DIR=$(BOARD_DIR_DK2) \
         FLAVOR=$(FLAVOR) \
         USER_C_MODULES=$(USER_C_MODULES) \
         FROZEN_MANIFEST=$(FROZEN_MANIFEST_DK2) \
@@ -118,6 +120,7 @@ clean:
 		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) clean
 	make -C $(MPY_DIR)/ports/stm32 \
 		BOARD=$(BOARD_DK2) \
+		BOARD_DIR=$(BOARD_DIR_DK2) \
 		USER_C_MODULES=$(USER_C_MODULES) \
 		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DK2) clean
 

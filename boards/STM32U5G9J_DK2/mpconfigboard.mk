@@ -2,9 +2,9 @@
 MCU_SERIES = u5
 CMSIS_MCU = STM32U5G9xx
 MICROPY_FLOAT_IMPL = single
-AF_FILE = boards/stm32u5a5_af.csv
+AF_FILE = boards/STM32U5G9J_DK2/stm32u5g9_af.csv
 
-LD_FILES = boards/STM32U5G9J_DK2/stm32u5g9dk2.ld boards/common_basic.ld
+LD_FILES = $(BOARD_DIR)/stm32u5g9dk2.ld boards/common_basic.ld
 TEXT0_ADDR = 0x08000000
 
 # MicroPython settings
