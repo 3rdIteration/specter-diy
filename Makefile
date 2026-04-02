@@ -94,7 +94,7 @@ simulate: unix
 test: unix
 	cd test && ../$(TARGET_DIR)/micropython_unix run_tests.py
 
-all: mpy-cross disco f746g unix
+all: mpy-cross disco unix
 
 clean:
 	rm -rf $(TARGET_DIR)

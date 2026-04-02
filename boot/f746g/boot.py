@@ -5,7 +5,7 @@ import sys
 
 # Clean sys.path from qspi
 for p in sys.path:
-    if "qspi" in sys.path:
+    if "qspi" in p:
         sys.path.remove(p)
 
 version = "<version:tag10>0100900099</version:tag10>"
