@@ -1,3 +1,3 @@
-include('../f469-disco/manifests/f746g.py')
+include('../f469-disco/manifests/disco.py')
 freeze('../src')
 freeze('../boot/f746g')

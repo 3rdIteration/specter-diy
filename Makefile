@@ -1,6 +1,6 @@
 TARGET_DIR = bin
 BOARD ?= STM32F469DISC
-BOARD_F746G ?= STM32F746GDISC
+BOARD_F746G ?= STM32F7DISC
 FLAVOR ?= SPECTER
 USER_C_MODULES ?= ../../../usermods
 MPY_DIR ?= f469-disco/micropython
@@ -55,7 +55,7 @@ disco: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32 git-info
                 $(TARGET_DIR)/specter-diy.hex
 
 # STM32F746G-Discovery board with bitcoin library
-f746g: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
+f746g: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32 git-info
 	@echo Building firmware for STM32F746G-Discovery
 	make -C $(MPY_DIR)/ports/stm32 \
         BOARD=$(BOARD_F746G) \
@@ -66,9 +66,9 @@ f746g: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
         DEBUG=$(DEBUG) \
         CFLAGS_EXTRA="$(MPY_CFLAGS)" && \
 	arm-none-eabi-objcopy -O binary \
-        $(MPY_DIR)/ports/stm32/build-STM32F746GDISC/firmware.elf \
+        $(MPY_DIR)/ports/stm32/build-STM32F7DISC/firmware.elf \
         $(TARGET_DIR)/specter-diy-f746g.bin && \
-        cp $(MPY_DIR)/ports/stm32/build-STM32F746GDISC/firmware.hex \
+        cp $(MPY_DIR)/ports/stm32/build-STM32F7DISC/firmware.hex \
                 $(TARGET_DIR)/specter-diy-f746g.hex
 
 # disco board with bitcoin library

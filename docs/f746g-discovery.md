@@ -104,33 +104,7 @@ specter-diy/
 ├── manifests/f746g.py                # F746G frozen module manifest
 ├── src/platform.py                   # Updated with F746G fallbacks
 └── f469-disco/                       # (submodule)
-    ├── manifests/
-    │   ├── f746g.py                  # Inner manifest
-    │   └── f746g_empty.py            # Minimal manifest
-    ├── micropython/ports/stm32/boards/
-    │   └── STM32F746GDISC/           # Board definition
-    │       ├── mpconfigboard.h
-    │       ├── mpconfigboard.mk
-    │       ├── pins.csv
-    │       ├── board_init.c
-    │       ├── bdev.c
-    │       └── stm32f7xx_hal_conf.h
-    └── usermods/
-        ├── sdram/
-        │   ├── sdram_f746g.c         # SDRAM module for F746G
-        │   └── micropython.mk        # Updated build config
-        └── udisplay_f469/
-            ├── display_f746g.c       # Display module for F746G
-            ├── display_f746g/        # Python display wrapper
-            ├── lv_conf.h             # Updated with F746G resolution
-            ├── micropython.mk        # Updated build config
-            ├── lv_stm_hal/
-            │   └── lv_stm_hal_f746g.c  # LVGL HAL for F746G
-            └── BSP_DISCO_F746G/      # Board Support Package
-                ├── Drivers/BSP/STM32746G-Discovery/
-                │   ├── stm32746g_discovery.c/h    # Board I/O
-                │   ├── stm32746g_discovery_lcd.c/h # LCD driver
-                │   ├── stm32746g_discovery_ts.c/h  # Touch driver
-                │   └── stm32746g_discovery_sdram.c/h # SDRAM driver
-                └── Utilities/Fonts/   # Shared font files
+    ├── manifests/disco.py            # Shared manifest (common libs)
+    └── micropython/ports/stm32/boards/
+        └── STM32F7DISC/              # MicroPython board definition (upstream)
 ```
