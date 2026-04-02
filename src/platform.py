@@ -115,7 +115,11 @@ if simulator:
     sdcard = SDCard(None, None)
 else:
     storage_root = ""
-    sdcard = SDCard(pyb.SDCard(), pyb.LED(4))
+    # STM32F746G-Discovery has only 1 LED; use LED(1) for SD indicator
+    try:
+        sdcard = SDCard(pyb.SDCard(), pyb.LED(4))
+    except ValueError:
+        sdcard = SDCard(pyb.SDCard(), pyb.LED(1))
 
 def get_version() -> str:
     # version is coming from boot.py if running on the hardware
@@ -202,7 +206,11 @@ def delete_recursively(path, include_self=False):
 
 
 if not simulator:
-    stlk = pyb.UART("YB", 9600)
+    try:
+        stlk = pyb.UART("YB", 9600)
+    except ValueError:
+        # STM32F746G-Discovery uses UART1 for ST-LINK VCP
+        stlk = None
 
 def enable_usb():
     pyb.usb_mode("VCP")
@@ -279,7 +287,11 @@ def wipe():
 def usb_connected():
     if simulator:
         return True
-    return bool(pyb.Pin.board.USB_VBUS.value())
+    try:
+        return bool(pyb.Pin.board.USB_VBUS.value())
+    except AttributeError:
+        # Board may not have USB_VBUS pin defined
+        return False
 
 BATTERY_TABLE = [
     (4.2,  100),

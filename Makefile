@@ -1,10 +1,12 @@
 TARGET_DIR = bin
 BOARD ?= STM32F469DISC
+BOARD_F746G ?= STM32F746GDISC
 FLAVOR ?= SPECTER
 USER_C_MODULES ?= ../../../usermods
 MPY_DIR ?= f469-disco/micropython
 MPY_CFLAGS ?= -Wno-dangling-pointer -Wno-enum-int-mismatch
 FROZEN_MANIFEST_DISCO ?= ../../../../manifests/disco.py
+FROZEN_MANIFEST_F746G ?= ../../../../manifests/f746g.py
 FROZEN_MANIFEST_DEBUG ?= ../../../../manifests/debug.py
 FROZEN_MANIFEST_UNIX ?= ../../../../manifests/unix.py
 DEBUG ?= 0
@@ -42,6 +44,23 @@ disco: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
         cp $(MPY_DIR)/ports/stm32/build-STM32F469DISC/firmware.hex \
                 $(TARGET_DIR)/specter-diy.hex
 
+# STM32F746G-Discovery board with bitcoin library
+f746g: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
+	@echo Building firmware for STM32F746G-Discovery
+	make -C $(MPY_DIR)/ports/stm32 \
+        BOARD=$(BOARD_F746G) \
+        FLAVOR=$(FLAVOR) \
+        USE_DBOOT=$(USE_DBOOT) \
+        USER_C_MODULES=$(USER_C_MODULES) \
+        FROZEN_MANIFEST=$(FROZEN_MANIFEST_F746G) \
+        DEBUG=$(DEBUG) \
+        CFLAGS_EXTRA="$(MPY_CFLAGS)" && \
+	arm-none-eabi-objcopy -O binary \
+        $(MPY_DIR)/ports/stm32/build-STM32F746GDISC/firmware.elf \
+        $(TARGET_DIR)/specter-diy-f746g.bin && \
+        cp $(MPY_DIR)/ports/stm32/build-STM32F746GDISC/firmware.hex \
+                $(TARGET_DIR)/specter-diy-f746g.hex
+
 # disco board with bitcoin library
 debug: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
 	@echo Building firmware
@@ -75,7 +94,7 @@ simulate: unix
 test: unix
 	cd test && ../$(TARGET_DIR)/micropython_unix run_tests.py
 
-all: mpy-cross disco unix
+all: mpy-cross disco f746g unix
 
 clean:
 	rm -rf $(TARGET_DIR)
