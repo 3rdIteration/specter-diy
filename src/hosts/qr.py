@@ -11,6 +11,8 @@ from microur.decoder import FileURDecoder
 from microur.util import cbor
 
 QRSCANNER_TRIGGER = config.QRSCANNER_TRIGGER
+# UART bus for QR scanner (configurable for different boards)
+QRSCANNER_UART = getattr(config, 'QRSCANNER_UART', 'YA')
 # OK response from scanner
 SUCCESS = b"\x02\x00\x00\x01\x00\x33\x31"
 # serial port mode
@@ -56,8 +58,12 @@ class QRHost(Host):
     button = "Scan QR code"
     settings_button = "QR scanner"
 
-    def __init__(self, path, trigger=None, uart="YA", baudrate=9600):
+    def __init__(self, path, trigger=None, uart=None, baudrate=9600):
         super().__init__(path)
+
+        # Use configured UART if not explicitly specified
+        if uart is None:
+            uart = QRSCANNER_UART
 
         # default settings, extend it with more settings if applicable
         self.settings = {

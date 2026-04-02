@@ -1,0 +1,20 @@
+{
+    "deploy": [
+        "../deploy.md"
+    ],
+    "docs": "",
+    "features": [
+        "800x480 LCD",
+        "Capacitive Touch",
+        "Octo-SPI Flash",
+        "USB Type-C",
+        "SD Card",
+        "TrustZone"
+    ],
+    "images": [],
+    "mcu": "stm32u5g9",
+    "product": "STM32U5G9J-DK2",
+    "thumbnail": "",
+    "url": "https://www.st.com/en/evaluation-tools/stm32u5g9j-dk2.html",
+    "vendor": "ST Microelectronics"
+}
