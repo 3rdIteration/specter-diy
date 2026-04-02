@@ -147,6 +147,7 @@ static void ltdc_init(void) {
     layer_cfg.Alpha0 = 0;
     layer_cfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
     layer_cfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
+    /* NOTE: FBStartAdress is the official STM32 HAL field name (misspelled in ST HAL) */
     layer_cfg.FBStartAdress = (uint32_t)framebuffer;
     layer_cfg.ImageWidth = TFT_HOR_RES;
     layer_cfg.ImageHeight = TFT_VER_RES;

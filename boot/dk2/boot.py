@@ -14,7 +14,7 @@ import sys
 # Clean sys.path from qspi
 # Shouldn't happen in production, but just in case.
 for p in sys.path:
-    if "qspi" in sys.path:
+    if "qspi" in p:
         sys.path.remove(p)
 
 # DK2 is USB-powered; no external power hold circuit.

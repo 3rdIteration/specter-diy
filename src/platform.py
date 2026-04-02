@@ -290,8 +290,11 @@ def wipe():
         f = pyb.Flash()
         block_size = f.ioctl(5, None)
         if is_dk2:
-            # DK2: 4 MB internal flash, wipe internal flash blocks
-            for i in range(256, 1024):
+            # DK2: 4 MB internal flash with larger sectors
+            # Block range depends on the flash block size reported by the driver.
+            # Wipe all user-data blocks beyond the reserved area.
+            num_blocks = f.ioctl(4, None)  # total number of blocks
+            for i in range(256, num_blocks):
                 b = os.urandom(block_size)
                 f.writeblocks(i, b)
                 del b
