@@ -34,6 +34,9 @@ jobs:
       - name: Build STM32F469 Discovery firmware
         run: nix develop -c make disco
 
+      - name: Build STM32U5G9J-DK2 firmware
+        run: nix develop -c make dk2
+
       - name: Upload firmware artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -41,3 +44,5 @@ jobs:
           path: |
             bin/specter-diy.bin
             bin/specter-diy.hex
+            bin/specter-diy-dk2.bin
+            bin/specter-diy-dk2.hex
