@@ -4,6 +4,8 @@ Clone the repository recursively `git clone https://github.com/cryptoadvance/spe
 
 `bootloader` folder contains a [secure bootloader](https://github.com/cryptoadvance/specter-bootloader) that you can customize with your own firmware signing keys.
 
+Check [reproducible-build](./reproducible-build.md) if you want to use Docker.
+
 ## Prerequisites for the Nix build
 
 There are multiple ways to get all necessary tools. The recommended way is to use the Nix flake with direnv.
@@ -122,6 +124,13 @@ To build a simulator run `make unix` - it will compile a micropython simulator f
 To launch a simulator either run `bin/micropython_unix simulate.py` or simly run `make simulate`.
 
 If something is not working you can clean up with `make clean`
+
+### Automated build script
+
+The top-level `build_firmware.sh` helper runs the full secure build, including the bootloader and signed upgrade package. It
+also creates `release/disco-nobootloader.{bin,hex}`, which contain the plain firmware without the secure bootloader. The
+`disco-nobootloader.bin` image is identical to the `nix build` output and can be flashed directly to a development board when
+you need a faster iteration loop.
 
 ## Run Unittests
 
