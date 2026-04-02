@@ -13,7 +13,7 @@ for p in sys.path:
 pwr = pyb.Pin("B15", pyb.Pin.OUT)
 pwr.on()
 
-version = "<version:tag10>0100900099</version:tag10>"
+version = "<version:tag10>0101000199</version:tag10>"
 
 # get i2c
 i2c = pyb.I2C(1)
@@ -49,7 +49,7 @@ def poweroff(_):
 
 pyb.ExtInt(pyb.Pin('B1'), pyb.ExtInt.IRQ_FALLING, pyb.Pin.PULL_NONE, pwrcb)
 
-# configure usb from start if you want, 
+# configure usb from start if you want,
 # otherwise will be configured after PIN
 # pyb.usb_mode("VCP+MSC") # debug mode with USB and mounted storages from start
 # pyb.usb_mode("VCP") # debug mode with USB from start
@@ -62,3 +62,5 @@ os.dupterm(None,1)
 import platform
 platform.version = version
 platform.i2c = i2c
+platform.bootloader_locked = True
+platform.build_type = "disco"
