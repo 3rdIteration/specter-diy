@@ -404,17 +404,19 @@ BATTERY_TABLE = [
 # Initialised lazily on first call to _get_battery_status_adc().
 _battery_adc = None
 _charging_pin = None
+_battery_adc_initialised = False
 
 def _init_battery_adc():
     """Set up the ADC and charging-state pin once."""
-    global _battery_adc, _charging_pin
+    global _battery_adc, _charging_pin, _battery_adc_initialised
+    _battery_adc_initialised = True
     if simulator:
         return
     try:
         if config.BATTERY_ADC_PIN is not None:
             _battery_adc = pyb.ADC(pyb.Pin(config.BATTERY_ADC_PIN))
     except Exception as e:
-        print("battery ADC init:", e)
+        print("battery ADC init (%s):" % config.BATTERY_ADC_PIN, e)
     try:
         if config.BATTERY_CHARGING_PIN is not None:
             _charging_pin = pyb.Pin(
@@ -423,7 +425,7 @@ def _init_battery_adc():
                 pyb.Pin.PULL_UP,
             )
     except Exception as e:
-        print("charging pin init:", e)
+        print("charging pin init (%s):" % config.BATTERY_CHARGING_PIN, e)
 
 
 def _voltage_to_level(voltage):
@@ -443,7 +445,7 @@ def _voltage_to_level(voltage):
 def _get_battery_status_adc():
     """Read battery voltage via the on-board ADC and charging pin."""
     global _battery_adc, _charging_pin
-    if _battery_adc is None and _charging_pin is None:
+    if not _battery_adc_initialised:
         _init_battery_adc()
     if _battery_adc is None:
         return None, None
@@ -451,7 +453,11 @@ def _get_battery_status_adc():
         # 12-bit ADC with 3.3 V reference
         raw = _battery_adc.read()
         adc_voltage = raw * 3.3 / 4095.0
-        voltage = adc_voltage / config.BATTERY_ADC_DIVIDER_RATIO
+        ratio = config.BATTERY_ADC_DIVIDER_RATIO
+        if ratio <= 0:
+            print("battery ADC: invalid divider ratio", ratio)
+            return None, None
+        voltage = adc_voltage / ratio
         level = _voltage_to_level(voltage)
         charging = None
         if _charging_pin is not None:

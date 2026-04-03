@@ -11,7 +11,7 @@ measure battery voltage and charging state through two MCU GPIO pins,
 | Signal              | MCU pin (default) | Arduino header | Direction |
 |---------------------|--------------------|----------------|-----------|
 | Battery voltage ADC | **A0** (PA6)       | CN5-A0         | Analog in |
-| Charging state      | **A1** (PA4¹)      | CN5-A1         | Digital in|
+| Charging state      | **A1** (PA4¹)      | CN5-A1         | Digital in |
 
 > ¹ On the new shield these pins are no longer routed to the smartcard
 > connector – they replace the unused SC AUX2 and the adjacent pad.
