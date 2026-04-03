@@ -113,24 +113,38 @@ must match the physical resistor values.
 
 ---
 
-## 2. Charging state detection
+## 2. Charging state detection (TP4056)
 
-The charger IC (e.g. BQ25060, MCP73831, or TP4056) provides a **STAT**
-output that indicates charging status:
+The **TP4056** linear Li-Ion charger IC has two open-drain status outputs:
 
-| STAT pin | Meaning              |
-|----------|----------------------|
-| LOW      | Charging in progress |
-| HIGH-Z   | Charge complete / no battery / fault |
+| Pin  | Name   | LOW (sinking)       | HIGH-Z (open)                    |
+|------|--------|---------------------|----------------------------------|
+| 7    | CHRG   | Charging in progress | Not charging                    |
+| 6    | STDBY  | Charge complete      | Not in standby                  |
+
+Combined truth table:
+
+| CHRG | STDBY | Meaning                        |
+|------|-------|--------------------------------|
+| LOW  | HIGH  | Charging in progress           |
+| HIGH | LOW   | Charge complete (standby)      |
+| HIGH | HIGH  | No battery / no USB / shutdown |
+
+> Both outputs are **open-drain** — they can only pull LOW or float.  An
+> external (or MCU-internal) pull-up resistor is required to read a
+> logic HIGH when the pin is not being driven.
+
+We connect the **CHRG** (pin 7) output to the MCU.  This gives the
+firmware a simple binary signal: LOW = charging, HIGH = not charging.
 
 ### Schematic
 
 ```
-  Charger STAT output ────┬──── MCU A1 (digital input, internal pull-up)
-                          │
-                         [R5 100 kΩ] (external pull-up to 3.3 V, optional
-                          │            if MCU internal pull-up is used)
-                         3V3
+  TP4056 pin 7 (CHRG) ────┬──── MCU A1 (digital input, internal pull-up)
+                           │
+                          [R5 100 kΩ] (external pull-up to 3.3 V, optional
+                           │            if MCU internal pull-up is used)
+                          3V3
 ```
 
 The firmware configures the pin with an internal pull-up and reads:
@@ -138,9 +152,13 @@ The firmware configures the pin with an internal pull-up and reads:
 * `pin.value() == 0` → **charging**
 * `pin.value() == 1` → **not charging / complete**
 
-No isolation MOSFET is needed here because the charger IC itself is
-powered from USB VBUS; when VBUS is absent the STAT pin is floating and
-the MCU is off, so no current flows.
+No isolation MOSFET is needed here because the TP4056 is powered from
+USB VBUS; when VBUS is absent the CHRG output is floating (HIGH-Z) and
+the MCU is off, so no current flows through the pull-up.
+
+> **Tip:** If you also want to distinguish *charge complete* from
+> *no battery / USB disconnected*, connect STDBY (pin 6) to a second
+> GPIO with a pull-up in the same way and check both pins in firmware.
 
 ---
 
@@ -148,10 +166,10 @@ the MCU is off, so no current flows.
 
 ```
                             ┌─────────────────────────┐
-  USB 5 V ──►  Charger IC  │  BQ25060 / MCP73831     │
+  USB 5 V ──►  Charger IC  │  TP4056                  │
               (on shield)   │                         │
                             │  VBAT ◄──► Li-Ion cell  │
-                            │  STAT ──────────────────┼──► MCU A1
+                            │  CHRG (pin 7) ──────────┼──► MCU A1
                             └────────────┬────────────┘
                                          │ VBAT
                     ┌────────────────────┘

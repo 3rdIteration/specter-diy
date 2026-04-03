@@ -32,8 +32,8 @@ QRSCANNER_TRIGGER = "D2"
 BATTERY_ADC_PIN = None          # e.g. "A0" – set in config.py
 BATTERY_ADC_DIVIDER_RATIO = 0.6 # R2/(R1+R2) for the external divider
 
-# Charging state input pin (active-low from charger STAT output).
-# When the charger IC is charging the battery the STAT pin is pulled
-# low; it floats (pulled high externally) when charging is complete or
-# no battery is present.
+# Charging state input pin (active-low from TP4056 CHRG output).
+# The TP4056 CHRG pin (pin 7) is open-drain: pulled LOW while charging,
+# floating (HIGH-Z) when charge is complete or no USB power.  An
+# internal pull-up on the MCU reads HIGH when not charging.
 BATTERY_CHARGING_PIN = None     # e.g. "A1" – set in config.py

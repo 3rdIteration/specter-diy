@@ -461,7 +461,7 @@ def _get_battery_status_adc():
         level = _voltage_to_level(voltage)
         charging = None
         if _charging_pin is not None:
-            # Charger STAT pin is active-low: 0 = charging
+            # TP4056 CHRG pin is open-drain, active-low: 0 = charging
             charging = not _charging_pin.value()
         return level, charging
     except Exception as e:
