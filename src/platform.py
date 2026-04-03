@@ -400,28 +400,93 @@ BATTERY_TABLE = [
     (3.6,  0),
 ]
 
-def get_battery_status():
-    # simulator or no i2c
+# ---------- ADC-based battery monitoring (new shield) ----------
+# Initialised lazily on first call to _get_battery_status_adc().
+_battery_adc = None
+_charging_pin = None
+
+def _init_battery_adc():
+    """Set up the ADC and charging-state pin once."""
+    global _battery_adc, _charging_pin
+    if simulator:
+        return
+    try:
+        if config.BATTERY_ADC_PIN is not None:
+            _battery_adc = pyb.ADC(pyb.Pin(config.BATTERY_ADC_PIN))
+    except Exception as e:
+        print("battery ADC init:", e)
+    try:
+        if config.BATTERY_CHARGING_PIN is not None:
+            _charging_pin = pyb.Pin(
+                config.BATTERY_CHARGING_PIN,
+                pyb.Pin.IN,
+                pyb.Pin.PULL_UP,
+            )
+    except Exception as e:
+        print("charging pin init:", e)
+
+
+def _voltage_to_level(voltage):
+    """Convert a battery voltage to a 0-100 level using BATTERY_TABLE."""
+    level = 0
+    for idx, (v, lvl) in enumerate(BATTERY_TABLE):
+        if voltage > v:
+            if idx == 0:
+                level = lvl
+                break
+            prevV, prevLvl = BATTERY_TABLE[idx - 1]
+            level = int(lvl + (prevLvl - lvl) * (voltage - v) / (prevV - v))
+            break
+    return level
+
+
+def _get_battery_status_adc():
+    """Read battery voltage via the on-board ADC and charging pin."""
+    global _battery_adc, _charging_pin
+    if _battery_adc is None and _charging_pin is None:
+        _init_battery_adc()
+    if _battery_adc is None:
+        return None, None
+    try:
+        # 12-bit ADC with 3.3 V reference
+        raw = _battery_adc.read()
+        adc_voltage = raw * 3.3 / 4095.0
+        voltage = adc_voltage / config.BATTERY_ADC_DIVIDER_RATIO
+        level = _voltage_to_level(voltage)
+        charging = None
+        if _charging_pin is not None:
+            # Charger STAT pin is active-low: 0 = charging
+            charging = not _charging_pin.value()
+        return level, charging
+    except Exception as e:
+        print("battery ADC read:", e)
+        return None, None
+
+
+def _get_battery_status_i2c():
+    """Read battery voltage via the I2C fuel-gauge IC (original shield)."""
     if i2c is None:
         return None, None
     try:
-        # check if battery monitor exists
         if 112 not in i2c.scan():
             return None, None
-        voltage = int.from_bytes(i2c.mem_read(2, 112, 8),'little')*2.44e-3
-        level = 0
-        for i, (v, lvl) in enumerate(BATTERY_TABLE):
-            if voltage > v:
-                # max voltage
-                if i == 0:
-                    level = lvl
-                    break
-                # linear interpolation
-                prevV, prevLvl = BATTERY_TABLE[i-1]
-                level = int(lvl + (prevLvl-lvl)*(voltage-v)/(prevV-v))
-                break
-        charging = (int.from_bytes(i2c.mem_read(2, 112, 6),'little') < 8192)
+        voltage = int.from_bytes(i2c.mem_read(2, 112, 8), 'little') * 2.44e-3
+        level = _voltage_to_level(voltage)
+        charging = (int.from_bytes(i2c.mem_read(2, 112, 6), 'little') < 8192)
         return level, charging
     except Exception as e:
         print(e)
         return None, None
+
+
+def get_battery_status():
+    """Return (level, charging) using whichever method is available.
+
+    If BATTERY_ADC_PIN is configured the ADC path is used; otherwise
+    the legacy I2C fuel-gauge path is tried.
+    """
+    if simulator:
+        return None, None
+    if getattr(config, "BATTERY_ADC_PIN", None) is not None:
+        return _get_battery_status_adc()
+    return _get_battery_status_i2c()
