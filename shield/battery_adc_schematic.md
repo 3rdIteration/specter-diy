@@ -215,7 +215,7 @@ config:
 # config.py – new shield board overrides
 BATTERY_ADC_PIN = "A0"              # ADC pin connected to the voltage divider
 BATTERY_ADC_DIVIDER_RATIO = 0.6     # R2/(R1+R2) — must match hardware
-BATTERY_CHARGING_PIN = "A1"         # Charger STAT pin (active-low)
+BATTERY_CHARGING_PIN = "A1"         # TP4056 CHRG pin (active-low)
 ```
 
 No changes to `boot.py` are required; the I2C fuel-gauge init is skipped
