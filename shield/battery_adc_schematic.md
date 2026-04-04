@@ -208,15 +208,22 @@ Total added cost: **< $0.15**
 
 ## 5. Software configuration
 
-Create (or edit) `config.py` on the device flash alongside the default
-config:
+**Auto-detection is the default.**  The firmware probes pin A0 for a
+plausible Li-Ion voltage (2.5 V – 4.5 V after divider correction) on
+the first battery status request.  If the reading is in range the ADC
+path is used; otherwise the firmware falls back to the I2C fuel-gauge.
+The detected method is cached for the lifetime of the session.
+
+No `config.py` or `boot.py` changes are required for the standard
+wiring (A0 = ADC, A1 = CHRG).  If you use different pins or a
+different divider ratio, override the defaults:
 
 ```python
-# config.py – new shield board overrides
+# config.py – only needed for non-standard wiring
 BATTERY_ADC_PIN = "A0"              # ADC pin connected to the voltage divider
 BATTERY_ADC_DIVIDER_RATIO = 0.6     # R2/(R1+R2) — must match hardware
 BATTERY_CHARGING_PIN = "A1"         # TP4056 CHRG pin (active-low)
 ```
 
-No changes to `boot.py` are required; the I2C fuel-gauge init is skipped
-automatically when the IC is not present on the bus.
+To disable ADC probing entirely (e.g. if pin A0 is used for something
+else), set `BATTERY_ADC_PIN = None` in your `config.py`.

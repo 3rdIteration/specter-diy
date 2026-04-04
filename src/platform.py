@@ -406,26 +406,34 @@ _battery_adc = None
 _charging_pin = None
 _battery_adc_initialised = False
 
+# Plausible Li-Ion single-cell voltage range for auto-detection.
+# A running device needs ≥ ~3.0 V; fully charged is 4.2 V.
+# Readings outside this window indicate a floating / unconnected pin.
+_BATTERY_MIN_V = 2.5
+_BATTERY_MAX_V = 4.5
+
 def _init_battery_adc():
     """Set up the ADC and charging-state pin once."""
     global _battery_adc, _charging_pin, _battery_adc_initialised
     _battery_adc_initialised = True
     if simulator:
         return
+    adc_pin = getattr(config, "BATTERY_ADC_PIN", "A0")
+    chg_pin = getattr(config, "BATTERY_CHARGING_PIN", "A1")
     try:
-        if config.BATTERY_ADC_PIN is not None:
-            _battery_adc = pyb.ADC(pyb.Pin(config.BATTERY_ADC_PIN))
+        if adc_pin is not None:
+            _battery_adc = pyb.ADC(pyb.Pin(adc_pin))
     except Exception as e:
-        print("battery ADC init (%s):" % config.BATTERY_ADC_PIN, e)
+        print("battery ADC init (%s):" % adc_pin, e)
     try:
-        if config.BATTERY_CHARGING_PIN is not None:
+        if chg_pin is not None:
             _charging_pin = pyb.Pin(
-                config.BATTERY_CHARGING_PIN,
+                chg_pin,
                 pyb.Pin.IN,
                 pyb.Pin.PULL_UP,
             )
     except Exception as e:
-        print("charging pin init (%s):" % config.BATTERY_CHARGING_PIN, e)
+        print("charging pin init (%s):" % chg_pin, e)
 
 
 def _voltage_to_level(voltage):
@@ -453,11 +461,16 @@ def _get_battery_status_adc():
         # 12-bit ADC with 3.3 V reference
         raw = _battery_adc.read()
         adc_voltage = raw * 3.3 / 4095.0
-        ratio = config.BATTERY_ADC_DIVIDER_RATIO
+        ratio = getattr(config, "BATTERY_ADC_DIVIDER_RATIO", 0.6)
         if ratio <= 0:
             print("battery ADC: invalid divider ratio", ratio)
             return None, None
         voltage = adc_voltage / ratio
+        # Plausibility check: reject readings outside the Li-Ion range.
+        # A floating / unconnected pin reads near 0 V or 3.3 V, which
+        # converts to values well outside a single-cell battery range.
+        if voltage < _BATTERY_MIN_V or voltage > _BATTERY_MAX_V:
+            return None, None
         level = _voltage_to_level(voltage)
         charging = None
         if _charging_pin is not None:
@@ -485,14 +498,38 @@ def _get_battery_status_i2c():
         return None, None
 
 
+# Detected battery source: None = not yet probed, "adc" / "i2c" / "none".
+_battery_method = None
+
+
 def get_battery_status():
     """Return (level, charging) using whichever method is available.
 
-    If BATTERY_ADC_PIN is configured the ADC path is used; otherwise
-    the legacy I2C fuel-gauge path is tried.
+    On the first call the function probes for a battery measurement
+    source: it tries the ADC path (voltage divider on the new shield)
+    and then the I2C fuel-gauge (original shield).  Whichever responds
+    with a plausible reading first is remembered and used for all
+    subsequent calls – the two are never present simultaneously.
     """
+    global _battery_method
     if simulator:
         return None, None
-    if getattr(config, "BATTERY_ADC_PIN", None) is not None:
+
+    if _battery_method is None:
+        # Auto-detect: try ADC first, then I2C
+        level, charging = _get_battery_status_adc()
+        if level is not None:
+            _battery_method = "adc"
+            return level, charging
+        level, charging = _get_battery_status_i2c()
+        if level is not None:
+            _battery_method = "i2c"
+            return level, charging
+        _battery_method = "none"
+        return None, None
+
+    if _battery_method == "adc":
         return _get_battery_status_adc()
-    return _get_battery_status_i2c()
+    if _battery_method == "i2c":
+        return _get_battery_status_i2c()
+    return None, None
