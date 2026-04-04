@@ -1,14 +1,34 @@
-# Power Button – Dual-Purpose SW1 (Power-On + Safe Shutdown)
+# Power Management – Two-Button Design (SW1 + SW2)
 
-This document describes a small add-on circuit that lets a **single
-push-button (SW1)** serve two roles:
+The shield uses **two push-buttons** with distinct roles:
+
+| Button | Normal use | Mechanism |
+|--------|-----------|-----------|
+| **SW1** | **Power-on** and **graceful shutdown** | Diode-OR latch (power-on) + N-FET inverter → MCU B1 `pwr_nButton` (shutdown) |
+| **SW2** | **Hard shutdown** (emergency, MCU hung) | NPN transistor Q301 pulls PWR\_EN LOW directly — bypasses firmware entirely |
+
+**SW1 is the everyday button.** Pressing it while the device is
+running produces a falling edge on MCU pin B1 (`pwr_nButton`),
+triggering a clean power-off: filesystem sync, then PWR\_HOLD LOW.
+
+**SW2 is the emergency kill switch.** If the MCU hangs and cannot
+respond to SW1, pressing SW2 forces an immediate hardware power-off
+by pulling PWR\_EN LOW through Q301.  No firmware involvement — this
+is a last-resort recovery mechanism.
+
+---
+
+## SW1 — Graceful Shutdown (pwr\_nButton)
+
+This section describes the add-on circuit that lets **SW1** serve
+two roles:
 
 1. **Power-on** — the existing diode-OR latch drives PWR\_EN HIGH
    (unchanged).
 2. **Safe shutdown** — while the system is running, pressing SW1
-   produces a **falling edge on MCU pin B1**, which the firmware
-   already monitors to trigger a clean power-off (filesystem sync,
-   then PWR\_HOLD LOW).
+   produces a **falling edge on MCU pin B1** (`pwr_nButton`), which
+   the firmware already monitors to trigger a clean power-off
+   (filesystem sync, then PWR\_HOLD LOW).
 
 The circuit requires **no firmware changes** — it is compatible with
 both `boot/main/boot.py` and `boot/debug/boot.py`, which configure B1
@@ -18,9 +38,7 @@ as:
 pyb.ExtInt(pyb.Pin('B1'), pyb.ExtInt.IRQ_FALLING, pyb.Pin.PULL_NONE, pwrcb)
 ```
 
----
-
-## Problem
+### Problem
 
 When the system is running, PWR\_HOLD2 keeps PWR\_EN latched HIGH
 through D307.  Pressing SW1 again simply drives the same node HIGH
@@ -35,9 +53,7 @@ connects PWR\_VIN to the circuit when pressed.
 We need an **inverter** to convert SW1's active-high pulse into an
 active-low signal on B1.
 
----
-
-## Solution — N-FET Inverter
+### Solution — N-FET Inverter
 
 A single **2N7002 N-channel MOSFET** (Q302) acts as an open-drain
 inverter:
@@ -96,9 +112,7 @@ RC time constant with R321 ∥ R322 ≈ 9.1 kΩ → **τ ≈ 0.9 ms**,
 which filters contact bounce.  The firmware also debounces via
 `micropython.schedule()`, so C301 is optional but recommended.
 
----
-
-## Operating States
+### Operating States
 
 | State | SW1 | Q302 Gate | Q302 | B1 | Result |
 |---|---|---|---|---|---|
@@ -124,9 +138,7 @@ is well under 1 kΩ.  With the 10 kΩ pull-up:
 
 At R\_DS(on) = 100 Ω → **V\_B1 ≈ 0.03 V** — solidly LOW.
 
----
-
-## Power-on / boot sequence (no false trigger)
+### Power-on / boot sequence (no false trigger)
 
 1. User presses SW1 → PWR\_VIN flows through D306 → PWR\_EN rises →
    regulator starts → 3V3 rises.
@@ -142,9 +154,7 @@ At R\_DS(on) = 100 Ω → **V\_B1 ≈ 0.03 V** — solidly LOW.
 5. B1 is now HIGH (idle).  Next press will produce the falling edge
    that triggers a safe shutdown.
 
----
-
-## Safe shutdown sequence
+### Safe shutdown sequence (SW1)
 
 1. User presses SW1 → Q302 ON → B1 falls → `IRQ_FALLING` fires.
 2. `pwrcb()` schedules `poweroff()` on the main loop.
@@ -159,9 +169,7 @@ At R\_DS(on) = 100 Ω → **V\_B1 ≈ 0.03 V** — solidly LOW.
 > button is released, power drops.  This is the same behaviour as the
 > original power button design.
 
----
-
-## BOM (3 components + 1 optional)
+### BOM — SW1 inverter (3 components + 1 optional)
 
 All parts from the **JLCPCB Basic Parts Library** for lowest cost.
 
@@ -176,9 +184,7 @@ All parts from the **JLCPCB Basic Parts Library** for lowest cost.
 > Q302 and R321–R323 are the same values already used elsewhere on the
 > shield (battery ADC circuit), so no new unique parts are introduced.
 
----
-
-## Connections to existing board
+### Connections to existing board
 
 Only **one signal** needs to be tapped from the existing power
 circuit — the SW1 node (junction of SW1 and R317):
@@ -192,3 +198,60 @@ circuit — the SW1 node (junction of SW1 and R317):
 
 No existing traces need to be cut.  The add-on can be built as a
 small daughter-board or integrated into the next shield revision.
+
+---
+
+## SW2 — Hard Shutdown (Emergency Kill)
+
+SW2 is a **hardware-only** power kill that works even when the MCU is
+completely unresponsive.  It does **not** go through the firmware — it
+forces the regulator off by pulling PWR\_EN LOW directly.
+
+### Schematic
+
+```
+                          ┌──────────── PWR_EN junction
+                          │             (D306/D307/R315/R320)
+                        Collector
+                          │
+  PWR_VIN ──[R318 10 kΩ]─┤  Q301 (NPN)
+   (SW2 pressed)          │
+                        Base
+                          │
+                       [R319 100 kΩ]  ← pull-down keeps base
+                          │               LOW when SW2 is open
+                         GND
+                        Emitter
+                          │
+                         GND
+```
+
+### How it works
+
+1. **SW2 not pressed** → R319 holds Q301 base LOW → Q301 OFF →
+   PWR\_EN controlled normally by D306/D307/R315.
+2. **SW2 pressed** → base driven by PWR\_VIN through R318 →
+   Q301 saturates → collector pulls PWR\_EN junction to \~V\_CE(sat)
+   ≈ 0.2 V → regulator shuts off immediately.
+
+Q301 must sink the hold-current from PWR\_HOLD2 through R316 (1 kΩ)
+and D307:
+
+    I_C = (3.3 V − 0.7 V − 0.2 V) / 1 kΩ ≈ 2.4 mA
+
+At minimum battery (3.0 V):
+
+    I_B = (3.0 V − 0.7 V) / 10 kΩ = 0.23 mA  →  required hFE ≈ 11
+
+Any general-purpose NPN (2N2222, BC547, etc.) with minimum hFE > 30
+will saturate comfortably.
+
+### When to use SW2
+
+| Situation | Use |
+|---|---|
+| Normal power-off | **SW1** — graceful shutdown via firmware (filesystem safe) |
+| MCU hung / firmware crashed | **SW2** — hard kill, may lose unsaved data |
+
+> **Warning:** SW2 bypasses `os.sync()`.  Use only when the device is
+> unresponsive to SW1.  Under normal operation, always use SW1.
