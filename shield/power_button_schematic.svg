@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 520" width="780" height="520">
+  <rect width="780" height="520" fill="white"/>
+  <style>
+    text { font-family: monospace; }
+  </style>
+
+  <!-- Title -->
+  <text x="20" y="28" text-anchor="start" font-size="15" font-family="sans-serif" font-weight="bold" fill="black">Specter DIY — Power Button Inverter (SW1 → active-low B1)</text>
+  <text x="20" y="44" text-anchor="start" font-size="10" font-family="sans-serif" fill="#666">N-FET open-drain inverter · No firmware changes required · JLCPCB Basic Library parts (LCSC in blue)</text>
+
+  <!-- ===== 3V3 Rail (top) ===== -->
+  <line x1="530" y1="70" x2="530" y2="82" stroke="red" stroke-width="1.5"/>
+  <text x="530" y="65" text-anchor="middle" font-size="11" font-weight="bold" fill="red">3V3</text>
+
+  <!-- R323 pull-up (vertical) -->
+  <line x1="530" y1="82" x2="530" y2="90" stroke="black" stroke-width="1.5"/>
+  <rect x="524" y="90" width="12" height="42" fill="none" stroke="black" stroke-width="1.5"/>
+  <line x1="530" y1="132" x2="530" y2="145" stroke="black" stroke-width="1.5"/>
+  <text x="545" y="108" text-anchor="start" font-size="9" fill="black">R323</text>
+  <text x="545" y="120" text-anchor="start" font-size="9" fill="black">10 kΩ</text>
+  <text x="545" y="132" text-anchor="start" font-size="8" fill="#0066cc">C25744</text>
+
+  <!-- Drain / B1 junction -->
+  <circle cx="530" cy="145" r="3" fill="black"/>
+  <line x1="530" y1="145" x2="660" y2="145" stroke="black" stroke-width="1.5"/>
+  <text x="665" y="141" text-anchor="start" font-size="12" font-weight="bold" fill="black">MCU B1</text>
+  <text x="665" y="155" text-anchor="start" font-size="9" fill="#666">(nButton)</text>
+  <!-- small arrow pointing to B1 -->
+  <polygon points="655,145 648,140 648,150" fill="black"/>
+
+  <!-- ===== Q302 N-FET MOSFET ===== -->
+  <!-- Drain wire down to FET -->
+  <line x1="530" y1="145" x2="530" y2="195" stroke="black" stroke-width="1.5"/>
+
+  <!-- FET body: channel line (vertical, offset left of drain/source axis) -->
+  <line x1="520" y1="195" x2="520" y2="275" stroke="black" stroke-width="2"/>
+
+  <!-- Gate line: horizontal from left to channel -->
+  <line x1="460" y1="235" x2="512" y2="235" stroke="black" stroke-width="1.5"/>
+  <!-- Gate plate (vertical, parallel to channel, small gap) -->
+  <line x1="514" y1="200" x2="514" y2="270" stroke="black" stroke-width="1.5"/>
+
+  <!-- Drain stub: horizontal from channel to drain axis -->
+  <line x1="520" y1="205" x2="530" y2="205" stroke="black" stroke-width="1.5"/>
+  <line x1="530" y1="195" x2="530" y2="205" stroke="black" stroke-width="1.5"/>
+
+  <!-- Source stub: horizontal from channel to source axis -->
+  <line x1="520" y1="265" x2="530" y2="265" stroke="black" stroke-width="1.5"/>
+  <line x1="530" y1="265" x2="530" y2="280" stroke="black" stroke-width="1.5"/>
+
+  <!-- Body arrow (N-channel: arrow points from source toward channel) -->
+  <line x1="520" y1="235" x2="530" y2="235" stroke="black" stroke-width="1.5"/>
+  <polygon points="524,235 530,230 530,240" fill="black"/>
+
+  <!-- D, G, S labels on FET -->
+  <text x="537" y="200" text-anchor="start" font-size="8" fill="#666">D</text>
+  <text x="455" y="231" text-anchor="end" font-size="8" fill="#666">G</text>
+  <text x="537" y="272" text-anchor="start" font-size="8" fill="#666">S</text>
+
+  <!-- Q302 label -->
+  <text x="545" y="237" text-anchor="start" font-size="9" fill="black">Q302</text>
+  <text x="545" y="249" text-anchor="start" font-size="9" fill="black">2N7002</text>
+  <text x="545" y="261" text-anchor="start" font-size="8" fill="#666">N-ch MOSFET</text>
+  <text x="545" y="273" text-anchor="start" font-size="8" fill="#0066cc">C8545</text>
+
+  <!-- Source to GND -->
+  <line x1="530" y1="280" x2="530" y2="295" stroke="black" stroke-width="1.5"/>
+  <!-- GND symbol (source) -->
+  <line x1="520" y1="295" x2="540" y2="295" stroke="black" stroke-width="1.5"/>
+  <line x1="523" y1="299" x2="537" y2="299" stroke="black" stroke-width="1.5"/>
+  <line x1="526" y1="303" x2="534" y2="303" stroke="black" stroke-width="1.5"/>
+
+  <!-- ===== Gate drive circuit ===== -->
+  <!-- Horizontal wire from gate junction to R321 -->
+  <!-- Gate junction point -->
+  <circle cx="350" cy="235" r="3" fill="black"/>
+  <line x1="350" y1="235" x2="460" y2="235" stroke="black" stroke-width="1.5"/>
+
+  <!-- R321 horizontal (from SW1 node to gate junction) -->
+  <line x1="220" y1="235" x2="240" y2="235" stroke="black" stroke-width="1.5"/>
+  <rect x="240" y="229" width="42" height="12" fill="none" stroke="black" stroke-width="1.5"/>
+  <line x1="282" y1="235" x2="350" y2="235" stroke="black" stroke-width="1.5"/>
+  <text x="261" y="225" text-anchor="middle" font-size="9" fill="black">R321 10 kΩ</text>
+  <text x="261" y="254" text-anchor="middle" font-size="8" fill="#0066cc">C25744</text>
+
+  <!-- SW1 node label -->
+  <circle cx="220" cy="235" r="3" fill="black"/>
+  <line x1="100" y1="235" x2="220" y2="235" stroke="black" stroke-width="1.5"/>
+  <text x="95" y="228" text-anchor="end" font-size="11" font-weight="bold" fill="black">SW1 node</text>
+  <text x="95" y="242" text-anchor="end" font-size="8" fill="#666">(junction with R317)</text>
+  <text x="95" y="254" text-anchor="end" font-size="8" fill="#666">PWR_VIN when pressed</text>
+
+  <!-- R322 pull-down (vertical, from gate junction to GND) -->
+  <line x1="350" y1="235" x2="350" y2="260" stroke="black" stroke-width="1.5"/>
+  <rect x="344" y="260" width="12" height="42" fill="none" stroke="black" stroke-width="1.5"/>
+  <line x1="350" y1="302" x2="350" y2="320" stroke="black" stroke-width="1.5"/>
+  <text x="363" y="278" text-anchor="start" font-size="9" fill="black">R322</text>
+  <text x="363" y="290" text-anchor="start" font-size="9" fill="black">100 kΩ</text>
+  <text x="363" y="302" text-anchor="start" font-size="8" fill="#0066cc">C25741</text>
+
+  <!-- GND symbol (R322) -->
+  <line x1="340" y1="320" x2="360" y2="320" stroke="black" stroke-width="1.5"/>
+  <line x1="343" y1="324" x2="357" y2="324" stroke="black" stroke-width="1.5"/>
+  <line x1="346" y1="328" x2="354" y2="328" stroke="black" stroke-width="1.5"/>
+
+  <!-- ===== Optional debounce cap C301 (dashed) ===== -->
+  <line x1="350" y1="235" x2="300" y2="235" stroke="#999" stroke-width="0" />
+  <!-- C301 from gate junction going down, offset to left for clarity -->
+  <!-- dashed vertical line from junction to cap position -->
+  <line x1="220" y1="235" x2="220" y2="275" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- capacitor plates -->
+  <line x1="210" y1="275" x2="230" y2="275" stroke="#999" stroke-width="1.5"/>
+  <line x1="210" y1="281" x2="230" y2="281" stroke="#999" stroke-width="1.5"/>
+  <line x1="220" y1="281" x2="220" y2="300" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- GND symbol (C301) -->
+  <line x1="212" y1="300" x2="228" y2="300" stroke="#999" stroke-width="1"/>
+  <line x1="214" y1="304" x2="226" y2="304" stroke="#999" stroke-width="1"/>
+  <line x1="216" y1="308" x2="224" y2="308" stroke="#999" stroke-width="1"/>
+  <text x="178" y="275" text-anchor="end" font-size="8" fill="#999">C301 100 nF</text>
+  <text x="178" y="286" text-anchor="end" font-size="8" fill="#999">(optional)</text>
+  <text x="178" y="297" text-anchor="end" font-size="7" fill="#8888cc">C1525</text>
+
+  <!-- ===== Annotation box: how it works ===== -->
+  <rect x="30" y="370" width="720" height="130" fill="#f8f8f0" stroke="#ccc" stroke-width="1" rx="5"/>
+  <text x="45" y="390" font-size="11" font-family="sans-serif" font-weight="bold" fill="#333">How it works</text>
+
+  <text x="45" y="410" font-size="10" font-family="sans-serif" fill="#333">① SW1 not pressed → R322 holds gate LOW → Q302 OFF → R323 pulls B1 to 3.3 V (HIGH, idle)</text>
+  <text x="45" y="427" font-size="10" font-family="sans-serif" fill="#333">② SW1 pressed     → gate ≈ 0.91 × PWR_VIN → Q302 ON → B1 pulled to GND (falling edge → IRQ fires)</text>
+  <text x="45" y="444" font-size="10" font-family="sans-serif" fill="#333">③ Firmware runs poweroff(): syncs filesystem, drives PWR_HOLD LOW → power off</text>
+
+  <line x1="45" y1="454" x2="720" y2="454" stroke="#ddd" stroke-width="1"/>
+
+  <text x="45" y="470" font-size="9" font-family="sans-serif" fill="#666">Boot safety: Q302 pulls B1 LOW during power-on (SW1 held), but the IRQ_FALLING interrupt</text>
+  <text x="45" y="483" font-size="9" font-family="sans-serif" fill="#666">is not yet registered. When the user releases SW1, B1 rises (ignored by IRQ_FALLING).</text>
+  <text x="45" y="496" font-size="9" font-family="sans-serif" fill="#666">The next press produces a clean falling edge → safe shutdown.  No firmware changes needed.</text>
+
+</svg>
