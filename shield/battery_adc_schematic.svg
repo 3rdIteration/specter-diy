@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 720" width="920" height="720">
+  <rect width="920" height="720" fill="white"/>
+  <style>
+    text { font-family: monospace; }
+  </style>
+  <text x="20" y="30" text-anchor="start" font-size="16" font-family="sans-serif" font-weight="bold" fill="black">Specter DIY — ADC Battery Measurement Circuit</text>
+<text x="20" y="48" text-anchor="start" font-size="10" font-family="sans-serif" font-weight="normal" fill="#666">JLCPCB Basic Library parts  ·  LCSC part numbers in blue</text>
+<rect x="40" y="65" width="520" height="390" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="6,3" rx="6"/>
+<text x="48" y="79" font-size="10" font-family="sans-serif" fill="#666">Battery Voltage Measurement (power-off isolated)</text>
+<text x="75" y="124" text-anchor="end" font-size="11" font-family="monospace" font-weight="bold" fill="black">VBAT</text>
+<text x="75" y="136" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#666">(3.0–4.2 V)</text>
+<circle cx="80" cy="120" r="3" fill="black"/>
+<line x1="80" y1="120" x2="240" y2="120" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="120" x2="240" y2="140" stroke="black" stroke-width="1.5"/>
+<line x1="232" y1="146.0" x2="232" y2="174.0" stroke="black" stroke-width="1.5"/>
+<line x1="220" y1="160" x2="232" y2="160" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="140.0" x2="240" y2="150.0" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="150.0" x2="236" y2="150.0" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="160" x2="236" y2="160" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="170.0" x2="236" y2="170.0" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="170.0" x2="240" y2="180.0" stroke="black" stroke-width="1.5"/>
+<line x1="236" y1="146.0" x2="236" y2="174.0" stroke="black" stroke-width="1.5"/>
+<polygon points="236,150.0 244,146.0 244,154.0" fill="black"/>
+<text x="250" y="148" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Q1 CJ2301</text>
+<text x="250" y="160" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#666">P-ch MOSFET</text>
+<text x="250" y="172" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#0066cc">C8547</text>
+<line x1="240" y1="180.0" x2="240" y2="185" stroke="black" stroke-width="1.5"/>
+<circle cx="240" cy="185" r="3" fill="black"/>
+<line x1="240" y1="185" x2="240" y2="195.0" stroke="black" stroke-width="1.5"/>
+<rect x="234.0" y="195.0" width="12" height="40" fill="none" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="235.0" x2="240" y2="245" stroke="black" stroke-width="1.5"/>
+<text x="230.0" y="213.0" text-anchor="end" font-size="9" font-family="monospace">R1 100kΩ</text>
+<text x="230.0" y="225.0" text-anchor="end" font-size="8" fill="#0066cc" font-family="monospace">C25741</text>
+<circle cx="240" cy="245" r="3" fill="black"/>
+<line x1="240" y1="245" x2="240" y2="255.0" stroke="black" stroke-width="1.5"/>
+<rect x="234.0" y="255.0" width="12" height="40" fill="none" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="295.0" x2="240" y2="305" stroke="black" stroke-width="1.5"/>
+<text x="250.0" y="273.0" text-anchor="start" font-size="9" font-family="monospace">R2 150kΩ</text>
+<text x="250.0" y="285.0" text-anchor="start" font-size="8" fill="#0066cc" font-family="monospace">C25900</text>
+<line x1="240" y1="305" x2="240" y2="313" stroke="black" stroke-width="1.5"/>
+<line x1="230" y1="313" x2="250" y2="313" stroke="black" stroke-width="1.5"/>
+<line x1="234" y1="317" x2="246" y2="317" stroke="black" stroke-width="1.5"/>
+<line x1="238" y1="321" x2="242" y2="321" stroke="black" stroke-width="1.5"/>
+<line x1="240" y1="245" x2="370" y2="245" stroke="black" stroke-width="1.5"/>
+<text x="375" y="241" text-anchor="start" font-size="10" font-family="monospace" font-weight="bold" fill="black">ADC_BATT</text>
+<text x="375" y="255" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#666">→ MCU pin A0</text>
+<circle cx="305" cy="245" r="3" fill="black"/>
+<line x1="305" y1="245" x2="305" y2="259.0" stroke="black" stroke-width="1.5"/>
+<line x1="295" y1="259.0" x2="315" y2="259.0" stroke="black" stroke-width="2"/>
+<line x1="295" y1="271.0" x2="315" y2="271.0" stroke="black" stroke-width="2"/>
+<line x1="305" y1="271.0" x2="305" y2="285" stroke="black" stroke-width="1.5"/>
+<text x="317" y="263.0" text-anchor="start" font-size="9" font-family="monospace">C1 100nF</text>
+<text x="317" y="275.0" text-anchor="start" font-size="8" fill="#0066cc" font-family="monospace">C1525</text>
+<line x1="305" y1="285" x2="305" y2="293" stroke="black" stroke-width="1.5"/>
+<line x1="295" y1="293" x2="315" y2="293" stroke="black" stroke-width="1.5"/>
+<line x1="299" y1="297" x2="311" y2="297" stroke="black" stroke-width="1.5"/>
+<line x1="303" y1="301" x2="307" y2="301" stroke="black" stroke-width="1.5"/>
+<text x="317" y="297" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#999">(opt.)</text>
+<circle cx="150" cy="120" r="3" fill="black"/>
+<line x1="150" y1="120" x2="150" y2="130" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="130" x2="150" y2="140.0" stroke="black" stroke-width="1.5"/>
+<rect x="144.0" y="140.0" width="12" height="40" fill="none" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="180.0" x2="150" y2="190" stroke="black" stroke-width="1.5"/>
+<text x="140.0" y="158.0" text-anchor="end" font-size="9" font-family="monospace">R3 10kΩ</text>
+<text x="140.0" y="170.0" text-anchor="end" font-size="8" fill="#0066cc" font-family="monospace">C25744</text>
+<circle cx="150" cy="190" r="3" fill="black"/>
+<line x1="150" y1="190" x2="220" y2="190" stroke="black" stroke-width="1.5"/>
+<line x1="220" y1="190" x2="220" y2="160" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="190" x2="150" y2="245" stroke="black" stroke-width="1.5"/>
+<line x1="142" y1="251.0" x2="142" y2="279.0" stroke="black" stroke-width="1.5"/>
+<line x1="130" y1="265" x2="142" y2="265" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="245.0" x2="150" y2="255.0" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="255.0" x2="146" y2="255.0" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="265" x2="146" y2="265" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="275.0" x2="146" y2="275.0" stroke="black" stroke-width="1.5"/>
+<line x1="150" y1="275.0" x2="150" y2="285.0" stroke="black" stroke-width="1.5"/>
+<line x1="146" y1="251.0" x2="146" y2="279.0" stroke="black" stroke-width="1.5"/>
+<polygon points="146,275.0 154,271.0 154,279.0" fill="black"/>
+<text x="95" y="253" text-anchor="end" font-size="9" font-family="monospace" font-weight="normal" fill="black">Q2 2N7002</text>
+<text x="95" y="265" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#666">N-ch MOSFET</text>
+<text x="95" y="277" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#0066cc">C8545</text>
+<line x1="150" y1="285.0" x2="150" y2="293.0" stroke="black" stroke-width="1.5"/>
+<line x1="140" y1="293.0" x2="160" y2="293.0" stroke="black" stroke-width="1.5"/>
+<line x1="144" y1="297.0" x2="156" y2="297.0" stroke="black" stroke-width="1.5"/>
+<line x1="148" y1="301.0" x2="152" y2="301.0" stroke="black" stroke-width="1.5"/>
+<text x="65" y="257" text-anchor="end" font-size="10" font-family="monospace" font-weight="bold" fill="black">PWR_HOLD</text>
+<text x="65" y="269" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#666">(B15, 3.3 V)</text>
+<circle cx="70" cy="265" r="3" fill="black"/>
+<line x1="70" y1="265" x2="80.0" y2="265" stroke="black" stroke-width="1.5"/>
+<rect x="80.0" y="259.0" width="40" height="12" fill="none" stroke="black" stroke-width="1.5"/>
+<line x1="120.0" y1="265" x2="130" y2="265" stroke="black" stroke-width="1.5"/>
+<text x="100.0" y="255.0" text-anchor="middle" font-size="9" font-family="monospace">R4 10kΩ</text>
+<text x="100.0" y="244.0" text-anchor="middle" font-size="8" fill="#0066cc" font-family="monospace">C25744</text>
+<line x1="130" y1="265" x2="130" y2="265" stroke="black" stroke-width="1.5"/>
+<rect x="40" y="470" width="520" height="130" fill="none" stroke="#999" stroke-width="1" stroke-dasharray="6,3" rx="6"/>
+<text x="48" y="484" font-size="10" font-family="sans-serif" fill="#666">Charging State Detection (TP4056)</text>
+<text x="95" y="544" text-anchor="end" font-size="10" font-family="monospace" font-weight="bold" fill="black">TP4056</text>
+<text x="95" y="556" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#666">CHRG (pin 7)</text>
+<text x="95" y="568" text-anchor="end" font-size="8" font-family="monospace" font-weight="normal" fill="#999">open-drain</text>
+<line x1="100" y1="540" x2="280" y2="540" stroke="black" stroke-width="1.5"/>
+<circle cx="280" cy="540" r="3" fill="black"/>
+<line x1="280" y1="485" x2="280" y2="495.0" stroke="black" stroke-width="1.5"/>
+<rect x="274.0" y="495.0" width="12" height="40" fill="none" stroke="black" stroke-width="1.5"/>
+<line x1="280" y1="535.0" x2="280" y2="545" stroke="black" stroke-width="1.5"/>
+<text x="290.0" y="513.0" text-anchor="start" font-size="9" font-family="monospace">R5 100kΩ</text>
+<text x="290.0" y="525.0" text-anchor="start" font-size="8" fill="#0066cc" font-family="monospace">C25741</text>
+<line x1="280" y1="485" x2="280" y2="475" stroke="black" stroke-width="1.5"/>
+<line x1="272" y1="475" x2="288" y2="475" stroke="black" stroke-width="1.5"/>
+<text x="280" y="471" text-anchor="middle" font-size="10" font-family="monospace" font-weight="bold">3V3</text>
+<text x="300" y="537" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#999">(opt.)</text>
+<line x1="280" y1="540" x2="400" y2="540" stroke="black" stroke-width="1.5"/>
+<text x="405" y="536" text-anchor="start" font-size="10" font-family="monospace" font-weight="bold" fill="black">CHRG_STAT</text>
+<text x="405" y="550" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#666">→ MCU pin A1</text>
+<text x="405" y="562" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#999">(input w/ pull-up)</text>
+<text x="590" y="80" text-anchor="start" font-size="13" font-family="sans-serif" font-weight="bold" fill="black">Bill of Materials</text>
+<text x="590" y="94" text-anchor="start" font-size="9" font-family="sans-serif" font-weight="normal" fill="#666">(JLCPCB Basic Library)</text>
+<text x="590" y="110" text-anchor="start" font-size="9" font-family="monospace" font-weight="bold" fill="black">Ref</text>
+<text x="620" y="110" text-anchor="start" font-size="9" font-family="monospace" font-weight="bold" fill="black">Part</text>
+<text x="720" y="110" text-anchor="start" font-size="9" font-family="monospace" font-weight="bold" fill="black">Value</text>
+<text x="785" y="110" text-anchor="start" font-size="9" font-family="monospace" font-weight="bold" fill="black">Pkg</text>
+<text x="830" y="110" text-anchor="start" font-size="9" font-family="monospace" font-weight="bold" fill="black">LCSC</text>
+<line x1="590" y1="113" x2="880" y2="113" stroke="black" stroke-width="1.5"/>
+<text x="590" y="128" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Q1</text>
+<text x="620" y="128" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">CJ2301 P-FET</text>
+<text x="720" y="128" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">—</text>
+<text x="785" y="128" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">SOT-23</text>
+<text x="830" y="128" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C8547</text>
+<text x="590" y="146" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Q2</text>
+<text x="620" y="146" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">2N7002 N-FET</text>
+<text x="720" y="146" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">—</text>
+<text x="785" y="146" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">SOT-23</text>
+<text x="830" y="146" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C8545</text>
+<text x="590" y="164" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">R1</text>
+<text x="620" y="164" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Chip Resistor</text>
+<text x="720" y="164" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">100kΩ 1%</text>
+<text x="785" y="164" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="164" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C25741</text>
+<text x="590" y="182" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">R2</text>
+<text x="620" y="182" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Chip Resistor</text>
+<text x="720" y="182" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">150kΩ 1%</text>
+<text x="785" y="182" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="182" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C25900</text>
+<text x="590" y="200" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">R3</text>
+<text x="620" y="200" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Chip Resistor</text>
+<text x="720" y="200" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">10kΩ</text>
+<text x="785" y="200" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="200" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C25744</text>
+<text x="590" y="218" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">R4</text>
+<text x="620" y="218" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Chip Resistor</text>
+<text x="720" y="218" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">10kΩ</text>
+<text x="785" y="218" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="218" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C25744</text>
+<text x="590" y="236" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">R5*</text>
+<text x="620" y="236" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">Chip Resistor</text>
+<text x="720" y="236" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">100kΩ</text>
+<text x="785" y="236" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="236" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C25741</text>
+<text x="590" y="254" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">C1*</text>
+<text x="620" y="254" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">MLCC X7R</text>
+<text x="720" y="254" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">100nF</text>
+<text x="785" y="254" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="black">0402</text>
+<text x="830" y="254" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#0066cc">C1525</text>
+<text x="590" y="277" text-anchor="start" font-size="8" font-family="monospace" font-weight="normal" fill="#999">* = optional</text>
+<text x="590" y="307" text-anchor="start" font-size="12" font-family="sans-serif" font-weight="bold" fill="black">Design Notes</text>
+<text x="590" y="325" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· Q1 isolates divider when device is OFF</text>
+<text x="590" y="339" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">  (PWR_HOLD LOW → Q2 OFF → Q1 gate = VBAT → OFF)</text>
+<text x="590" y="353" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· Q2 level-shifts 3.3 V PWR_HOLD to drive Q1</text>
+<text x="590" y="367" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· Divider: 150k/(100k+150k) = 0.60</text>
+<text x="590" y="381" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">  4.2 V × 0.60 = 2.52 V (safe for 3.3 V ADC)</text>
+<text x="590" y="395" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· Zero standby drain when device is powered off</text>
+<text x="590" y="409" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333"></text>
+<text x="590" y="423" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· TP4056 CHRG: open-drain, LOW = charging</text>
+<text x="590" y="437" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">· MCU internal pull-up or R5 reads HIGH-Z as HIGH</text>
+<text x="590" y="451" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333"></text>
+<text x="590" y="465" text-anchor="start" font-size="9" font-family="monospace" font-weight="normal" fill="#333">Voltage = (ADC / 4095) × 3.3 / 0.60</text>
+</svg>

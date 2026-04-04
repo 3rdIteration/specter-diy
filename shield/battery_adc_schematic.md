@@ -56,7 +56,7 @@ pin B15).
 
 | Ref | Part                       | Value    | Notes                                     |
 |-----|----------------------------|----------|--------------------------------------------|
-| Q1  | P-ch MOSFET (e.g. Si2301)  | –        | V_GS(th) < −1 V, R_DS(on) < 1 Ω          |
+| Q1  | P-ch MOSFET (CJ2301)       | –        | V_GS(th) < −1 V, R_DS(on) < 1 Ω          |
 | R1  | Resistor                   | 100 kΩ   | Upper leg of voltage divider               |
 | R2  | Resistor                   | 150 kΩ   | Lower leg of voltage divider               |
 | R3  | Gate pull-up resistor      | 10 kΩ    | Ensures Q1 is OFF when PWR_HOLD is LOW     |
@@ -77,7 +77,7 @@ pin B15).
 #### Gate drive detail (level shift)
 
 Because PWR_HOLD is a 3.3 V logic signal and V_BAT can be up to 4.2 V,
-a small N-channel MOSFET (e.g. 2N7002) is used to pull Q1's gate low:
+a small N-channel MOSFET (2N7002) is used to pull Q1's gate low:
 
 ```
   PWR_HOLD ──[R4 10 kΩ]──┬── Gate of Q2 (N-ch, 2N7002)
@@ -189,24 +189,31 @@ the MCU is off, so no current flows through the pull-up.
 
 ---
 
-## 4. Bill of Materials (measurement circuit only)
+## 4. Schematic diagram
 
-| Ref | Part           | Package  | Qty | Approx. cost |
-|-----|----------------|----------|-----|--------------|
-| Q1  | Si2301 P-FET   | SOT-23   | 1   | $0.05        |
-| Q2  | 2N7002 N-FET   | SOT-23   | 1   | $0.03        |
-| R1  | 100 kΩ 1%      | 0402     | 1   | $0.01        |
-| R2  | 150 kΩ 1%      | 0402     | 1   | $0.01        |
-| R3  | 10 kΩ          | 0402     | 1   | $0.01        |
-| R4  | 10 kΩ          | 0402     | 1   | $0.01        |
-| R5  | 100 kΩ (opt.)  | 0402     | 1   | $0.01        |
-| C1  | 100 nF (opt.)  | 0402     | 1   | $0.01        |
+![ADC Battery Measurement Schematic](battery_adc_schematic.svg)
+
+## 5. Bill of Materials (measurement circuit only)
+
+All parts below are from the **JLCPCB Basic Library** (no extended-part
+surcharge).
+
+| Ref | Part                    | Value      | Package | LCSC    |
+|-----|-------------------------|------------|---------|---------|
+| Q1  | CJ2301 P-ch MOSFET     | –          | SOT-23  | C8547   |
+| Q2  | 2N7002 N-ch MOSFET     | –          | SOT-23  | C8545   |
+| R1  | Chip Resistor 1 %      | 100 kΩ    | 0402    | C25741  |
+| R2  | Chip Resistor 1 %      | 150 kΩ    | 0402    | C25900  |
+| R3  | Chip Resistor          | 10 kΩ     | 0402    | C25744  |
+| R4  | Chip Resistor          | 10 kΩ     | 0402    | C25744  |
+| R5  | Chip Resistor (opt.)   | 100 kΩ    | 0402    | C25741  |
+| C1  | MLCC X7R (opt.)        | 100 nF    | 0402    | C1525   |
 
 Total added cost: **< $0.15**
 
 ---
 
-## 5. Software configuration
+## 6. Software configuration
 
 **Auto-detection is the default.**  The firmware probes pin A0 for a
 plausible Li-Ion voltage (2.5 V – 4.5 V after divider correction) on
