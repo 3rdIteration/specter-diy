@@ -2760,61 +2760,11 @@
 			)
 		)
 	)
-	(text "SMARTCARD INTERFACE (ST8034)"
-		(exclude_from_sim no)
-		(at 25 25 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "3bf22f6d-440f-4580-9a91-e194aa296496")
-	)
-	(text "QR SCANNER (FFC)"
-		(exclude_from_sim no)
-		(at 25 130 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "3ae412d2-2d88-476a-af75-252975fa1279")
-	)
-	(text "ARDUINO SHIELD HEADERS"
-		(exclude_from_sim no)
-		(at 280 25 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "3d1af035-57ea-472f-ae2b-77043478cc60")
-	)
-	(text "BUZZER"
-		(exclude_from_sim no)
-		(at 25 215 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "5edf6f31-2461-4957-a731-1025ab00c85c")
-	)
-	(text "BYPASS & FILTERING"
-		(exclude_from_sim no)
-		(at 25 275 0)
-		(effects
-			(font
-				(size 2 2)
-			)
-			(justify left)
-		)
-		(uuid "c8b8dc02-3816-4c20-a7f5-97bc0cbc35a0")
-	)
+
+
+
+
+
 	(wire
 		(pts
 			(xy 130 105) (xy 130 108)
@@ -6070,5 +6020,121 @@
 			(justify left)
 		)
 		(uuid "e867a083-910b-4b7a-96ed-bdf3fc7c1373")
+	)
+
+	(text "SMARTCARD INTERFACE (ST8034)"
+		(exclude_from_sim no)
+		(at 25 25 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "8cef0d58-8023-4a38-8bad-146248f0d7ad")
+	)
+	(text "ST ST8034 smartcard interface IC (U6, QFN-24).\nISO 7816 compliant: handles clock, reset, I/O, and power.\nSmartcard socket J8 (7312P0225A13LF) with card detect.\nSC_IO: bidirectional data line to MCU (UART TX/RX via U6).\nSC_CLK: clock output to card. SC_RST: reset output to card.\nSC_VCC: regulated card supply from U6. SC_PRESN: card presence detect.\nCommunication with secure element is encrypted end-to-end;\nthe smartcard controller learns nothing about transmitted data."
+		(exclude_from_sim no)
+		(at 25 31 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "bdcdcfda-2a69-4d6e-a837-72bf6aa72085")
+	)
+	(text "QR SCANNER (FFC)"
+		(exclude_from_sim no)
+		(at 25 130 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "92c231ec-6476-4867-bea9-88e33e6c3d87")
+	)
+	(text "GROW GM65-S QR/barcode scanner module connection.\nFFC connector J10 (SFV12R-2STE1HLF, 12-pin 0.5mm pitch).\nSimple UART interface: QR_TX (data from scanner to MCU),\nQR_RX (commands from MCU to scanner).\nQR_TRIG: hardware trigger for scan initiation.\nScanner only captures images and sends scanned data;\nno security-critical processing in the scanner module."
+		(exclude_from_sim no)
+		(at 25 136 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "69f07bd2-2d75-4cc6-af52-4acee5c38544")
+	)
+	(text "ARDUINO SHIELD HEADERS"
+		(exclude_from_sim no)
+		(at 280 25 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "2087f790-73f7-48cb-b5fe-71045d7607af")
+	)
+	(text "Standard Arduino Uno R3 header pinout for\nSTM32F469I-Discovery board compatibility.\nJ9:  D8-D13 (digital), GND, AREF, SDA, SCL.\nJ11: D0-D7 (digital), incl. D0/RX and D1/TX for UART.\nJ12: A0-A3 (analog inputs), I2C SDA/SCL.\nJ13: Power header (V3V3, GND, VIN).\nI2C bus shared between fuel gauge (STC3100),\nsmartcard interface, and MCU."
+		(exclude_from_sim no)
+		(at 280 31 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "56190cc7-5215-4da5-bab5-0c46ebebacda")
+	)
+	(text "BUZZER"
+		(exclude_from_sim no)
+		(at 25 215 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "6a7b15a8-16fc-41e8-ab09-948588489094")
+	)
+	(text "Piezo buzzer LS1 (SMT-1127-S-R / TDK PS1240P02BT).\nDriven by BUZZER signal from MCU GPIO.\nUsed for audible feedback (key press confirmation,\ntransaction signing alerts, error notifications)."
+		(exclude_from_sim no)
+		(at 25 221 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "438117f4-33e6-4b49-bbf7-8004e053bba6")
+	)
+	(text "BYPASS & FILTERING"
+		(exclude_from_sim no)
+		(at 25 275 0)
+		(effects
+			(font
+				(size 2 2)
+			)
+			(justify left)
+		)
+		(uuid "deaa4fd9-4d3e-4a05-a23e-b0b8f0402af4")
+	)
+	(text "Decoupling capacitors for V3V3 rail:\nC29-C48: 100nF ceramic (0402) placed near IC power pins.\nBulk capacitors: 10uF and 22uF for rail stability.\nR32-R34: pull-up/pull-down resistors for signal integrity."
+		(exclude_from_sim no)
+		(at 25 281 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "79cba7f6-b3ec-4d70-b56c-0d86a9b3c556")
 	)
 )

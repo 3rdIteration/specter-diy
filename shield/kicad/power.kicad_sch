@@ -4320,72 +4320,12 @@
 			)
 		)
 	)
-	(text "USB INPUT & CHARGING"
-		(exclude_from_sim no)
-		(at 25 25 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "65caaaa7-1329-460f-9029-8953b1814a6b")
-	)
-	(text "LI-ION CHARGER (BQ25060)"
-		(exclude_from_sim no)
-		(at 145 25 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "3dc96cce-ccda-41c2-b898-de41f5feb0f2")
-	)
-	(text "BATTERY & FUEL GAUGE (STC3100)"
-		(exclude_from_sim no)
-		(at 25 105 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "8959d904-7718-44eb-b9d8-3fef332b1961")
-	)
-	(text "BUCK-BOOST (TPS63060)"
-		(exclude_from_sim no)
-		(at 265 25 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "51897018-5304-4e68-ba74-eba118a507ec")
-	)
-	(text "VOLTAGE SUPERVISOR"
-		(exclude_from_sim no)
-		(at 265 105 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "9191b02e-2763-439f-80b2-0c44e37b3428")
-	)
-	(text "POWER CONTROL"
-		(exclude_from_sim no)
-		(at 25 185 0)
-		(effects
-			(font
-				(size 3 3)
-			)
-			(justify left)
-		)
-		(uuid "5260ab5e-546d-4961-ba4e-79c4af2f917c")
-	)
+
+
+
+
+
+
 	(wire
 		(pts
 			(xy 52.62 63.73) (xy 67.46 63.73)
@@ -9057,5 +8997,144 @@
 			(justify left)
 		)
 		(uuid "b6dd0379-094c-47f0-88c8-98c4ebb001b6")
+	)
+
+	(text "USB INPUT & CHARGING"
+		(exclude_from_sim no)
+		(at 25 25 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "3dd7704f-2add-40ec-ad9e-593b736b0d32")
+	)
+	(text "USB Micro-B connector (J1) provides 5V power input.\nESD protection via CDSOD323-T05S TVS diode (D1).\nFerrite beads FB1/FB2 filter high-frequency noise.\nInput decoupling: C1 (100nF), C2 (22uF) on VBUS."
+		(exclude_from_sim no)
+		(at 25 31 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "b1dabf5e-d2da-4f13-bf65-128a48d4045c")
+	)
+	(text "LI-ION CHARGER (BQ25060)"
+		(exclude_from_sim no)
+		(at 145 25 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "b707992b-186e-45ce-a5d8-d1af336e1c1a")
+	)
+	(text "TI BQ25060 single-cell Li-ion charger (U1).\nVBUS_F input from USB after ESD/ferrite filtering.\nCharge current set by R1 (ISET pin).\nNTC thermistor input (TS) for battery temp monitoring.\nCHG_STAT output: charge status indicator (active low).\nOutput: VBAT (3.0V-4.2V) to battery connector J2."
+		(exclude_from_sim no)
+		(at 145 31 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "e678c358-60c0-4784-9b5e-c6f89c56e593")
+	)
+	(text "BATTERY & FUEL GAUGE (STC3100)"
+		(exclude_from_sim no)
+		(at 25 105 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "3cad0ed9-0f0d-47e7-92e8-4c8123407ffe")
+	)
+	(text "ST STC3100 coulomb counter / fuel gauge (U3).\nMonitors battery voltage and current via sense resistor R22 (30mOhm).\nI2C interface (SDA/SCL) reports state-of-charge to MCU.\nBattery connector J2 (JST PH 2-pin).\nTest points J3-J5 for VBAT/GND access."
+		(exclude_from_sim no)
+		(at 25 111 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "5c5d831c-37a7-497c-bbc4-2d8ff1cec2f5")
+	)
+	(text "BUCK-BOOST CONVERTER (TPS63060)"
+		(exclude_from_sim no)
+		(at 265 25 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "016792c7-c6bf-4bb4-9192-728217fb1050")
+	)
+	(text "TI TPS63060 buck-boost DC-DC converter (U4).\nInput: VBAT (2.5V-4.2V from battery or USB).\nOutput: V3V3 (3.3V regulated) for all digital logic.\nPWR_EN input: enables/disables output (power latch).\nInductor L2 (1.5uH) for energy storage.\nFeedback: R4/R5 divider sets output to 3.3V.\nInput caps: C5-C8. Output caps: C9-C11."
+		(exclude_from_sim no)
+		(at 265 31 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "f7b40b07-ed0c-40cf-a20c-5340bcfe1b26")
+	)
+	(text "VOLTAGE SUPERVISOR"
+		(exclude_from_sim no)
+		(at 265 105 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "2fd97c39-31d3-46d1-a7f9-293635cdd1a1")
+	)
+	(text "TI TPS3422 precision voltage supervisor (U2).\nMonitors V3V3 rail for undervoltage/brownout.\nAsserts nRESET to MCU if V3V3 drops below threshold.\nEnsures clean power-on reset sequence.\nMAX803 (U5) provides additional reset supervision.\nR9/R11/R12: threshold and timing resistors."
+		(exclude_from_sim no)
+		(at 265 111 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "de7888fe-60d1-4ac8-8bdc-5f51ee8ee8f3")
+	)
+	(text "POWER CONTROL"
+		(exclude_from_sim no)
+		(at 25 185 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "e6f4c539-7cf9-480c-b06a-f44a32761a51")
+	)
+	(text "Two-button power management system:\nSW1 (Push): Graceful shutdown button.\n  Q1-Q2 N-FET inverter converts press to falling edge on PWR_BTN.\n  MCU detects IRQ_FALLING, syncs filesystem, then releases PWR_EN.\nSW2 (SPDT): Emergency hard-kill switch.\n  Directly controls PWR_EN via Q3-Q6 MOSFET logic.\n  Use only when MCU is unresponsive.\nQ1-Q6: MOSFET power switching (DMG1012T / NTR4101PT1G).\nD3-D7: Protection diodes (RB520S30)."
+		(exclude_from_sim no)
+		(at 25 191 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "89a1fb80-ca52-440e-8acd-fa797f372d35")
 	)
 )

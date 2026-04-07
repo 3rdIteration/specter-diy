@@ -10,12 +10,7 @@
 		(comment 2 "github.com/3rdIteration/specter-diy")
 	)
 	(lib_symbols)
-	(text "Specter Shield v1\nHardware Wallet Shield Board\nFor STM32F469I-Discovery"
-		(exclude_from_sim no)
-		(at 50 40 0)
-		(effects (font (size 3 3)) (justify left))
-		(uuid "55d0864f-51db-4616-a9df-1ed589fba424")
-	)
+
 	(sheet
 		(at 40 80)
 		(size 60 20)
@@ -49,5 +44,76 @@
 			(project ""
 				(path "/0edde069-4094-4249-98aa-f396abbdb468"
 					(page "3"))))
+	)
+
+	(text "Specter Shield v1\nHardware Wallet Shield Board\nFor STM32F469I-Discovery"
+		(exclude_from_sim no)
+		(at 50 30 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left)
+		)
+		(uuid "92094401-45a0-4faa-ae0f-3b3aa19d2a6a")
+	)
+	(text "Open-source Bitcoin hardware wallet extension board.\nAdds battery power, smartcard slot, QR scanner, and buzzer\nto the STM32F469I-Discovery development board.\nUses standard Arduino Uno R3 headers for compatibility.\n4-layer PCB, 60mm x 127mm, 139 components."
+		(exclude_from_sim no)
+		(at 50 48 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "30b43e98-8441-4503-baf6-9cee6afeea37")
+	)
+	(text "USB 5V input -> BQ25060 Li-ion charger -> TPS63060 buck-boost -> 3.3V output\nBattery fuel gauge (STC3100), voltage supervisor (TPS3422/MAX803),\ntwo-button power control (graceful shutdown + emergency kill)"
+		(exclude_from_sim no)
+		(at 40 100 0)
+		(effects
+			(font
+				(size 1.3 1.3)
+				(color 100 100 100 1)
+			)
+			(justify left)
+		)
+		(uuid "005f53dc-26a2-4f69-b8ef-df99d9a6dcaa")
+	)
+	(text "ST8034 smartcard interface (ISO 7816), QR scanner via FFC (UART),\nArduino shield headers (J9/J11-J13), piezo buzzer, bypass capacitors"
+		(exclude_from_sim no)
+		(at 40 140 0)
+		(effects
+			(font
+				(size 1.3 1.3)
+				(color 100 100 100 1)
+			)
+			(justify left)
+		)
+		(uuid "45c9780f-695a-492d-9fce-b58e9080ee81")
+	)
+	(text "DESIGN NOTES"
+		(exclude_from_sim no)
+		(at 50 165 0)
+		(effects
+			(font
+				(size 2.5 2.5)
+			)
+			(justify left)
+		)
+		(uuid "9aeaa245-d20f-4249-ad7a-6c15979cb0d7")
+	)
+	(text "- All security-critical operations run on the STM32F469 MCU\n- QR scanner only captures images; no crypto processing\n- Smartcard communication is encrypted end-to-end\n- Power latch (PWR_EN) ensures clean shutdown with filesystem sync\n- Battery monitoring via I2C fuel gauge or ADC voltage divider\n- Original design: Altium CircuitMaker by Mikhail Tolkachev\n- Source: github.com/3rdIteration/specter-diy"
+		(exclude_from_sim no)
+		(at 50 172 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+				(color 0 0 150 1)
+			)
+			(justify left)
+		)
+		(uuid "f03b8d8c-7171-493d-8661-74cd72433930")
 	)
 )
