@@ -1,45 +1,53 @@
 (kicad_sch
 	(version 20231120)
-	(generator "specter-shield-converter")
-	(generator_version "1.0")
-	(uuid "bc69fa00-9457-422c-87dc-a4e397ef4ab4")
+	(generator "specter-shield-builder")
+	(generator_version "2.0")
+	(uuid "0edde069-4094-4249-98aa-f396abbdb468")
 	(paper "A3")
 	(title_block
 		(title "Specter Shield v1")
-		(comment 1 "Converted from Altium CircuitMaker")
-		(comment 2 "Schematic structure only - wiring needs manual completion")
+		(comment 1 "KiCad conversion from Altium CircuitMaker")
+		(comment 2 "github.com/3rdIteration/specter-diy")
 	)
 	(lib_symbols)
-	(text "Specter Shield v1\nConverted from Altium CircuitMaker\n\nThis schematic structure mirrors the original PDF schematics.\nSub-sheets contain component symbols but wiring must be\ncompleted manually using the PDF schematics as reference:\n- 01_Structure_Diagram.pdf\n- 02_Power.pdf\n- 03_Peripherals.pdf"
-		(exclude_from_sim no) (at 50 50 0)
-		(effects (font (size 2 2)) (justify left))
-		(uuid "8d126a18-3c56-4855-b681-2f5bad6209e4")
+	(text "Specter Shield v1\nHardware Wallet Shield Board\nFor STM32F469I-Discovery"
+		(exclude_from_sim no)
+		(at 50 40 0)
+		(effects (font (size 3 3)) (justify left))
+		(uuid "55d0864f-51db-4616-a9df-1ed589fba424")
 	)
-	(sheet (at 50 120) (size 40 15)
-		(stroke (width 0.1) (type solid) (color 0 0 0 0))
-		(fill (color 255 255 255 0.0))
-		(uuid "897957eb-35da-42de-8ecb-266406ae0116")
-		(property "Sheetname" "Structure Diagram" (at 50 119 0)
-			(effects (font (size 1.27 1.27)) (justify left bottom)))
-		(property "Sheetfile" "structure_diagram.kicad_sch" (at 50 136 0)
+	(sheet
+		(at 40 80)
+		(size 60 20)
+		(stroke (width 0.2) (type solid) (color 0 0 0 1))
+		(fill (color 255 255 230 1.0))
+		(uuid "0a8cc8fb-f3c6-470a-a06c-009652435f22")
+		(property "Sheetname" "Power Supply"
+			(at 40 78 0)
+			(effects (font (size 1.5 1.5) bold) (justify left bottom)))
+		(property "Sheetfile" "power.kicad_sch"
+			(at 40 102 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
+		(instances
+			(project ""
+				(path "/0edde069-4094-4249-98aa-f396abbdb468"
+					(page "2"))))
 	)
-	(sheet (at 50 160) (size 40 15)
-		(stroke (width 0.1) (type solid) (color 0 0 0 0))
-		(fill (color 255 255 255 0.0))
-		(uuid "dd31c9c5-8d27-4ade-9def-51d3cd2920f4")
-		(property "Sheetname" "Power" (at 50 159 0)
-			(effects (font (size 1.27 1.27)) (justify left bottom)))
-		(property "Sheetfile" "power.kicad_sch" (at 50 176 0)
+	(sheet
+		(at 40 120)
+		(size 60 20)
+		(stroke (width 0.2) (type solid) (color 0 0 0 1))
+		(fill (color 230 255 230 1.0))
+		(uuid "4b9865d8-b858-401c-be65-f483ed429815")
+		(property "Sheetname" "Peripherals & Connectors"
+			(at 40 118 0)
+			(effects (font (size 1.5 1.5) bold) (justify left bottom)))
+		(property "Sheetfile" "structure_diagram.kicad_sch"
+			(at 40 142 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
-	)
-	(sheet (at 50 200) (size 40 15)
-		(stroke (width 0.1) (type solid) (color 0 0 0 0))
-		(fill (color 255 255 255 0.0))
-		(uuid "5672cfc5-2657-4684-a591-936b123a11a9")
-		(property "Sheetname" "Peripherals" (at 50 199 0)
-			(effects (font (size 1.27 1.27)) (justify left bottom)))
-		(property "Sheetfile" "peripherals.kicad_sch" (at 50 216 0)
-			(effects (font (size 1.27 1.27)) (justify left top)))
+		(instances
+			(project ""
+				(path "/0edde069-4094-4249-98aa-f396abbdb468"
+					(page "3"))))
 	)
 )
