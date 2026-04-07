@@ -25,6 +25,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C132560"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "J1_0_1"
 				(rectangle
 					(start -5.08 7.62)
@@ -101,6 +104,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C3706224"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D1_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -144,6 +150,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1002"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "FB1_0_1"
 				(rectangle
@@ -189,6 +198,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1002"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "FB2_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -232,6 +244,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1560"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C1_0_1"
 				(rectangle
@@ -277,6 +292,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1560"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C2_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -320,6 +338,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C2835501"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "U1_0_1"
 				(rectangle
@@ -437,6 +458,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C3_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -480,6 +504,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C4_0_1"
 				(rectangle
@@ -525,6 +552,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C11702"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R1_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -568,6 +598,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C15749"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R2_0_1"
 				(rectangle
@@ -613,6 +646,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25794"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R8_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -656,6 +692,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C525371"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R10_0_1"
 				(rectangle
@@ -701,6 +740,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C2286"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D2_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -745,6 +787,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C26083"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R3_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -788,6 +833,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C295747"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "J2_0_1"
 				(rectangle
@@ -941,6 +989,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C2969798"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "U3_0_1"
 				(rectangle
 					(start -5.08 11.43)
@@ -1041,6 +1092,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C23209"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R22_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1084,6 +1138,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1560"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C13_0_1"
 				(rectangle
@@ -1129,6 +1186,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25092"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R23_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1173,6 +1233,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R24_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1216,6 +1279,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C48567"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "U4_0_1"
 				(rectangle
@@ -1333,6 +1399,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C49990"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "L2_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1376,6 +1445,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C307331"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C5_0_1"
 				(rectangle
@@ -1421,6 +1493,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C6_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1464,6 +1539,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C307331"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C7_0_1"
 				(rectangle
@@ -1509,6 +1587,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C8_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1552,6 +1633,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C9_0_1"
 				(rectangle
@@ -1597,6 +1681,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C10_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1640,6 +1727,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R4_0_1"
 				(rectangle
@@ -1685,6 +1775,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R6_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1728,6 +1821,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25092"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R5_0_1"
 				(rectangle
@@ -1773,6 +1869,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C15749"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R7_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -1816,6 +1915,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C11_0_1"
 				(rectangle
@@ -1997,6 +2099,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C12_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2040,6 +2145,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C15000"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R9_0_1"
 				(rectangle
@@ -2085,6 +2193,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R11_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2128,6 +2239,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C15749"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R12_0_1"
 				(rectangle
@@ -2173,6 +2287,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C221930"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "SW1_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2216,6 +2333,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C226259"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "SW2_0_1"
 				(rectangle
@@ -2269,6 +2389,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C35920"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q1_0_1"
 				(rectangle
 					(start -5.08 3.81)
@@ -2320,6 +2443,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C42385153"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q2_0_1"
 				(rectangle
@@ -2373,6 +2499,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C42385153"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q3_0_1"
 				(rectangle
 					(start -5.08 3.81)
@@ -2424,6 +2553,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C35920"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q4_0_1"
 				(rectangle
@@ -2477,6 +2609,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C42385153"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q5_0_1"
 				(rectangle
 					(start -5.08 3.81)
@@ -2528,6 +2663,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C42385153"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "Q6_0_1"
 				(rectangle
@@ -2581,6 +2719,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R13_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2624,6 +2765,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C11702"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R14_0_1"
 				(rectangle
@@ -2669,6 +2813,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25804"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R15_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2712,6 +2859,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25804"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R16_0_1"
 				(rectangle
@@ -2757,6 +2907,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R17_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2801,6 +2954,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25804"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R18_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2844,6 +3000,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C26083"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R19_0_1"
 				(rectangle
@@ -2933,6 +3092,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C167132"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D3_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -2976,6 +3138,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C167132"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D4_0_1"
 				(rectangle
@@ -3021,6 +3186,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C167132"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D5_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3064,6 +3232,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C167132"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D6_0_1"
 				(rectangle
@@ -3109,6 +3280,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C167132"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "D7_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3152,6 +3326,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C265101"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "J6_0_1"
 				(rectangle
@@ -3205,6 +3382,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C14_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3248,6 +3428,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C15_0_1"
 				(rectangle
@@ -3293,6 +3476,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1560"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C16_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3336,6 +3522,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1560"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C17_0_1"
 				(rectangle
@@ -3381,6 +3570,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C307331"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C18_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3424,6 +3616,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C19_0_1"
 				(rectangle
@@ -3469,6 +3664,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C20_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3512,6 +3710,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C21_0_1"
 				(rectangle
@@ -3557,6 +3758,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C22_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3600,6 +3804,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C23_0_1"
 				(rectangle
@@ -3645,6 +3852,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C784585"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C24_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3688,6 +3898,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C25_0_1"
 				(rectangle
@@ -3733,6 +3946,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1557"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C26_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3776,6 +3992,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C27_0_1"
 				(rectangle
@@ -3821,6 +4040,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C1525"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "C28_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3864,6 +4086,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25794"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R20_0_1"
 				(rectangle
@@ -3909,6 +4134,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25092"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R21_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -3952,6 +4180,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R25_0_1"
 				(rectangle
@@ -3997,6 +4228,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C156444"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R26_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -4040,6 +4274,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R27_0_1"
 				(rectangle
@@ -4085,6 +4322,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25092"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R28_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -4128,6 +4368,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C138051"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R29_0_1"
 				(rectangle
@@ -4173,6 +4416,9 @@
 			(property "Datasheet" ""
 				(at 0 0 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C25804"
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R30_0_1"
 				(rectangle
 					(start -5.08 2.54)
@@ -4216,6 +4462,9 @@
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(property "Datasheet" ""
 				(at 0 0 0)
+				(effects (font (size 1.27 1.27)) (hide yes)))
+			(property "LCSC" "C15749"
+				(at 0 -20.32 0)
 				(effects (font (size 1.27 1.27)) (hide yes)))
 			(symbol "R31_0_1"
 				(rectangle
@@ -4752,6 +5001,9 @@
 		(property "Datasheet" ""
 			(at 45 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C132560"
+			(at 45 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "ebf503a6-8f65-45d9-80cb-5bc2416f1a1d"))
 		(pin "2"
@@ -4792,6 +5044,9 @@
 		(property "Datasheet" ""
 			(at 75 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C3706224"
+			(at 75 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "58cfe8b9-57a5-4c85-a73d-cbd0e2688231"))
 		(pin "2"
@@ -4822,6 +5077,9 @@
 			(at 100 60 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 100 60 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1002"
 			(at 100 60 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -4856,6 +5114,9 @@
 		(property "Datasheet" ""
 			(at 100 72 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1002"
+			(at 100 72 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "fbbfb810-4d53-4fb9-91f0-4c747f806497"))
 		(pin "2"
@@ -4888,6 +5149,9 @@
 		(property "Datasheet" ""
 			(at 120 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1560"
+			(at 120 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "2b5efd24-0c15-4ab7-95ad-0f536c5bc811"))
 		(pin "2"
@@ -4918,6 +5182,9 @@
 			(at 130 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 130 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1560"
 			(at 130 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -4982,6 +5249,9 @@
 		(property "Datasheet" ""
 			(at 180 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2835501"
+			(at 180 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "a02515a3-ae0b-434c-a71c-f1e3c7da07c8"))
 		(pin "2"
@@ -5032,6 +5302,9 @@
 		(property "Datasheet" ""
 			(at 155 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 155 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "c8a5cb2d-7699-4e72-8506-97be0ee64793"))
 		(pin "2"
@@ -5062,6 +5335,9 @@
 			(at 155 75 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 155 75 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 155 75 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5096,6 +5372,9 @@
 		(property "Datasheet" ""
 			(at 210 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C11702"
+			(at 210 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "64aea57c-3b16-4634-bf1d-846d0de34dba"))
 		(pin "2"
@@ -5126,6 +5405,9 @@
 			(at 210 68 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 210 68 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C15749"
 			(at 210 68 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5160,6 +5442,9 @@
 		(property "Datasheet" ""
 			(at 210 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25794"
+			(at 210 80 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "de2b174a-0d95-4746-a314-50dfeb7eb66e"))
 		(pin "2"
@@ -5190,6 +5475,9 @@
 			(at 155 85 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 155 85 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C525371"
 			(at 155 85 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5224,6 +5512,9 @@
 		(property "Datasheet" ""
 			(at 225 50 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2286"
+			(at 225 50 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "9101a942-c12c-45dc-b072-bfd6c86c1ad6"))
 		(pin "2"
@@ -5254,6 +5545,9 @@
 			(at 240 50 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 240 50 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C26083"
 			(at 240 50 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5346,6 +5640,9 @@
 			(at 45 130 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 45 130 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C295747"
 			(at 45 130 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5470,6 +5767,9 @@
 		(property "Datasheet" ""
 			(at 140 135 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C2969798"
+			(at 140 135 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "9ea05930-31f5-417b-9f4e-71b6f640026f"))
 		(pin "2"
@@ -5516,6 +5816,9 @@
 		(property "Datasheet" ""
 			(at 105 125 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C23209"
+			(at 105 125 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "6dea24d9-b469-485b-a36c-3ac76ac40778"))
 		(pin "2"
@@ -5546,6 +5849,9 @@
 			(at 170 130 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 170 130 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1560"
 			(at 170 130 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5580,6 +5886,9 @@
 		(property "Datasheet" ""
 			(at 105 145 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25092"
+			(at 105 145 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "67459627-20a2-4416-a0b5-c6eb586b52f9"))
 		(pin "2"
@@ -5610,6 +5919,9 @@
 			(at 105 155 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 105 155 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
 			(at 105 155 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5674,6 +5986,9 @@
 		(property "Datasheet" ""
 			(at 310 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C48567"
+			(at 310 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "194f5094-9d25-4bce-b938-009b183c8478"))
 		(pin "2"
@@ -5724,6 +6039,9 @@
 		(property "Datasheet" ""
 			(at 275 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C49990"
+			(at 275 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "14a706d9-6b75-4c5f-bab8-f2b919300787"))
 		(pin "2"
@@ -5754,6 +6072,9 @@
 			(at 275 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 275 80 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C307331"
 			(at 275 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5788,6 +6109,9 @@
 		(property "Datasheet" ""
 			(at 280 90 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 280 90 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "39e20979-3d29-4529-888b-743f89b2165a"))
 		(pin "2"
@@ -5818,6 +6142,9 @@
 			(at 345 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 345 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C307331"
 			(at 345 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5852,6 +6179,9 @@
 		(property "Datasheet" ""
 			(at 345 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
+			(at 345 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "ab562d23-8f18-4ebb-9cbf-73ab974c84c7"))
 		(pin "2"
@@ -5882,6 +6212,9 @@
 			(at 355 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 355 55 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 355 55 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5916,6 +6249,9 @@
 		(property "Datasheet" ""
 			(at 355 65 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 355 65 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "65fc711e-20ad-49fc-9b43-a2171d42948a"))
 		(pin "2"
@@ -5946,6 +6282,9 @@
 			(at 350 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 350 80 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
 			(at 350 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -5980,6 +6319,9 @@
 		(property "Datasheet" ""
 			(at 350 95 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
+			(at 350 95 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "2c71bd74-addc-449f-88f9-c76541c3f65a"))
 		(pin "2"
@@ -6010,6 +6352,9 @@
 			(at 365 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 365 80 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25092"
 			(at 365 80 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6044,6 +6389,9 @@
 		(property "Datasheet" ""
 			(at 275 100 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C15749"
+			(at 275 100 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "c018ec39-0ab5-4133-838f-6ca34efb2fe9"))
 		(pin "2"
@@ -6074,6 +6422,9 @@
 			(at 270 100 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 270 100 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 270 100 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6214,6 +6565,9 @@
 		(property "Datasheet" ""
 			(at 285 125 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 285 125 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "fa5016f2-387d-430d-a569-caf1e0d34664"))
 		(pin "2"
@@ -6244,6 +6598,9 @@
 			(at 285 140 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 285 140 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C15000"
 			(at 285 140 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6278,6 +6635,9 @@
 		(property "Datasheet" ""
 			(at 340 128 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
+			(at 340 128 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "7ff9009e-6b0e-497d-8981-a6217db5dadf"))
 		(pin "2"
@@ -6308,6 +6668,9 @@
 			(at 340 145 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 340 145 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C15749"
 			(at 340 145 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6402,6 +6765,9 @@
 		(property "Datasheet" ""
 			(at 55 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C221930"
+			(at 55 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "7e18ad49-75aa-4a96-9269-c96c8c891c8c"))
 		(pin "2"
@@ -6432,6 +6798,9 @@
 			(at 55 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 55 250 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C226259"
 			(at 55 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6468,6 +6837,9 @@
 		(property "Datasheet" ""
 			(at 105 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C35920"
+			(at 105 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "41db9fff-376d-4f02-93c5-e07d5ed57ebe"))
 		(pin "2"
@@ -6500,6 +6872,9 @@
 			(at 105 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 105 235 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C42385153"
 			(at 105 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6536,6 +6911,9 @@
 		(property "Datasheet" ""
 			(at 145 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C42385153"
+			(at 145 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "c9f94250-f49e-41cd-a64e-4b2c01509033"))
 		(pin "2"
@@ -6568,6 +6946,9 @@
 			(at 145 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 145 235 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C35920"
 			(at 145 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6604,6 +6985,9 @@
 		(property "Datasheet" ""
 			(at 185 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C42385153"
+			(at 185 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "b91bd594-50a3-4932-9a22-5a8f17853033"))
 		(pin "2"
@@ -6636,6 +7020,9 @@
 			(at 185 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 185 235 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C42385153"
 			(at 185 235 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6672,6 +7059,9 @@
 		(property "Datasheet" ""
 			(at 125 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
+			(at 125 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "d1dc30a1-dc2c-4a16-b67d-c4c51245ca67"))
 		(pin "2"
@@ -6702,6 +7092,9 @@
 			(at 125 225 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 125 225 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C11702"
 			(at 125 225 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6736,6 +7129,9 @@
 		(property "Datasheet" ""
 			(at 165 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25804"
+			(at 165 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "a46578fd-292e-4186-8dee-6a336fd4eb26"))
 		(pin "2"
@@ -6766,6 +7162,9 @@
 			(at 165 225 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 165 225 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25804"
 			(at 165 225 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6800,6 +7199,9 @@
 		(property "Datasheet" ""
 			(at 205 210 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
+			(at 205 210 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "5c5ad76a-7d38-4ae6-9e60-a52a94345c7e"))
 		(pin "2"
@@ -6832,6 +7234,9 @@
 		(property "Datasheet" ""
 			(at 205 225 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25804"
+			(at 205 225 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "3a9f0f5f-d4b8-42cb-8595-877520b495df"))
 		(pin "2"
@@ -6862,6 +7267,9 @@
 			(at 205 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 205 250 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C26083"
 			(at 205 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -6958,6 +7366,9 @@
 		(property "Datasheet" ""
 			(at 55 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C167132"
+			(at 55 88 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "0e6cbec7-7d2e-42fc-b248-a487669ed52e"))
 		(pin "2"
@@ -6988,6 +7399,9 @@
 			(at 75 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 75 88 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C167132"
 			(at 75 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7022,6 +7436,9 @@
 		(property "Datasheet" ""
 			(at 95 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C167132"
+			(at 95 88 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "5a54fce7-1a86-4959-a73d-e48394805f3d"))
 		(pin "2"
@@ -7052,6 +7469,9 @@
 			(at 115 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 115 88 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C167132"
 			(at 115 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7086,6 +7506,9 @@
 		(property "Datasheet" ""
 			(at 135 88 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C167132"
+			(at 135 88 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "240442c1-8b1c-4b92-9272-2006385c0e4a"))
 		(pin "2"
@@ -7116,6 +7539,9 @@
 			(at 235 255 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 235 255 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C265101"
 			(at 235 255 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7152,6 +7578,9 @@
 		(property "Datasheet" ""
 			(at 260 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 260 250 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "ec415589-7453-42fa-aa43-613fe7ed782a"))
 		(pin "2"
@@ -7182,6 +7611,9 @@
 			(at 270 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 270 250 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 270 250 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7216,6 +7648,9 @@
 		(property "Datasheet" ""
 			(at 260 265 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1560"
+			(at 260 265 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "7763fbc1-f051-4d91-a500-a41b10d74215"))
 		(pin "2"
@@ -7246,6 +7681,9 @@
 			(at 40 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 40 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1560"
 			(at 40 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7280,6 +7718,9 @@
 		(property "Datasheet" ""
 			(at 62 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C307331"
+			(at 62 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "c2c5a069-aec2-4966-aae2-41069b2db476"))
 		(pin "2"
@@ -7310,6 +7751,9 @@
 			(at 84 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 84 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
 			(at 84 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7344,6 +7788,9 @@
 		(property "Datasheet" ""
 			(at 106 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
+			(at 106 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "e80084c5-b2ab-40b5-b52b-744ede62d3e7"))
 		(pin "2"
@@ -7374,6 +7821,9 @@
 			(at 128 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 128 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
 			(at 128 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7408,6 +7858,9 @@
 		(property "Datasheet" ""
 			(at 150 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
+			(at 150 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "69867559-ee35-40cb-9785-4a234e527a6e"))
 		(pin "2"
@@ -7438,6 +7891,9 @@
 			(at 172 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 172 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
 			(at 172 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7472,6 +7928,9 @@
 		(property "Datasheet" ""
 			(at 194 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C784585"
+			(at 194 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "6f5e3dc2-63e1-46d6-ab25-759962c3af33"))
 		(pin "2"
@@ -7502,6 +7961,9 @@
 			(at 216 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 216 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 216 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7536,6 +7998,9 @@
 		(property "Datasheet" ""
 			(at 238 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1557"
+			(at 238 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "00b88973-a6c6-4f50-9612-a2231c3e4aa4"))
 		(pin "2"
@@ -7566,6 +8031,9 @@
 			(at 260 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 260 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
 			(at 260 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7600,6 +8068,9 @@
 		(property "Datasheet" ""
 			(at 282 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C1525"
+			(at 282 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "066eff35-93d7-41a0-b3ab-a558876149ce"))
 		(pin "2"
@@ -7630,6 +8101,9 @@
 			(at 304 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 304 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25794"
 			(at 304 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7664,6 +8138,9 @@
 		(property "Datasheet" ""
 			(at 326 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25092"
+			(at 326 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "b7327da4-5e7b-4b15-b93d-b99fc73ffdbf"))
 		(pin "2"
@@ -7694,6 +8171,9 @@
 			(at 348 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 348 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
 			(at 348 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7728,6 +8208,9 @@
 		(property "Datasheet" ""
 			(at 370 290 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C156444"
+			(at 370 290 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "6b758834-cf43-4658-8a67-4f4b3798f0cb"))
 		(pin "2"
@@ -7758,6 +8241,9 @@
 			(at 40 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 40 312 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
 			(at 40 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7792,6 +8278,9 @@
 		(property "Datasheet" ""
 			(at 62 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25092"
+			(at 62 312 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "097ec6b9-e0b6-4e87-b879-c28f883a7835"))
 		(pin "2"
@@ -7822,6 +8311,9 @@
 			(at 84 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 84 312 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C138051"
 			(at 84 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
@@ -7856,6 +8348,9 @@
 		(property "Datasheet" ""
 			(at 106 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C25804"
+			(at 106 312 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"
 			(uuid "2dd7716d-6ae9-46a5-9fe3-ccc68c329167"))
 		(pin "2"
@@ -7886,6 +8381,9 @@
 			(at 128 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(property "Datasheet" ""
+			(at 128 312 0)
+			(effects (font (size 1.27 1.27)) (hide yes)))
+		(property "LCSC" "C15749"
 			(at 128 312 0)
 			(effects (font (size 1.27 1.27)) (hide yes)))
 		(pin "1"

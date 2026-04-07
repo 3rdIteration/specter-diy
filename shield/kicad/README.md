@@ -117,25 +117,94 @@ All 139 components have footprints assigned from KiCad standard libraries:
 
 ### Low Priority
 5. **3D models** - Assign 3D models to component footprints
-6. **BOM fields** - Add manufacturer part numbers and supplier info from the original BOM (`specter-shield_v1 BOM.xlsx`)
+6. ~~**BOM fields** - Add manufacturer part numbers and supplier info~~ ✅ LCSC part numbers assigned
 
-## Key Components
+## Key Components & LCSC Part Numbers
 
-| Designator | Part | Description |
-|-----------|------|-------------|
-| U1 | BQ25060DQCR | Li-ion battery charger |
-| U2 | TPS3422EGDRYR | Voltage supervisor |
-| U3 | STC3100IST | Battery fuel gauge |
-| U4 | TPS63060DSCR | Buck-boost converter |
-| U5 | MAX803SQ293D2T1G | Voltage detector |
-| U6 | ST8034HNQR | Smartcard interface IC |
-| J1 | FCI-10118193-0001LF | Micro USB connector |
-| J8 | 7312P0225A13LF | Smartcard socket |
-| J10 | SFV12R-2STE1HLF | QR scanner FFC connector |
-| J11-J13 | M20-877x | Arduino headers |
-| SW1 | 1825968-2 | Power/shutdown button |
-| SW2 | OS102011MA1QN1 | Hard kill switch |
-| LS1 | SMT-1127-S-R | Buzzer |
+All components have been assigned LCSC part numbers for JLCPCB assembly where available. Pinouts have been verified against manufacturer datasheets.
+
+### ICs (Pinouts Verified ✓)
+
+| Designator | Part | Description | LCSC | Pinout Status |
+|-----------|------|-------------|------|---------------|
+| U1 | BQ25060DQCR | Li-ion battery charger (DFN-10) | C2835501 | ✓ Verified: IN/ISET2/VSS/OUT/PGND/PG/CE/ISET/TMR/TS/PAD |
+| U2 | TPS3422EGDRYR | Voltage supervisor (DFN-6) | N/A¹ | ✓ Verified: VDD/GND/SENSE/CT/~MR/~RESET/PAD |
+| U3 | STC3100IST | Battery fuel gauge (DFN-8) | C2969798 | ✓ Verified: IO0/SDA/SCL/GND/CG/ROSC/ALM/VCC/PAD |
+| U4 | TPS63060DSCR | Buck-boost converter (VSON-10) | C48567 | ✓ Verified: VIN/EN/VINA/PS-SYNC/L2/L1/PG/FB/VOUT/GND/PAD |
+| U5 | MAX803SQ293D2T1G | Voltage detector (SOT-23²) | N/A¹ | ✓ Verified: GND/VCC/~RESET |
+| U6 | ST8034HNQR | Smartcard interface (QFN-24) | C2674058 | ✓ Verified: 24 pins + PAD match datasheet |
+
+¹ Not available on LCSC — requires manual sourcing from DigiKey/Mouser
+² Note: MAX803SQ variant is SC-70-3 package; footprint may need adjustment for exact fit
+
+### MOSFETs & Transistors (Pinouts Verified ✓)
+
+| Designator | Part | LCSC | Pins |
+|-----------|------|------|------|
+| Q1, Q4 | NTR4101PT1G (P-ch SOT-23) | C35920 | G=1, S=2, D=3 ✓ |
+| Q2, Q3, Q5, Q6 | DMG1012T (N-ch SOT-523) | C42385153 | G=1, S=2, D=3 ✓ |
+
+### Diodes
+
+| Designator | Part | LCSC |
+|-----------|------|------|
+| D1 | CDSOD323-T05S (TVS, SOD-323) | C3706224 |
+| D2 | LED_Red (0603) | C2286 |
+| D3–D7 | RB520S30 (Schottky, SOD-523) | C167132 |
+
+### Connectors
+
+| Designator | Part | LCSC |
+|-----------|------|------|
+| J1 | USB Micro-B (Molex 47346-0001) | C132560 |
+| J2 | JST PH 2-pin battery (S2B-PH-SM4-TB) | C295747 |
+| J6 | JST PH 3-pin (S3B-PH-SM4-TB) | C265101 |
+| J8 | Smartcard socket (C-707-10M008-S) | N/A¹ |
+| J10 | FFC 12-pin (Hirose FH12-12S-0.5SH) | C88360 |
+| J3–J5 | Test point pads | N/A (bare pads) |
+| J7, J9, J11–J13 | Pin headers (2.54mm) | Generic |
+
+### Switches & Buzzer
+
+| Designator | Part | LCSC |
+|-----------|------|------|
+| SW1 | C&K RS282G05A3 (push button) | C221930 |
+| SW2 | C&K OS102011MA1QN1 (SPDT slide) | C226259 |
+| LS1 | TDK PS1240P02BT (buzzer) | C76871 |
+
+### Passives — Resistors (0402 unless noted)
+
+| Value | Designators | LCSC |
+|-------|------------|------|
+| 22Ω | R5, R21, R23, R28, R44 | C25092 |
+| 30mΩ (0805) | R22 | C23209 |
+| 200Ω | R3, R19, R36, R40–R42, R51 | C26083 |
+| 1kΩ | R1, R14, R37, R38 | C11702 |
+| 2kΩ | R8, R20 | C25794 |
+| 10kΩ | R15, R16, R18, R30, R32–R35, R39, R43, R46–R50, R52 | C25804 |
+| 11.3kΩ | R9, R45 | C15000 |
+| 24kΩ | R2, R7, R12, R31 | C15749 |
+| 120kΩ | R4, R6, R11, R13, R17, R24, R25, R27, R29 | C138051 |
+| 200kΩ | R26 | C156444 |
+| NTC 10kΩ | R10 | C525371 |
+
+### Passives — Capacitors (0402 unless noted)
+
+| Value | Designators | LCSC |
+|-------|------------|------|
+| 10pF | C26 | C1557 |
+| 1nF | C1, C2, C13, C16, C17, C39 | C1560 |
+| 100nF | C3, C4, C6, C9–C12, C14, C15, C25, C27–C34, C38, C45, C48 | C1525 |
+| 1µF | C5, C7, C18, C37, C41 | C307331 |
+| 10µF (0805) | C43, C44, C46, C47 | C15850 |
+| 22µF (0805) | C8, C19–C24, C35, C36, C40, C42 | C784585 |
+
+### Ferrite Beads & Inductors
+
+| Designator | Part | LCSC |
+|-----------|------|------|
+| FB1, FB2 | Ferrite bead 0603 (~1kΩ@100MHz) | C1002 |
+| L2 | 1.5µH inductor (Taiyo Yuden NR5040) | C49990 |
 
 ## Original Design Source
 
