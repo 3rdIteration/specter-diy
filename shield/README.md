@@ -6,6 +6,8 @@ It includes a QR scanner, smartcard slot and a battery. All elements are not sec
 
 Structure diagram, pinout and schematics are available in this folder and on [circuitmaker](https://circuitmaker.com/Projects/Details/MikhailTolkachev/specter-shield). To manufacture the kit yourself just send the content of the [`specter-shield`](./specter-shield/) folder to the PCB manufacturer.
 
+A [KiCad project](./kicad/) is also available, converted from the production files. See the [KiCad README](./kicad/README.md) for details on what was converted and what needs manual completion.
+
 For the QR scanner we use GROW GM65-S scanner.
 
 Available in [our shop](https://specter.solutions/shop/specter-shield/). Assembled kit look like this:
