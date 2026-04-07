@@ -33,7 +33,7 @@ uint32_t card_clk = clk_in / (2U * prescaler);
 | **SC_CLK Output Frequency** | **4.5 MHz** |
 | USART Baudrate | 4,500,000 / 372 ≈ **12,097 baud** |
 
-The smartcard reader Python configuration is in [`src/keystore/javacard/util.py`](../../src/keystore/javacard/util.py):
+The smartcard reader Python configuration is in [`src/keystore/javacard/util.py`](../src/keystore/javacard/util.py):
 
 ```python
 reader = sc.Reader(
