@@ -297,29 +297,157 @@ USART baudrate = 12,097 baud     ← unchanged firmware
 | **Option A** | 9 MHz SMD3225 | Extended part | — | Check LCSC for availability; extended parts have ~$3 setup fee |
 | **Option B** | 8 MHz SMD3225 | **Basic part** | C115962 | Card CLK = 4 MHz; requires firmware baudrate change |
 
-**If 9 MHz must be sourced as an extended part**, the additional cost is minimal ($3 one-time per order). This is the recommended approach for **zero software changes**.
+**If 9 MHz must be sourced as an extended part**, the additional cost is minimal ($3 one-time per order). This approach requires zero software changes but uses a non-standard crystal frequency.
 
-**If a JLCPCB basic part is strictly required**, an 8 MHz crystal could be used:
-- 8 MHz / 2 = 4.0 MHz to card → baudrate = 4,000,000 / 372 ≈ 10,753 baud
-- Firmware expects 12,097 baud → **~12.5% mismatch, requires firmware change**
-- This defeats the zero-software-change goal
-
-### Summary Comparison
-
-| Configuration | IC | Crystal | Divider | Card CLK | Firmware Change? |
-|---------------|-----|---------|---------|----------|-----------------|
-| Current design | ST8034ATDT | None (MCU CK) | ÷1 | 4.5 MHz | None (baseline) |
-| ATDT + crystal (prev section) | ST8034ATDT | 4 MHz | ÷1 | 4.0 MHz | **Yes** (baudrate) |
-| **TDT + 9 MHz crystal** | **ST8034TDT** | **9 MHz** | **÷2** | **4.5 MHz** | **None** ✓ |
-| TDT + 8 MHz crystal | ST8034TDT | 8 MHz | ÷2 | 4.0 MHz | **Yes** (baudrate) |
-
-**Recommendation: Use the ST8034TDT with a 9 MHz crystal and CLKDIV=HIGH.** This achieves the exact same 4.5 MHz card clock as the current design, requiring zero firmware changes and allowing the ST8034TDT to be used as a drop-in replacement (with only the crystal and CLKDIV pull-up as PCB changes).
+**The 8 MHz option is now the ★ recommended approach** — see the next section. With one small firmware define (`SCARD_CARD_CLK_HZ`), both ATDT and TDT work identically with a JLCPCB basic-part crystal.
 
 ---
 
-## BOM Impact
+## ★ Recommended: 8 MHz Crystal + 4 MHz Card Clock (Both ATDT and TDT)
 
-### For ST8034ATDT with 4 MHz Crystal (original proposal)
+The best overall solution is to use an **8 MHz crystal** with **CLKDIV = HIGH (÷2)** on both ST8034 variants, giving a standard **4 MHz card clock**. This requires a single, small firmware change but delivers the most benefits:
+
+- **8 MHz crystal is a JLCPCB basic part** (C115962) — cheapest sourcing
+- **4 MHz is the standard ISO 7816 smartcard clock** — maximum compatibility
+- **Both ST8034ATDT and ST8034TDT work identically** — no autodetection, interchangeable ICs
+- **Single firmware change** — one define, no runtime logic
+
+### How It Works
+
+Both ST8034 variants with CLKDIV = HIGH divide by 2:
+
+| Device | CLKDIV = HIGH | 8 MHz Crystal | Card CLK |
+|--------|---------------|---------------|----------|
+| ST8034ATDT | ÷2 | 8 MHz | **4 MHz** |
+| ST8034TDT | ÷2 | 8 MHz | **4 MHz** |
+
+The card receives exactly 4 MHz regardless of which IC is populated. ISO 7816 baudrate at 4 MHz:
+
+```
+baudrate = 4,000,000 / 372 ≈ 10,753 baud
+```
+
+### Firmware Change
+
+**One define** in [`f469-disco/usermods/scard/scard.h`](https://github.com/diybitcoinhardware/f469-disco/blob/master/usermods/scard/scard.h):
+
+```c
+/// Frequency of card clock provided to smart card via external crystal + divider
+/// When defined, baudrate is derived from this value instead of the USART prescaler.
+/// This decouples the data timing from the MCU's CK pin output.
+#define SCARD_CARD_CLK_HZ               (4000000LU)  // 8 MHz crystal ÷ 2
+```
+
+And a small change in [`f469-disco/usermods/scard/ports/stm32/scard_io.c`](https://github.com/diybitcoinhardware/f469-disco/blob/master/usermods/scard/ports/stm32/scard_io.c) in `init_smartcard()`:
+
+```c
+  // Calculate clock prescaler, programmed into USART_GTPR.PSC
+  uint32_t clk_in = get_usart_clock(usart_id);
+  uint32_t prescaler = (clk_in + 2U * SCARD_MAX_CLK_FREQUENCY_HZ - 1U) /
+                       (2U * SCARD_MAX_CLK_FREQUENCY_HZ);
+  if(prescaler < 1U) {
+    prescaler = 1U;
+  } else if(prescaler > 31U) {
+    return false;
+  }
+
+  // Calculate baudrate depending on smart card clock and etu
+#ifdef SCARD_CARD_CLK_HZ
+  // External crystal: baudrate must match the actual card clock frequency,
+  // not the USART prescaler output (which is disconnected from the card)
+  uint32_t baudrate = (SCARD_CARD_CLK_HZ + SCARD_ETU / 2U) / SCARD_ETU;
+#else
+  // MCU-clocked: baudrate derived from prescaler (original behavior)
+  uint32_t card_clk = clk_in / (2U * prescaler);
+  uint32_t baudrate = (card_clk + SCARD_ETU / 2U) / SCARD_ETU;
+#endif
+```
+
+**That's it.** When `SCARD_CARD_CLK_HZ` is defined, baudrate is calculated from the known external crystal frequency. When undefined, the original behavior is preserved for backward compatibility with MCU-clocked designs.
+
+### Why Not Just Change SCARD_MAX_CLK_FREQUENCY_HZ?
+
+Changing `SCARD_MAX_CLK_FREQUENCY_HZ` from 5 MHz to 4 MHz won't work because the USART prescaler is integer-only:
+
+```
+APB1 = 45 MHz
+prescaler = ceil(45,000,000 / 8,000,000) = 6
+MCU CK output = 45,000,000 / (2 × 6) = 3,750,000 Hz (not 4 MHz!)
+derived baudrate = 3,750,000 / 372 ≈ 10,081 baud
+```
+
+But the card running from an 8 MHz ÷ 2 crystal expects:
+```
+card clock = 4,000,000 Hz
+expected baudrate = 4,000,000 / 372 ≈ 10,753 baud
+```
+
+That's a **6.7% mismatch** — UART communication requires <3% tolerance, so this would **fail**. The baudrate must be decoupled from the prescaler when using an external crystal; the `SCARD_CARD_CLK_HZ` define does exactly that.
+
+### Timing Verification
+
+| Parameter | Value |
+|-----------|-------|
+| External crystal | 8 MHz |
+| CLKDIV setting | HIGH (÷2) |
+| **Card CLK** | **4,000,000 Hz** |
+| SCARD_CARD_CLK_HZ | 4,000,000 |
+| **USART baudrate** | **4,000,000 / 372 ≈ 10,753 baud** |
+| Card expected baudrate | 4,000,000 / 372 ≈ 10,753 baud |
+| **Mismatch** | **0% — exact match** ✓ |
+
+### Hardware Configuration
+
+Both ATDT and TDT use identical hardware:
+
+```
+                  C_L1 (per crystal spec)
+                    │
+ST8034 XTAL1 ──────┤──── Y401 (8 MHz Crystal) ────┤── ST8034 XTAL2
+                    │                                │
+                   GND                              GND
+                                                     │
+                                                   C_L2 (per crystal spec)
+
+CLKDIV (pin 6) ──── HIGH (VCC via 10kΩ pull-up)
+
+MCU PA4 (USART2_CK) ──── DISCONNECTED (not routed to ST8034)
+
+Card CLK = 8 MHz / 2 = 4.0 MHz (standard ISO 7816)
+USART baudrate = 10,753 baud (firmware-configured)
+```
+
+### BOM for 8 MHz Crystal Approach (★ Recommended)
+
+| Ref | Part | Action | LCSC | Notes |
+|-----|------|--------|------|-------|
+| U401 | ST8034ATDT or ST8034TDT | **Either works** | — | Interchangeable with this design |
+| Y401 | 8 MHz Crystal SMD3225 | **ADD** | **C115962** | **JLCPCB Basic Part** ✓ |
+| C_L1 | Load cap 0402 (per crystal spec) | **ADD** | — | Typically 15-33 pF |
+| C_L2 | Load cap 0402 (per crystal spec) | **ADD** | — | Typically 15-33 pF |
+| R_PU | 10kΩ 0402 pull-up | **ADD** | C25804 | CLKDIV1 pull-up to VCC |
+| R403 | 22Ω 0805 | **REMOVE** | — | SC_CLK series resistor (no longer needed) |
+
+Net component change: +3 components (crystal + 2 caps + pull-up - 1 resistor).
+
+---
+
+## Summary Comparison (All Options)
+
+| Configuration | IC | Crystal | CLKDIV | Card CLK | Firmware Change? | Crystal Cost |
+|---------------|-----|---------|--------|----------|-----------------|-------------|
+| Current design | ATDT | None (MCU CK) | LOW (÷1) | 4.5 MHz | None (baseline) | N/A |
+| ATDT + 4 MHz crystal | ATDT | 4 MHz | LOW (÷1) | 4.0 MHz | **Yes** (baudrate) | Basic |
+| TDT + 9 MHz crystal | TDT | 9 MHz | HIGH (÷2) | 4.5 MHz | None | Extended |
+| ★ **8 MHz crystal (either IC)** | **Either** | **8 MHz** | **HIGH (÷2)** | **4.0 MHz** | **Yes** (1 define) | **Basic** ✓ |
+
+**★ Recommended: 8 MHz crystal with CLKDIV=HIGH.** One small firmware change (`SCARD_CARD_CLK_HZ = 4000000`) enables both ST8034ATDT and ST8034TDT to be used interchangeably with a JLCPCB basic-part crystal, delivering the standard ISO 7816 4 MHz card clock. No autodetection needed — the hardware is identical regardless of which IC variant is populated.
+
+---
+
+## Previous BOM Tables (For Reference)
+
+### For ST8034ATDT with 4 MHz Crystal
 
 | Ref | Part | Action | LCSC | Notes |
 |-----|------|--------|------|-------|
@@ -338,5 +466,3 @@ USART baudrate = 12,097 baud     ← unchanged firmware
 | C_L2 | Load cap (per crystal spec) | **ADD** | — | Load cap for crystal |
 | R_PU | 10kΩ 0402 pull-up | **ADD** | C25804 | CLKDIV1 pull-up to VCC |
 | R403 | 22Ω 0805 | **REMOVE** | — | SC_CLK series resistor (no longer needed) |
-
-Net component change: +3 components (crystal + 2 caps + pull-up - 1 resistor).
