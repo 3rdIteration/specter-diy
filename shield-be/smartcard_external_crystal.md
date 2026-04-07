@@ -207,7 +207,123 @@ The **absolute minimum** firmware change to support an external crystal is a **s
 
 ---
 
+## Using ST8034TDT Instead of ST8034ATDT (Zero Software Changes)
+
+The **ST8034TDT** has better availability than the ST8034ATDT but has a different clock divider behavior. The key difference is:
+
+| Device | CLKDIV = LOW | CLKDIV = HIGH |
+|--------|-------------|---------------|
+| **ST8034ATDT** | fXTAL (÷1) | fXTAL / 2 |
+| **ST8034TDT** | fXTAL / 4 | fXTAL / 2 |
+
+The current Shield-BE design uses the ST8034ATDT with **CLKDIV1 = LOW** (÷1 mode), so the card receives the full XTAL1 input frequency (4.5 MHz from the MCU). The ST8034TDT's **minimum divider is ÷2** (CLKDIV = HIGH), not ÷1.
+
+### The Problem
+
+If you simply swap ST8034ATDT → ST8034TDT without changes:
+- MCU outputs 4.5 MHz on USART2_CK → enters ST8034 XTAL1
+- ST8034TDT with CLKDIV=HIGH divides by 2 → card receives **2.25 MHz**
+- But the firmware baudrate is based on 4.5 MHz → **12,097 baud**
+- Card expects baudrate at 2.25 MHz / 372 = **6,048 baud**
+- **2× mismatch → communication failure**
+
+### The Solution: 9 MHz External Crystal
+
+Use a **9 MHz external crystal** on the ST8034TDT's XTAL1/XTAL2 pins, with **CLKDIV = HIGH** (÷2 divider):
+
+```
+9 MHz crystal ÷ 2 = 4.5 MHz to card
+```
+
+This produces **exactly 4.5 MHz** at the card — the same frequency the current MCU clock provides. The firmware's baudrate calculation yields:
+
+```c
+// Firmware (unchanged):
+clk_in = 45,000,000 Hz (APB1)
+prescaler = 5
+card_clk = 45,000,000 / (2 × 5) = 4,500,000 Hz
+baudrate = 4,500,000 / 372 ≈ 12,097 baud
+
+// Card (with 9 MHz crystal, ÷2):
+card_clk = 9,000,000 / 2 = 4,500,000 Hz
+expected_baudrate = 4,500,000 / 372 ≈ 12,097 baud  ✓ EXACT MATCH
+```
+
+**No software changes are needed.** The MCU's USART2_CK pin (PA4) still toggles at 4.5 MHz but is physically disconnected from the ST8034. The USART data baudrate (12,097) exactly matches what the card expects from its 4.5 MHz clock. Both sides agree on the timing.
+
+### Hardware Changes for ST8034TDT
+
+1. **Replace** U401: ST8034ATDT → **ST8034TDT** (pin-compatible, same SO-16 package)
+2. **Disconnect** SC_CLK trace from MCU PA4 to ST8034 XTAL1
+3. **Add** Y401: **9 MHz crystal** (SMD3225-4P) between XTAL1 (pin 1) and XTAL2 (pin 2)
+4. **Add** load capacitors C_L1, C_L2 from XTAL1/XTAL2 to GND
+5. **Change CLKDIV1 = HIGH** (currently LOW) — tie to VCC or MCU GPIO HIGH
+6. **Remove** R403 (22Ω SC_CLK series resistor, no longer needed)
+
+### CLKDIV Pin Configuration Change
+
+The current schematic has `SC_CLKDIV1 = LOW` for the ST8034ATDT's ÷1 mode. For the ST8034TDT, this must change to **HIGH** for the ÷2 divider:
+
+| Pin | Current (ST8034ATDT) | New (ST8034TDT) | Effect |
+|-----|---------------------|-----------------|--------|
+| CLKDIV (pin 6) | LOW (÷1) | **HIGH (÷2)** | 9 MHz / 2 = 4.5 MHz |
+
+On the MCU interface sheet, SC_CLKDIV1 is routed to an MCU GPIO. Either:
+- Tie it HIGH (to VCC through a resistor), or
+- Set the MCU GPIO to output HIGH in firmware (trivial, but technically a "change")
+
+The simplest zero-firmware-change approach is to **tie CLKDIV1 to VCC** via a pull-up resistor on the shield PCB.
+
+### Signal Path (ST8034TDT with 9 MHz Crystal)
+```
+MCU PA4 (USART2_CK) ──── DISCONNECTED (not routed to ST8034)
+
+                  C_L1
+                    │
+ST8034TDT XTAL1 ───┤──── Y401 (9 MHz Crystal) ────┤── ST8034TDT XTAL2
+                    │                                │
+                   GND                              GND
+                                                     │
+                                                   C_L2
+
+CLKDIV (pin 6) ──── HIGH (VCC via pull-up)
+
+Card CLK = 9 MHz / 2 = 4.5 MHz  ← identical to current design
+USART baudrate = 12,097 baud     ← unchanged firmware
+```
+
+### 9 MHz Crystal Selection
+
+9 MHz is **not commonly available as a JLCPCB basic part** in SMD3225. Options:
+
+| Option | Frequency | JLCPCB Status | LCSC | Notes |
+|--------|-----------|---------------|------|-------|
+| **Option A** | 9 MHz SMD3225 | Extended part | — | Check LCSC for availability; extended parts have ~$3 setup fee |
+| **Option B** | 8 MHz SMD3225 | **Basic part** | C115962 | Card CLK = 4 MHz; requires firmware baudrate change |
+
+**If 9 MHz must be sourced as an extended part**, the additional cost is minimal ($3 one-time per order). This is the recommended approach for **zero software changes**.
+
+**If a JLCPCB basic part is strictly required**, an 8 MHz crystal could be used:
+- 8 MHz / 2 = 4.0 MHz to card → baudrate = 4,000,000 / 372 ≈ 10,753 baud
+- Firmware expects 12,097 baud → **~12.5% mismatch, requires firmware change**
+- This defeats the zero-software-change goal
+
+### Summary Comparison
+
+| Configuration | IC | Crystal | Divider | Card CLK | Firmware Change? |
+|---------------|-----|---------|---------|----------|-----------------|
+| Current design | ST8034ATDT | None (MCU CK) | ÷1 | 4.5 MHz | None (baseline) |
+| ATDT + crystal (prev section) | ST8034ATDT | 4 MHz | ÷1 | 4.0 MHz | **Yes** (baudrate) |
+| **TDT + 9 MHz crystal** | **ST8034TDT** | **9 MHz** | **÷2** | **4.5 MHz** | **None** ✓ |
+| TDT + 8 MHz crystal | ST8034TDT | 8 MHz | ÷2 | 4.0 MHz | **Yes** (baudrate) |
+
+**Recommendation: Use the ST8034TDT with a 9 MHz crystal and CLKDIV=HIGH.** This achieves the exact same 4.5 MHz card clock as the current design, requiring zero firmware changes and allowing the ST8034TDT to be used as a drop-in replacement (with only the crystal and CLKDIV pull-up as PCB changes).
+
+---
+
 ## BOM Impact
+
+### For ST8034ATDT with 4 MHz Crystal (original proposal)
 
 | Ref | Part | Action | LCSC | Notes |
 |-----|------|--------|------|-------|
@@ -216,4 +332,15 @@ The **absolute minimum** firmware change to support an external crystal is a **s
 | C_L2 | 33 pF 0805 | **ADD** | — | Load cap for crystal |
 | R403 | 22Ω 0805 | **REMOVE** | — | SC_CLK series resistor (no longer needed) |
 
-Net component change: +2 components (crystal + 2 caps - 1 resistor).
+### For ST8034TDT with 9 MHz Crystal (zero firmware changes)
+
+| Ref | Part | Action | LCSC | Notes |
+|-----|------|--------|------|-------|
+| U401 | ST8034TDT | **REPLACE** | — | Better availability than ATDT |
+| Y401 | 9 MHz Crystal SMD3225 | **ADD** | — | JLCPCB Extended Part (check LCSC) |
+| C_L1 | Load cap (per crystal spec) | **ADD** | — | Load cap for crystal |
+| C_L2 | Load cap (per crystal spec) | **ADD** | — | Load cap for crystal |
+| R_PU | 10kΩ 0402 pull-up | **ADD** | C25804 | CLKDIV1 pull-up to VCC |
+| R403 | 22Ω 0805 | **REMOVE** | — | SC_CLK series resistor (no longer needed) |
+
+Net component change: +3 components (crystal + 2 caps + pull-up - 1 resistor).
