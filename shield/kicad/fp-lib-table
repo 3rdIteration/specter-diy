@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "specter-shield")(type "KiCad")(uri "${KIPRJMOD}/specter-shield.pretty")(options "")(descr "Specter Shield component footprints"))
+)
