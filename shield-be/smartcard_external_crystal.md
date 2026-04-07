@@ -257,7 +257,7 @@ expected_baudrate = 4,500,000 / 372 ≈ 12,097 baud  ✓ EXACT MATCH
 2. **Disconnect** SC_CLK trace from MCU PA4 to ST8034 XTAL1
 3. **Add** Y401: **9 MHz crystal** (SMD3225-4P) between XTAL1 (pin 1) and XTAL2 (pin 2)
 4. **Add** load capacitors C_L1, C_L2 from XTAL1/XTAL2 to GND
-5. **Change CLKDIV1 = HIGH** (currently LOW) — tie to VCC or MCU GPIO HIGH
+5. **Change CLKDIV1 = HIGH** (currently LOW) — tie to VCC via pull-up resistor on PCB
 6. **Remove** R403 (22Ω SC_CLK series resistor, no longer needed)
 
 ### CLKDIV Pin Configuration Change
@@ -268,11 +268,7 @@ The current schematic has `SC_CLKDIV1 = LOW` for the ST8034ATDT's ÷1 mode. For 
 |-----|---------------------|-----------------|--------|
 | CLKDIV (pin 6) | LOW (÷1) | **HIGH (÷2)** | 9 MHz / 2 = 4.5 MHz |
 
-On the MCU interface sheet, SC_CLKDIV1 is routed to an MCU GPIO. Either:
-- Tie it HIGH (to VCC through a resistor), or
-- Set the MCU GPIO to output HIGH in firmware (trivial, but technically a "change")
-
-The simplest zero-firmware-change approach is to **tie CLKDIV1 to VCC** via a pull-up resistor on the shield PCB.
+On the MCU interface sheet, SC_CLKDIV1 is routed to an MCU GPIO. For zero firmware changes, **tie CLKDIV1 to VCC** via a pull-up resistor on the shield PCB (hardware-only change).
 
 ### Signal Path (ST8034TDT with 9 MHz Crystal)
 ```
