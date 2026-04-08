@@ -134,6 +134,20 @@ Keys are loaded into device memory for signing when needed."""
 
     # ─── PIN operations ──────────────────────────────────────────
 
+    def _post_pin_setup(self):
+        """Common setup after successful PIN verification or creation.
+        Sets enc_secret and fetches card identity key."""
+        # Set enc_secret for wallet file operations (settings, etc.)
+        self.enc_secret = tagged_hash("enc", self.secret)
+        # Fetch the card's static authentikey for anti-phishing words.
+        # This may fail if the card doesn't support it; anti-phishing
+        # degrades gracefully to device-only secret in that case.
+        if self.applet.card_pubkey is None:
+            try:
+                self.applet.get_authentikey()
+            except SeedKeeperError:
+                pass  # card may not support authentikey
+
     def _unlock(self, pin):
         """Verify PIN with the SeedKeeper card."""
         try:
@@ -149,14 +163,7 @@ Keys are loaded into device memory for signing when needed."""
                 )
             else:
                 raise PinError(msg)
-        # Set enc_secret for wallet file operations (settings, etc.)
-        self.enc_secret = tagged_hash("enc", self.secret)
-        # Fetch the card's static authentikey now that PIN is verified.
-        # This is used for anti-phishing words on subsequent unlocks.
-        try:
-            self.applet.get_authentikey()
-        except Exception:
-            pass  # card may not support authentikey; anti-phishing degrades gracefully
+        self._post_pin_setup()
         # After unlock, refresh the list of stored secrets
         self._refresh_secret_list()
 
@@ -180,13 +187,7 @@ Keys are loaded into device memory for signing when needed."""
             self._pin_verified = True
         except SeedKeeperError as e:
             raise KeyStoreError("Failed to set PIN: %s" % str(e))
-        # Set enc_secret for wallet file operations
-        self.enc_secret = tagged_hash("enc", self.secret)
-        # Fetch authentikey for anti-phishing words
-        try:
-            self.applet.get_authentikey()
-        except Exception:
-            pass
+        self._post_pin_setup()
 
     def lock(self):
         """Lock the keystore, requiring PIN to unlock."""
@@ -241,7 +242,7 @@ Keys are loaded into device memory for signing when needed."""
             if self.applet.card_pubkey is None:
                 try:
                     self.applet.get_authentikey()
-                except Exception:
+                except SeedKeeperError:
                     pass
             self.connected = True
 
