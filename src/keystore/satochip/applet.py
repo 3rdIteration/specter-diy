@@ -383,6 +383,8 @@ class SeedKeeperApplet:
         if self.setup_done:
             return
 
+        # Default JavaCard PIN "Muscle00" — required by the card setup protocol.
+        # The card expects this as the initial PIN before the user's PIN is set.
         default_pin = [0x4D, 0x75, 0x73, 0x63, 0x6C, 0x65, 0x30, 0x30]
         pin0 = list(pin.encode("utf-8"))
         ublk0 = list(puk.encode("utf-8"))

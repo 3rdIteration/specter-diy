@@ -69,8 +69,9 @@ class SatochipSecureChannel:
         """
         # Parse the peer's public key
         if len(peer_pubkey_bytes) == 32:
-            # x-only: prepend 0x02 to make compressed key
-            # For ECDH the y parity doesn't matter (shared x is the same)
+            # x-only: prepend 0x02 to create a valid compressed key.
+            # Either parity gives the same shared x-coordinate after ECDH,
+            # which is all we use as the shared secret.
             peer_pubkey_bytes = b"\x02" + peer_pubkey_bytes
         peer_pub = secp256k1.ec_pubkey_parse(peer_pubkey_bytes)
 

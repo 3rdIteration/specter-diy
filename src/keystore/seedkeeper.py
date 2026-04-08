@@ -50,7 +50,10 @@ class SeedKeeperKeyStore(RAMKeyStore):
 Keys are loaded into device memory for signing when needed."""
     storage_button = "SeedKeeper storage"
     load_button = "Load key from SeedKeeper"
-    # share the smartcard connection with MemoryCard
+    # Reuse the smartcard connection from javacard/util.py.
+    # Only one keystore is active at a time (selected during boot),
+    # so there's no concurrent access. The SELECT command switches
+    # the active applet on the card for whichever keystore is in use.
     connection = get_connection()
 
     def __init__(self):
