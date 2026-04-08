@@ -91,8 +91,17 @@ Keys are loaded into device memory for signing when needed."""
     def get_auth_word(self, pin_part):
         """
         Generate anti-phishing word using internal secret and card identity.
+
+        Uses both the device's internal secret and the card's static
+        authentikey so the user can detect if either the device or the
+        card has been swapped. If authentikey is not yet available
+        (before secure channel), falls back to device secret only.
         """
-        key = tagged_hash("auth", self.secret)
+        # Include card identity if available (after secure channel setup)
+        if self.applet.card_pubkey is not None:
+            key = tagged_hash("auth", self.secret + self.applet.card_pubkey)
+        else:
+            key = tagged_hash("auth", self.secret)
         h = hmac.new(key, pin_part, digestmod="sha256").digest()
         word_number = int.from_bytes(h[:2], "big") % len(bip39.WORDLIST)
         return bip39.WORDLIST[word_number]
@@ -140,6 +149,14 @@ Keys are loaded into device memory for signing when needed."""
                 )
             else:
                 raise PinError(msg)
+        # Set enc_secret for wallet file operations (settings, etc.)
+        self.enc_secret = tagged_hash("enc", self.secret)
+        # Fetch the card's static authentikey now that PIN is verified.
+        # This is used for anti-phishing words on subsequent unlocks.
+        try:
+            self.applet.get_authentikey()
+        except Exception:
+            pass  # card may not support authentikey; anti-phishing degrades gracefully
         # After unlock, refresh the list of stored secrets
         self._refresh_secret_list()
 
@@ -163,6 +180,13 @@ Keys are loaded into device memory for signing when needed."""
             self._pin_verified = True
         except SeedKeeperError as e:
             raise KeyStoreError("Failed to set PIN: %s" % str(e))
+        # Set enc_secret for wallet file operations
+        self.enc_secret = tagged_hash("enc", self.secret)
+        # Fetch authentikey for anti-phishing words
+        try:
+            self.applet.get_authentikey()
+        except Exception:
+            pass
 
     def lock(self):
         """Lock the keystore, requiring PIN to unlock."""
@@ -171,9 +195,16 @@ Keys are loaded into device memory for signing when needed."""
 
     @property
     def userkey(self):
-        """Unique key per card for user isolation."""
+        """Unique key per card for user isolation.
+        Incorporates card pubkey when available so different cards
+        get different user contexts (same approach as MemoryCard)."""
         if self._userkey is None:
-            self._userkey = tagged_hash("userkey", self.secret)
+            if self.applet.card_pubkey is not None:
+                self._userkey = tagged_hash(
+                    "userkey", self.secret + self.applet.card_pubkey
+                )
+            else:
+                self._userkey = tagged_hash("userkey", self.secret)
         return self._userkey
 
     # ─── Card connection management ──────────────────────────────
@@ -204,6 +235,14 @@ Keys are loaded into device memory for signing when needed."""
             # Set up secure channel if required
             if self.applet.needs_secure_channel:
                 self.applet.initiate_secure_channel()
+            # Try to fetch the card's static authentikey for anti-phishing.
+            # This may fail if the card requires PIN first, in which case
+            # we'll fetch it after PIN verification in _unlock().
+            if self.applet.card_pubkey is None:
+                try:
+                    self.applet.get_authentikey()
+                except Exception:
+                    pass
             self.connected = True
 
         if check_pin and self.is_locked:

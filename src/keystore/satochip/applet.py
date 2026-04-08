@@ -103,6 +103,8 @@ class SeedKeeperApplet:
         self._pin_attempts_max = None
         self._pin_set = None
         self.protocol_version = 0
+        # Static card identity key (authentikey), used for anti-phishing
+        self.card_pubkey = None
 
     # ─── Low-level APDU transport ────────────────────────────────
 
@@ -282,6 +284,33 @@ class SeedKeeperApplet:
         # Format: [coordx_size(2) | coordx | sig_size(2) | sig_der]
         peer_pubkey_bytes = self._parse_peer_pubkey(response)
         self.sc.initiate(peer_pubkey_bytes)
+
+    def get_authentikey(self):
+        """
+        Get the card's static BIP32 authentikey (public key).
+
+        This is a fixed identity key for the card that doesn't change
+        across sessions. Used for anti-phishing words so the user can
+        detect if a different card has been inserted.
+
+        Must be called after secure channel is established and PIN verified.
+
+        Returns:
+            bytes: the card's compressed public key (33 bytes)
+        """
+        apdu = bytes([self.CLA, self.INS_BIP32_GET_AUTHENTIKEY, 0x00, 0x00])
+        response, sw1, sw2 = self.transmit(apdu)
+        self._check_sw(sw1, sw2, "get_authentikey")
+
+        # Response format: [coordx_size(2) | coordx(32) | sig_size(2) | sig]
+        if len(response) < 4:
+            raise SeedKeeperError("Invalid authentikey response")
+        coordx_size = (response[0] << 8) + response[1]
+        if len(response) < 2 + coordx_size:
+            raise SeedKeeperError("Invalid authentikey coordx")
+        coordx = bytes(response[2:2 + coordx_size])
+        self.card_pubkey = b"\x02" + coordx
+        return self.card_pubkey
 
     def _parse_peer_pubkey(self, response):
         """
