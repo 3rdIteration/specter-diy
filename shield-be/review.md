@@ -53,6 +53,7 @@ The hierarchical schematic has 5 sub-sheets:
 **TPS61089 Boost Converter (U301):**
 - Input: USB-C 5V or battery 3.0–4.2V
 - Output: 5V (set by R316 = 82kΩ and R317 = 330kΩ feedback divider)
+- **Operating input range: 2.5V – 5.5V, absolute maximum VIN: 6V**
 - Inductor L301 = 1µH, 1210 size — appropriate for TPS61089
 - Input cap: C305 = 22µF, output cap: C306 = 47µF (1206) — meets TPS61089 datasheet requirements
 - Bootstrap cap C307 = 100nF — correct per datasheet
@@ -63,9 +64,12 @@ The hierarchical schematic has 5 sub-sheets:
 - Charge/charged status LEDs (D302, D303) with 1kΩ current limiting resistors
 
 **Power Path:**
-- Q303 (AO3401A P-FET) controls battery vs USB power selection
-- Q304 (AO3401A) provides load switch from boost output
-- R307 = 100kΩ pullup on gate — note this creates a slow switching transition; may want lower value for crisper switching
+- USB_P → D302 (SS14 Schottky, anti-backfeed) → PWR_VIN
+- BATT_P → Q303 (AO3401A P-FET, "ideal diode") → PWR_VIN — conducts when BATT_P > PWR_VIN
+- PWR_VIN → TPS61089 boost → BOOST_VOUT (5V)
+- BOOST_VOUT → Q304 (AO3401A, load switch via PWR_EN) → PWR_VOUT
+- R307 = 100kΩ pullup on Q304 gate — creates slow switching transition; consider lowering for crisper switching
+- **Priority logic**: When battery voltage exceeds Schottky-dropped USB (~4.7V), Q303 conducts and battery supplies power preferentially. Board draws from battery until BATT_P drops below USB level, then transitions to USB.
 
 **Power Buttons:**
 - SW1 (SW301) → Q302 (2N7002 N-FET inverter) → PWR_NBUTTON — generates active-low interrupt for graceful shutdown ✅
@@ -232,13 +236,47 @@ The hierarchical schematic has 5 sub-sheets:
 |-------------|--------|-------|
 | Charge IC with thermal regulation | ✅ | TP4056 has internal thermal foldback |
 | Charge current limiting | ✅ | ~300 mA via R315 = 3.9kΩ |
-| Over-discharge protection | ⚠️ | No dedicated battery protection IC visible. Recommend adding DW01A + FS8205 or similar for over-discharge, over-charge, and short-circuit protection |
-| Reverse polarity protection | ⚠️ | Verify JST connector is keyed (JST-PH is keyed ✅), but no circuit-level reverse polarity protection |
+| Over-discharge protection | ⚠️ | No on-board battery protection IC. Schematic notes: "Use battery with BMS" |
+| Reverse polarity protection | ⚠️ | JST-PH is keyed ✅, but no circuit-level reverse polarity protection |
 | Charge status indication | ✅ | Charge/charged LEDs present |
 
-**Recommendations:**
-1. **Add a battery protection IC** (e.g., DW01A + dual MOSFET) between the battery connector and the rest of the circuit. This is essential for any product with a Li-ion battery — protects against over-charge (>4.25V), over-discharge (<2.5V), and short-circuit.
-2. Consider adding a PTC resettable fuse on the battery input as additional protection.
+#### Is Requiring a BMS-Equipped Battery Sufficient?
+
+The schematic explicitly states: *"Assumes 2 wire battery with BMS to manage temperature"* and *"No protection for LIPO over-discharge. (Use battery with BMS)"*
+
+**For an open-source DIY kit — yes, with caveats:**
+- Most Li-ion/LiPo cells sold with JST-PH connectors already include a BMS/PCM (DW01 + dual MOSFET) handling over-charge, over-discharge, and short-circuit protection
+- The TP4056 handles charge regulation (CC/CV to 4.2V, thermal foldback) — charger side is covered
+- The keyed JST-PH connector prevents reverse polarity
+- Adding a PTC resettable fuse (~$0.02, JLCPCB basic) on the battery input provides short-circuit protection regardless of BMS quality
+
+**For formal certification (UN 38.3 / IEC 62133) — no:**
+- Compliance testing certifies the *complete assembled product*, not individual batteries
+- A test lab will evaluate the combination and won't accept "trust the user's battery choice"
+- For a certified product, add DW01A + FS8205 on-board, or specify an approved battery model
+
+**Recommendation:** Document "battery variant MUST use a Li-ion cell with integrated BMS/protection circuit" in the readme. Consider adding a PTC fuse (e.g., 1A MF-R100) as a minimal on-board safety net.
+
+#### Input Voltage Limits — Alternative Battery Chemistries
+
+**⚠️ The TPS61089 has an absolute maximum VIN of 6V.** The battery connects to PWR_VIN via the Q303 ideal diode with no voltage clamping. Higher-voltage battery packs connected to the JST header will destroy U301.
+
+| Battery Configuration | Voltage Range | TPS61089 Safe? | TP4056 Behavior |
+|---|---|---|---|
+| 1S Li-ion/LiPo (intended) | 3.0–4.2V | ✅ | Charges normally |
+| 3× NiMH AAA | 3.0–4.2V | ✅ | Idles (VBAT > 4.2V threshold never reached) |
+| 3× Alkaline AAA | 3.6–4.8V | ✅ | Idles |
+| 4× NiMH AAA | 4.0–5.6V | ⚠️ Marginal | Idles |
+| 4× Alkaline AAA | 4.8–6.4V | **🔴 Exceeds abs max** | Idles |
+| 6× NiMH AAA | 6.0–8.4V | **🔴 Destroys U301** | Idles |
+| 6× Alkaline AAA | 7.2–9.6V | **🔴 Destroys U301** | Idles |
+
+With non-Li-ion chemistries:
+- **TP4056 does nothing** — it targets 4.2V CV and enters standby when BAT > 4.2V. Not harmful, just inert.
+- **Q303 ideal diode conducts** when BATT_P > USB Schottky drop (~4.7V), so battery supplies power preferentially. Board draws from battery until it drops below USB, then transitions to USB.
+- **D302 SS14 Schottky** blocks backfeed from battery to USB ✅
+
+**Recommendation:** Add a prominent warning: *"Battery input maximum 5.5V. Single-cell Li-ion/LiPo only. Do NOT connect multi-cell NiMH or alkaline packs exceeding 4 cells."* If wider input range is desired, consider replacing TPS61089 with a buck-boost like TPS63060 (up to 11.8V input, used in Shield v1).
 
 ### 4.4 Smart Card (ISO 7816 / EMV)
 
@@ -271,23 +309,24 @@ The hierarchical schematic has 5 sub-sheets:
 1. **Investigate 4 shorting DRC errors** on SC_VCC_SEL and SC_CLKDIV nets — confirm intentional or add net ties
 2. **Copper-edge clearance** on J401 smartcard pads — add manufacturer exception or adjust edge cut
 3. **Starved thermal reliefs** on C404/C405 — adjust pad connections for reliable soldering
+4. **Document battery input voltage limit** — TPS61089 abs max is 6V, no clamping on BATT_P→PWR_VIN path. Add warning to readme: single-cell Li-ion/LiPo only, max 5.5V
 
 ### High Priority (Recommended Before Production)
-4. **Add battery protection circuit** (DW01A + FS8205) for over-discharge/over-charge/short-circuit
-5. **Fix ERC pin type annotations** on TPS61089, TP4056, ST8034 symbols to clear false-error pin-not-driven warnings
-6. **Add ground stitching vias** around board perimeter for improved EMC
-7. **Review power FET gate resistor** R307 (100kΩ) — consider lowering for faster switching
+5. **Battery protection**: Either add DW01A + FS8205 on-board, or document requirement for BMS-equipped cells + add PTC fuse on battery input
+6. **Fix ERC pin type annotations** on TPS61089, TP4056, ST8034 symbols to clear false-error pin-not-driven warnings
+7. **Add ground stitching vias** around board perimeter for improved EMC
+8. **Review power FET gate resistor** R307 (100kΩ) — consider lowering for faster switching
 
 ### Medium Priority (Cleanup)
-8. Fix 28 silkscreen overlap issues for manufacturing readability
-9. Fix 6 footprint type mismatches in component metadata
-10. Fix non-mirrored back-layer text
-11. Address 96 library footprint warnings (sync footprints with library)
+9. Fix 28 silkscreen overlap issues for manufacturing readability
+10. Fix 6 footprint type mismatches in component metadata
+11. Fix non-mirrored back-layer text
+12. Address 96 library footprint warnings (sync footprints with library)
 
 ### Low Priority (Nice to Have)
-12. Add reverse polarity protection on battery input
-13. Consider adding a PTC fuse on battery line
-14. Add common-mode filtering if pursuing formal EMC certification
+13. Add reverse polarity protection on battery input
+14. Consider adding a PTC fuse on battery line
+15. Add common-mode filtering if pursuing formal EMC certification
 
 ---
 
