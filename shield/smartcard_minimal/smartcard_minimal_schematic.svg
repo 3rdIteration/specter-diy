@@ -365,7 +365,7 @@
   <text x="970" y="742" fill="#cc6600" font-size="10" font-weight="bold">R5    6.8Ω 0805  C17798</text>
   <text x="970" y="757" fill="#333" font-size="10">C1    100nF 0805 C49678</text>
   <text x="970" y="772" fill="#333" font-size="10">Q1    SS8550 PNP C2149</text>
-  <text x="970" y="787" fill="#333" font-size="10">Q2    2N7002 NFT C8545</text>
+  <text x="970" y="787" fill="#333" font-size="10">Q2    2N7002 FET C8545</text>
   <text x="970" y="802" fill="#cc6600" font-size="10" font-weight="bold">Q3    SS8050 NPN C2150</text>
   <text x="970" y="817" fill="#333" font-size="10">D1    PESD5V0S2B C85364</text>
   <text x="970" y="832" fill="#333" font-size="10">D2    PESD5V0S2B C85364</text>
