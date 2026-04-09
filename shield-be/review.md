@@ -53,7 +53,7 @@ The hierarchical schematic has 5 sub-sheets:
 **TPS61089 Boost Converter (U301):**
 - Input: USB-C 5V or battery 3.0–4.2V
 - Output: 5V (set by R316 = 82kΩ and R317 = 330kΩ feedback divider)
-- **Operating input range: 2.5V – 5.5V, absolute maximum VIN: 6V**
+- **Operating input range: 2.5V – 12V (wide VIN range, supports boost/buck-boost operation)**
 - Inductor L301 = 1µH, 1210 size — appropriate for TPS61089
 - Input cap: C305 = 22µF, output cap: C306 = 47µF (1206) — meets TPS61089 datasheet requirements
 - Bootstrap cap C307 = 100nF — correct per datasheet
@@ -259,24 +259,25 @@ The schematic explicitly states: *"Assumes 2 wire battery with BMS to manage tem
 
 #### Input Voltage Limits — Alternative Battery Chemistries
 
-**⚠️ The TPS61089 has an absolute maximum VIN of 6V.** The battery connects to PWR_VIN via the Q303 ideal diode with no voltage clamping. Higher-voltage battery packs connected to the JST header will destroy U301.
+The TPS61089 supports a wide input range up to 12V, so the boost converter itself is not the limiting factor. The **primary hazard** is the TP4056 Li-ion charger, which will attempt to charge *any* battery connected to its BAT pin using a Li-ion CC/CV profile (4.2V termination). This is dangerous for non-Li-ion chemistries.
 
-| Battery Configuration | Voltage Range | TPS61089 Safe? | TP4056 Behavior |
+| Battery Configuration | Voltage Range | TPS61089 Safe? | TP4056 Behavior (USB connected) |
 |---|---|---|---|
-| 1S Li-ion/LiPo (intended) | 3.0–4.2V | ✅ | Charges normally |
-| 3× NiMH AAA | 3.0–4.2V | ✅ | Idles (VBAT > 4.2V threshold never reached) |
-| 3× Alkaline AAA | 3.6–4.8V | ✅ | Idles |
-| 4× NiMH AAA | 4.0–5.6V | ⚠️ Marginal | Idles |
-| 4× Alkaline AAA | 4.8–6.4V | **🔴 Exceeds abs max** | Idles |
-| 6× NiMH AAA | 6.0–8.4V | **🔴 Destroys U301** | Idles |
-| 6× Alkaline AAA | 7.2–9.6V | **🔴 Destroys U301** | Idles |
+| 1S Li-ion/LiPo (intended) | 3.0–4.2V | ✅ | Charges normally (CC/CV to 4.2V) |
+| 3× NiMH AAA | 3.0–4.2V | ✅ | **🔴 DANGEROUS — charges NiMH to 4.2V (1.4V/cell), causing overcharge, heating, possible venting** |
+| 3× Alkaline AAA | 3.6–4.8V | ✅ | ⚠️ Attempts charge when VBAT < 4.2V; idles when > 4.2V. Charging alkalines risks leakage/rupture |
+| 4× NiMH AAA | 4.0–5.6V | ✅ | Idles (VBAT always > 4.2V) |
+| 4× Alkaline AAA | 4.8–6.4V | ✅ | Idles (VBAT always > 4.2V) |
+| 6× NiMH AAA | 6.0–8.4V | ✅ | Idles |
+| 6× Alkaline AAA | 7.2–9.6V | ✅ | Idles |
 
-With non-Li-ion chemistries:
-- **TP4056 does nothing** — it targets 4.2V CV and enters standby when BAT > 4.2V. Not harmful, just inert.
-- **Q303 ideal diode conducts** when BATT_P > USB Schottky drop (~4.7V), so battery supplies power preferentially. Board draws from battery until it drops below USB, then transitions to USB.
+Key behaviors with non-Li-ion chemistries:
+- **TP4056 is the hazard, not TPS61089** — any battery pack whose voltage falls within or below 4.2V when USB is connected will be subjected to Li-ion charging. For 3× NiMH (3.0–4.2V range), this means the charger will push cells to 1.4V each — well above the safe NiMH charge termination voltage (~1.45V peak with −ΔV detection). Without NiMH-specific termination, overcharge is guaranteed.
+- **Higher-voltage packs (4×+ cells) are safe from the charger** — TP4056 sees VBAT > 4.2V and enters standby. The TPS61089 handles the higher input voltage fine (up to 12V).
+- **Q303 ideal diode conducts** when BATT_P > USB Schottky drop (~4.7V), so higher-voltage battery packs supply power preferentially. Board draws from battery until it drops below USB level, then transitions to USB.
 - **D302 SS14 Schottky** blocks backfeed from battery to USB ✅
 
-**Recommendation:** Add a prominent warning: *"Battery input maximum 5.5V. Single-cell Li-ion/LiPo only. Do NOT connect multi-cell NiMH or alkaline packs exceeding 4 cells."* If wider input range is desired, consider replacing TPS61089 with a buck-boost like TPS63060 (up to 11.8V input, used in Shield v1).
+**Recommendation:** Add a prominent warning: *"Battery input: Single-cell Li-ion/LiPo only (3.0–4.2V). The TP4056 charger uses a Li-ion charge profile — connecting NiMH or alkaline cells risks overcharging and damage when USB is connected."* While higher-voltage packs won't damage the TPS61089, they are not a supported configuration.
 
 ### 4.4 Smart Card (ISO 7816 / EMV)
 
@@ -309,7 +310,7 @@ With non-Li-ion chemistries:
 1. **Investigate 4 shorting DRC errors** on SC_VCC_SEL and SC_CLKDIV nets — confirm intentional or add net ties
 2. **Copper-edge clearance** on J401 smartcard pads — add manufacturer exception or adjust edge cut
 3. **Starved thermal reliefs** on C404/C405 — adjust pad connections for reliable soldering
-4. **Document battery input voltage limit** — TPS61089 abs max is 6V, no clamping on BATT_P→PWR_VIN path. Add warning to readme: single-cell Li-ion/LiPo only, max 5.5V
+4. **Document battery chemistry restriction** — TP4056 will charge any battery in its voltage range using Li-ion profile (4.2V CC/CV). 3× NiMH cells are especially dangerous (charger overcharges them). Add warning to readme: single-cell Li-ion/LiPo only
 
 ### High Priority (Recommended Before Production)
 5. **Battery protection**: Either add DW01A + FS8205 on-board, or document requirement for BMS-equipped cells + add PTC fuse on battery input
