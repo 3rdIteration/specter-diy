@@ -152,6 +152,44 @@ The ST8034 (LCSC C2674058) is an 8-pin IC that provides:
 - ✅ Short-circuit protection → **R5 + Q3 current limiter (~88mA)**
 - ❌ Automatic activation sequencing → **handled by firmware via `uscard` driver**
 
+## Reference: STM32H7 Direct-Connect Design
+
+This discrete approach is validated by production hardware. A commercial device
+based on the STM32H7 uses an essentially identical topology for its smartcard
+interface — no smartcard IC, just direct MCU-to-card connections:
+
+- **P-FET high-side switch** (RZM002P02T2L) for VCC control — same role as our
+  Q1 (SS8550 PNP) + Q2 (2N7002). They use a single P-channel MOSFET with a
+  220kΩ gate pull-up, controlled directly from MCU (MCU_SC_PRES pin).
+- **Direct signal routing** — SC_USART_CLK → Card CLK, SC_USART_TX → Card I/O,
+  SC_RST → Card RESET. No buffering, no level shifting, just straight through.
+- **ESD protection** via ESDS312DBVR (quad-channel TVS in SOT-23-6) — same
+  concept as our 2× PESD5V0S2BT dual TVS, just packaged in one part.
+- **VCC decoupling** — 4.7µF + 100nF, similar to our single 100nF.
+- **Card presence switch** — mechanical detect, active-low, same as ours.
+
+The main difference is they power the card from a dedicated **3.0V rail** (V3P0)
+rather than 3.3V. This puts VCC right in the middle of the ISO 7816 Class C
+range (2.7V–3.3V), giving more margin at both ends. See the VCC voltage
+discussion below.
+
+### VCC Voltage: 3.3V vs Dedicated 3.0V
+
+The existing ST8034 on the Specter Shield powers the card at 3.3V (Class C),
+and this works fine with all tested JavaCards. Our discrete design does the same.
+
+If tighter Class C compliance is desired, a small LDO could drop 3.3V to 3.0V
+for SC_VCC. This would:
+- Move VCC to the center of the Class C range (2.7V–3.3V)
+- Eliminate any concern about the R5 sense resistor's ~0.2–0.6V drop pushing
+  SC_VCC below 2.7V under load
+- Add one more component (LDO + its decoupling caps)
+
+For the Specter use case, **3.3V is fine** — the ST8034 was already using it,
+the JavaCards we target support it, and the typical ~0.3V drop through R5 at
+normal operating current (30–60mA) keeps SC_VCC at ~3.0V anyway. A dedicated
+3.0V regulator is an option for future designs that want maximum margin.
+
 ## Limitations
 
 1. **3V class cards only** — Cards requiring 1.8V or 5V operation will not work.
