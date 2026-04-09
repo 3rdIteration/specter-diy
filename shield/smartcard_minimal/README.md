@@ -185,6 +185,12 @@ for SC_VCC. This would:
   SC_VCC below 2.7V under load
 - Add one more component (LDO + its decoupling caps)
 
+The STM32H7 reference device includes exactly this option: an **ADP125ARHZ-R7**
+LDO (500mA, <130mV dropout) with an ADJ-pin resistor divider
+(R14=182kΩ / R1=35.7kΩ, 1%) to set VOUT = 0.5V × (1 + 182/35.7) ≈ **3.05V**.
+Input and output caps are 4.7µF + 100nF each. This is a clean drop-in: feed
+V3V3 into VIN, route VOUT to SC_VCC instead of V3V3.
+
 For the Specter use case, **3.3V is fine** — the ST8034 was already using it,
 the JavaCards we target support it, and the typical ~0.3V drop through R5 at
 normal operating current (30–60mA) keeps SC_VCC at ~3.0V anyway. A dedicated
