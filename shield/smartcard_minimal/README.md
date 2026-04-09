@@ -196,6 +196,58 @@ the JavaCards we target support it, and the typical ~0.3V drop through R5 at
 normal operating current (30–60mA) keeps SC_VCC at ~3.0V anyway. A dedicated
 3.0V regulator is an option for future designs that want maximum margin.
 
+## Prototyping: Minimum Wiring
+
+![Prototype Wiring Diagram](smartcard_prototype_schematic.png)
+
+For a quick bench prototype you only need **2 passive components and 5 wires**:
+
+| Wire | MCU Pin | Card Pin | Notes |
+|------|---------|----------|-------|
+| SC_IO | PA2 | C7 (I/O) | + R1 10kΩ pull-up to 3V3 (required by ISO 7816) |
+| SC_CLK | PA4 | C3 (CLK) | Direct wire |
+| SC_RST | PG10 | C2 (RST) | Direct wire |
+| SC_VCC | PC5 | C1 (VCC) | Direct from GPIO — see warning below |
+| GND | GND | C5 (GND) | + C1 100nF decoupling cap across VCC–GND at card |
+
+### Can I drive VCC directly from the GPIO pin?
+
+**Yes, for a bench prototype** — the firmware already drives PC5 high/low to
+control card power, so wiring it straight to the card's VCC pin will technically
+work. However, you're operating outside the GPIO's rated limits:
+
+- **STM32F469 GPIO max source current: ~25 mA per pin** (absolute maximum from
+  datasheet). Typical JavaCards draw **30–60 mA**, which exceeds this.
+- **VCC will sag** under load due to the GPIO's internal Rds_on. Expect
+  **~2.5–3.0V** at the card instead of 3.3V. Most JavaCards tolerate this
+  (ISO 7816 Class C range is 2.7–3.3V), but you're at the edge.
+- **No short-circuit protection** — a shorted card slot could damage the MCU pin
+  or the 3.3V rail.
+- **No ESD protection** — handle with care on the bench.
+
+This is fine for a "does the card talk?" proof of concept. Many people prototype
+smartcard interfaces this way successfully. If communication is unreliable, the
+VCC sag is the first thing to check.
+
+### Upgrading from prototype to reliable
+
+To move from direct-GPIO to a proper VCC supply, add just **4 parts** from the
+full schematic:
+
+| Ref | Part | LCSC | Role |
+|-----|------|------|------|
+| Q1 | SS8550 PNP | C2149 | High-side VCC switch (sources from 3V3 rail, not GPIO) |
+| Q2 | 2N7002 N-FET | C8545 | Inverts PC5 to drive Q1 |
+| R2 | 10kΩ | C17414 | Q2 gate resistor |
+| R3 | 10kΩ | C17414 | Q1 base pull-up (keeps VCC off at startup) |
+
+This gives you full 3.3V at up to 200mA (PNP-limited), clean on/off control,
+and no GPIO stress. Add R5 + Q3 for current limiting if you want short-circuit
+protection (the full 11-part BOM above).
+
+**No firmware changes** are needed at any stage — the `uscard` driver treats PC5
+as a simple on/off pin regardless of what's behind it.
+
 ## Limitations
 
 1. **3V class cards only** — Cards requiring 1.8V or 5V operation will not work.

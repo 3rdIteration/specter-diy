@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="monospace" font-size="13">
+  <title>Minimum Smartcard Prototype Wiring (STM32F469-Discovery)</title>
+
+  <!-- Background -->
+  <rect width="900" height="620" fill="#fff" rx="8"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#333">Minimum Smartcard Prototype Wiring</text>
+  <text x="450" y="50" text-anchor="middle" font-size="12" fill="#666">STM32F469-Discovery → ISO 7816 Smartcard (5 wires + R1 + C1)</text>
+
+  <!-- ==================== MCU Block ==================== -->
+  <rect x="40" y="70" width="200" height="350" rx="6" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="140" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#4285f4">STM32F469</text>
+  <text x="140" y="122" text-anchor="middle" font-size="11" fill="#4285f4">(Discovery Board)</text>
+
+  <!-- MCU Pins -->
+  <text x="200" y="170" text-anchor="end" font-size="12" fill="#333" font-weight="bold">PA2</text>
+  <text x="200" y="186" text-anchor="end" font-size="10" fill="#888">USART2 TX/RX</text>
+  <circle cx="240" cy="167" r="5" fill="#4285f4"/>
+
+  <text x="200" y="225" text-anchor="end" font-size="12" fill="#333" font-weight="bold">PA4</text>
+  <text x="200" y="241" text-anchor="end" font-size="10" fill="#888">USART2 CLK</text>
+  <circle cx="240" cy="222" r="5" fill="#4285f4"/>
+
+  <text x="200" y="280" text-anchor="end" font-size="12" fill="#333" font-weight="bold">PG10</text>
+  <text x="200" y="296" text-anchor="end" font-size="10" fill="#888">GPIO out</text>
+  <circle cx="240" cy="277" r="5" fill="#4285f4"/>
+
+  <text x="200" y="335" text-anchor="end" font-size="12" fill="#333" font-weight="bold">PC5</text>
+  <text x="200" y="351" text-anchor="end" font-size="10" fill="#888">GPIO out (PWR)</text>
+  <circle cx="240" cy="332" r="5" fill="#e67c00"/>
+
+  <text x="200" y="390" text-anchor="end" font-size="12" fill="#333" font-weight="bold">GND</text>
+  <circle cx="240" cy="387" r="5" fill="#333"/>
+
+  <!-- ==================== Smartcard Block ==================== -->
+  <rect x="620" y="80" width="230" height="340" rx="6" fill="#fef7e0" stroke="#f9ab00" stroke-width="2"/>
+  <text x="735" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#c77800">Smartcard</text>
+  <text x="735" y="122" text-anchor="middle" font-size="11" fill="#c77800">(ISO 7816 connector)</text>
+
+  <!-- Card Pins -->
+  <text x="660" y="170" font-size="12" fill="#333" font-weight="bold">C7 I/O</text>
+  <circle cx="650" cy="167" r="5" fill="#f9ab00"/>
+
+  <text x="660" y="225" font-size="12" fill="#333" font-weight="bold">C3 CLK</text>
+  <circle cx="650" cy="222" r="5" fill="#f9ab00"/>
+
+  <text x="660" y="280" font-size="12" fill="#333" font-weight="bold">C2 RST</text>
+  <circle cx="650" cy="277" r="5" fill="#f9ab00"/>
+
+  <text x="660" y="335" font-size="12" fill="#333" font-weight="bold">C1 VCC</text>
+  <circle cx="650" cy="332" r="5" fill="#e67c00"/>
+
+  <text x="660" y="390" font-size="12" fill="#333" font-weight="bold">C5 GND</text>
+  <circle cx="650" cy="387" r="5" fill="#333"/>
+
+  <!-- Card pin numbers on right side -->
+  <text x="815" y="170" font-size="10" fill="#999">pin 7</text>
+  <text x="815" y="225" font-size="10" fill="#999">pin 3</text>
+  <text x="815" y="280" font-size="10" fill="#999">pin 2</text>
+  <text x="815" y="335" font-size="10" fill="#999">pin 1</text>
+  <text x="815" y="390" font-size="10" fill="#999">pin 5</text>
+
+  <!-- ==================== Wires ==================== -->
+
+  <!-- SC_IO: PA2 → R1 → Card C7 -->
+  <line x1="245" y1="167" x2="370" y2="167" stroke="#0d47a1" stroke-width="2"/>
+  <!-- R1 pull-up resistor box -->
+  <rect x="370" y="130" width="60" height="24" rx="3" fill="#fff" stroke="#0d47a1" stroke-width="1.5"/>
+  <text x="400" y="146" text-anchor="middle" font-size="11" fill="#0d47a1" font-weight="bold">R1</text>
+  <text x="400" y="124" text-anchor="middle" font-size="10" fill="#0d47a1">10kΩ</text>
+  <!-- R1 top to 3V3 -->
+  <line x1="400" y1="130" x2="400" y2="98" stroke="#d32f2f" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="400" y="92" text-anchor="middle" font-size="11" fill="#d32f2f" font-weight="bold">3V3</text>
+  <!-- R1 bottom connects to wire -->
+  <line x1="400" y1="154" x2="400" y2="167" stroke="#0d47a1" stroke-width="2"/>
+  <!-- Continue to card -->
+  <line x1="400" y1="167" x2="645" y2="167" stroke="#0d47a1" stroke-width="2"/>
+  <text x="520" y="160" text-anchor="middle" font-size="10" fill="#0d47a1">SC_IO</text>
+
+  <!-- SC_CLK: PA4 → Card C3 (direct) -->
+  <line x1="245" y1="222" x2="645" y2="222" stroke="#1b5e20" stroke-width="2"/>
+  <text x="445" y="215" text-anchor="middle" font-size="10" fill="#1b5e20">SC_CLK</text>
+
+  <!-- SC_RST: PG10 → Card C2 (direct) -->
+  <line x1="245" y1="277" x2="645" y2="277" stroke="#4a148c" stroke-width="2"/>
+  <text x="445" y="270" text-anchor="middle" font-size="10" fill="#4a148c">SC_RST</text>
+
+  <!-- SC_VCC: PC5 → Card C1 (DIRECT GPIO — prototype only!) -->
+  <line x1="245" y1="332" x2="645" y2="332" stroke="#e67c00" stroke-width="2.5" stroke-dasharray="8,4"/>
+  <text x="445" y="325" text-anchor="middle" font-size="10" fill="#e67c00" font-weight="bold">SC_VCC (direct from GPIO)</text>
+
+  <!-- C1 decoupling cap box near card VCC -->
+  <rect x="560" y="345" width="50" height="22" rx="3" fill="#fff" stroke="#e67c00" stroke-width="1.5"/>
+  <text x="585" y="360" text-anchor="middle" font-size="10" fill="#e67c00" font-weight="bold">C1</text>
+  <text x="585" y="380" text-anchor="middle" font-size="10" fill="#e67c00">100nF</text>
+  <!-- C1 to GND -->
+  <line x1="585" y1="367" x2="585" y2="387" stroke="#333" stroke-width="1.5"/>
+  <circle cx="585" cy="387" r="3" fill="#333"/>
+
+  <!-- GND: straight through -->
+  <line x1="245" y1="387" x2="645" y2="387" stroke="#333" stroke-width="2.5"/>
+  <text x="445" y="400" text-anchor="middle" font-size="10" fill="#333">GND</text>
+
+  <!-- ==================== Warning Box ==================== -->
+  <rect x="60" y="445" width="780" height="155" rx="8" fill="#fff3e0" stroke="#e67c00" stroke-width="2"/>
+  <text x="80" y="470" font-size="14" font-weight="bold" fill="#e67c00">⚠ Direct GPIO VCC — Prototype/Bench Only</text>
+
+  <text x="80" y="494" font-size="12" fill="#333">• STM32F469 GPIO can source <tspan font-weight="bold">~25 mA max</tspan> per pin (abs max from datasheet)</text>
+  <text x="80" y="512" font-size="12" fill="#333">• Typical JavaCard draws <tspan font-weight="bold">30–60 mA</tspan> — this exceeds the GPIO spec</text>
+  <text x="80" y="530" font-size="12" fill="#333">• VCC will sag under load: expect <tspan font-weight="bold">~2.5–3.0V</tspan> instead of 3.3V (GPIO Rds_on drop)</text>
+  <text x="80" y="548" font-size="12" fill="#333">• <tspan font-weight="bold">No short-circuit protection</tspan> — a shorted card slot could damage the MCU</text>
+  <text x="80" y="566" font-size="12" fill="#333">• <tspan font-weight="bold">No ESD protection</tspan> — handle with care on the bench</text>
+  <text x="80" y="590" font-size="12" fill="#333" font-weight="bold">→ For reliable operation, use the Q1+Q2 high-side switch from the full schematic (adds 4 parts)</text>
+
+  <!-- ==================== Parts count note ==================== -->
+</svg>
