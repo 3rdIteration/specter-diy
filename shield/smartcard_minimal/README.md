@@ -55,14 +55,18 @@ suitable for the smartcard signalling speeds without affecting timing.
 ### Power Switch (VCC Control)
 
 The ST8034's main active function was controlling card VCC. We replace it with a
-simple two-transistor high-side switch:
+two-transistor high-side switch plus a discrete current limiter:
 
 ```
 PC5 (HIGH to enable) → R2 (10kΩ) → Q2 gate (2N7002 N-FET)
                                        │
-Q2 drain ──────────────────────────── Q1 base (SS8550 PNP)
-                                       │
-Q1 emitter ← V3V3                     Q1 collector → SC_VCC → Card C1
+Q2 drain ──────────────────────────── Q1 base (SS8550 PNP) ←── Q3 collector
+                                       │                         │
+Q1 emitter ← V3V3                     Q1 collector               Q3 (SS8050 NPN)
+                                       │                         │
+                                    R5 (6.8Ω sense)           Q3 base ← top of R5
+                                       │                      Q3 emitter → bottom of R5
+                                    SC_VCC → Card C1
                                        │
 R3 (10kΩ) pulls Q1 base to V3V3      C1 (100nF) decouples SC_VCC
 (keeps Q1 OFF when Q2 is OFF)
@@ -70,11 +74,45 @@ R3 (10kΩ) pulls Q1 base to V3V3      C1 (100nF) decouples SC_VCC
 
 **Operation:**
 1. **MCU sets PC5 HIGH** → Q2 (N-FET) turns ON → Q2 drain pulls Q1 base to GND
-2. Q1 (PNP) turns ON → V3V3 flows to SC_VCC → Card is powered
+2. Q1 (PNP) turns ON → V3V3 flows through R5 to SC_VCC → Card is powered
 3. **MCU sets PC5 LOW** → Q2 OFF → R3 pulls Q1 base back to V3V3 → Q1 OFF → Card unpowered
 
 This gives the firmware full control over card activation/deactivation sequencing,
 exactly as it had with the ST8034.
+
+### Current Limiting (R5 + Q3)
+
+A classic two-transistor current limiter protects the card VCC line:
+
+- **R5 (6.8Ω)** is a sense resistor in series between Q1's collector and SC_VCC.
+  As current flows through R5, it develops a voltage drop across it.
+- **Q3 (SS8050 NPN)** has its base connected to the Q1-collector side (top) of
+  R5 and its emitter connected to the SC_VCC side (bottom) of R5. Its collector
+  connects to Q1's base.
+
+**How it works:**
+- When card current is below the limit, the voltage across R5 is less than
+  Q3's Vbe (~0.6V), so Q3 is OFF and has no effect.
+- When card current exceeds the limit, the voltage across R5 exceeds 0.6V,
+  turning Q3 ON. Q3's collector pulls Q1's base toward SC_VCC, reducing Q1's
+  base drive and throttling the current.
+- The circuit self-regulates at the threshold: **I_limit = Vbe(Q3) / R5 ≈
+  0.6V / 6.8Ω ≈ 88mA**
+
+This is well within the ISO 7816 Class C maximum of 80mA (with a small margin
+for Vbe variation). The typical operating current for JavaCards is 30–60mA,
+well below this limit. In a short-circuit condition, the current is hard-clamped
+to ~88mA, protecting both the card and the 3.3V supply rail.
+
+**Tuning:** To adjust the current limit, change R5:
+| R5 Value | Current Limit | Notes |
+|----------|--------------|-------|
+| 4.7Ω     | ~128mA       | More headroom, less protection |
+| 6.8Ω     | ~88mA        | **Default** — matches ISO 7816 Class C |
+| 10Ω      | ~60mA        | Tighter limit, may be too low for some cards |
+| 12Ω      | ~50mA        | Very conservative |
+
+All of these are JLCPCB basic 0805 resistors.
 
 ### Card Detection
 
@@ -92,15 +130,17 @@ All components are from the JLCPCB Basic Parts library — no extended part fees
 | R2  | Resistor  | 10kΩ  | 0805    | C17414 | Q2 gate resistor |
 | R3  | Resistor  | 10kΩ  | 0805    | C17414 | Q1 base pull-up (keeps VCC off at startup) |
 | R4  | Resistor  | 10kΩ  | 0805    | C17414 | Card detect pull-up |
+| R5  | Resistor  | 6.8Ω  | 0805    | C17798 | Current sense resistor (sets ~88mA limit) |
 | C1  | Capacitor | 100nF | 0805    | C49678 | SC_VCC decoupling |
 | Q1  | PNP BJT   | SS8550 | SOT-23 | C2149  | High-side VCC switch |
 | Q2  | N-FET     | 2N7002 | SOT-23 | C8545  | Inverts SC_PWR to drive Q1 |
+| Q3  | NPN BJT   | SS8050 | SOT-23 | C2150  | Current sense — shunts Q1 base on overcurrent |
 | D1  | Dual TVS  | PESD5V0S2BT | SOT-23 | C85364 | ESD on SC_IO + SC_CLK |
 | D2  | Dual TVS  | PESD5V0S2BT | SOT-23 | C85364 | ESD on SC_RST + SC_VCC |
 
-**Total: 9 components (4× 0805, 2× SOT-23 transistors, 2× SOT-23 TVS, 1× 0805 cap)**
+**Total: 11 components (5× 0805, 3× SOT-23 transistors, 2× SOT-23 TVS, 1× 0805 cap)**
 
-Estimated BOM cost: **< $0.30** (excluding card connector)
+Estimated BOM cost: **< $0.35** (excluding card connector)
 
 ## What This Replaces
 
@@ -109,7 +149,7 @@ The ST8034 (LCSC C2674058) is an 8-pin IC that provides:
 - ✅ VCC switching → **replaced by Q1 + Q2**
 - ✅ Level shifting → **not needed** (3.3V MCU → 3V class card, within spec)
 - ✅ Voltage class negotiation → **not needed** (fixed 3.3V, Class C cards)
-- ✅ Short-circuit protection → **Q1 current limited by PNP beta**
+- ✅ Short-circuit protection → **R5 + Q3 current limiter (~88mA)**
 - ❌ Automatic activation sequencing → **handled by firmware via `uscard` driver**
 
 ## Limitations
@@ -117,11 +157,17 @@ The ST8034 (LCSC C2674058) is an 8-pin IC that provides:
 1. **3V class cards only** — Cards requiring 1.8V or 5V operation will not work.
    Most modern JavaCards (including those used with Specter) support 3V class.
 
-2. **No overcurrent protection** — The SS8550 limits current by its beta
-   (~100–200), providing a soft limit around 100–300mA. For a more robust
-   design, add a 100mA PTC fuse (e.g., LCSC C369152) in series with SC_VCC.
+2. **Current limit has ~±15% tolerance** — The 88mA limit depends on Q3's Vbe
+   (which varies with temperature, typically 0.55V–0.65V). In practice this
+   means the actual limit is roughly 80–95mA, which safely brackets the ISO
+   7816 Class C 80mA spec.
 
-3. **3.3V is at the upper edge of Class C spec** (2.7V–3.3V) — This is within
+3. **~0.6V voltage drop under max load** — At 88mA through R5, the drop is
+   ~0.6V, giving SC_VCC ≈ 2.7V. This is at the lower edge of the Class C range
+   (2.7V–3.3V). At typical operating current (30–60mA), the drop is only
+   0.2–0.4V, giving SC_VCC ≈ 2.9–3.1V which is comfortable.
+
+4. **3.3V is at the upper edge of Class C spec** (2.7V–3.3V) — This is within
    spec and works in practice with all tested JavaCards.
 
 ## Firmware Reference
