@@ -23,6 +23,8 @@ def get_reader():
         # The SEC1210 handles ISO 7816 CLK, I/O, RST, and voltage internally.
         # ioPin/clkPin are repurposed as UART TX/RX to the bridge IC.
         # rstPin and pwrPin are None — managed by the SEC1210.
+        # ifaceId=1 corresponds to UART1 on the ESP32-P4, used to communicate
+        # with the SEC1210 bridge IC (versus ifaceId=2 for STM32 USART2).
         reader = sc.Reader(
             name="Specter card reader",
             ifaceId=1,
