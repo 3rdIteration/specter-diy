@@ -6,6 +6,12 @@ import gc
 
 simulator = (sys.platform in ["linux", "darwin"])
 
+# Detect ESP32-P4 platform (SEC1210 smartcard bridge via CCID over UART)
+try:
+    is_esp32p4 = (sys.platform == "esp32" and "ESP32P4" in os.uname().machine)
+except Exception:
+    is_esp32p4 = False
+
 
 # Build metadata injected at boot time. Defaults represent the minimum
 # information we can know without platform-specific boot scripts.
