@@ -189,3 +189,16 @@ reader = sc.Reader(
 
 This configuration is **completely unchanged** — the minimal circuit is a
 transparent, drop-in replacement for the ST8034.
+
+## Applicability
+
+This discrete design is the recommended smartcard interface for all shield
+variants:
+
+- **Shield Lite** ([`shield-lite/`](../../shield-lite/)) — directly solves the
+  availability and cost problems that motivated the Shield Lite project. All
+  components meet the Shield Lite design criteria (JLCPCB basic, single-side
+  assembly, hand-solderable with a standard iron).
+- **Shield v1** ([`shield/kicad/`](../kicad/)) — replaces U6 (ST8034 C2674058)
+  and its surrounding passives.
+- **New shield designs** — use this circuit instead of any ST8034 variant.

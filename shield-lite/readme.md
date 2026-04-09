@@ -19,6 +19,23 @@ Limited availability and high cost have limited the accesibility of the Smartcar
 + Single Sided Components - Fab houses like JLCPCB have extremely cheap assembly services as long as all components are on a single side of the PCB. (The Pin-Headers are easy to hand solder on)
 + Sticking to common/cheap components where possible, as opposed to more exotic/complex parts. (Minimise 'Extended' parts from fabs like JLCPCB, prefer pin-count <= 16 for fabs like PCBWay)
 
-## Future Work (Still in testing)
-+ Swap SmartCard interface IC to something like ST8034ATDT to make it easier to assemble by hand, decreases component count and makes assembly cheaply by PCBWay. (Current QFP package makes assembly expensive with PCBWay, though still cheap with JLCPCB)
-+ Look at alternative QR Scanners like the Grow GM805 which are cheaper, remove the need for fine pitch header soldering and also integrate the beeper, to futher drive costs down. (Currently has some compatability issues with binary SeedQR which need to be explored/fixed)
+## Smartcard Interface
+
+The original Shield used an ST8034 IC for the smartcard interface, but availability
+and cost have been persistent problems. Rather than swapping to a different IC package
+(e.g. ST8034ATDT), the recommended approach is now to use a **discrete basic
+components design** that eliminates the smartcard IC entirely.
+
+See [`shield/smartcard_minimal/`](../shield/smartcard_minimal/) for the full
+schematic and BOM — 11 JLCPCB basic parts (< $0.35), all 0805/SOT-23, no
+firmware changes required. This directly addresses the Shield Lite's core goals:
+
++ **Cost** — discrete BOM is cheaper than any ST8034 variant
++ **Availability** — all parts are JLCPCB basic library, always in stock
++ **Hand-solderability** — 0805 resistors/caps + SOT-23 transistors are easy with a standard iron
++ **Assembly cost** — all components are ≤ 3-pin SOT-23 or 0805, cheap to assemble at any fab (JLCPCB, PCBWay, etc.)
++ **Short-circuit protection** — built-in ~88mA current limiter via sense resistor + NPN clamp
+
+## Future Work
+
++ Look at alternative QR Scanners like the Grow GM805 which are cheaper, remove the need for fine pitch header soldering and also integrate the beeper, to further drive costs down. (Currently has some compatibility issues with binary SeedQR which need to be explored/fixed)
