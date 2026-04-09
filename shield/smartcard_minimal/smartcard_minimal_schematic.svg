@@ -1,0 +1,359 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="monospace" font-size="13">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#FAFAFA" stroke="#333" stroke-width="2"/>
+
+  <!-- Title Block -->
+  <rect x="20" y="10" width="1160" height="55" rx="5" fill="#1a3a5c" stroke="none"/>
+  <text x="600" y="32" text-anchor="middle" fill="white" font-size="18" font-weight="bold">Specter DIY — Minimal Smartcard Interface (ST8034 Replacement)</text>
+  <text x="600" y="50" text-anchor="middle" fill="#aaccee" font-size="12">All JLCPCB Basic Parts · ISO 7816 · STM32F469 USART2 Smartcard Mode</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- POWER RAILS at top -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- V3V3 rail -->
+  <line x1="100" y1="100" x2="900" y2="100" stroke="#cc0000" stroke-width="2.5"/>
+  <text x="95" y="97" text-anchor="end" fill="#cc0000" font-weight="bold" font-size="14">V3V3</text>
+  <text x="95" y="112" text-anchor="end" fill="#cc0000" font-size="10">(+3.3V)</text>
+
+  <!-- GND rail -->
+  <line x1="100" y1="810" x2="900" y2="810" stroke="#333" stroke-width="2.5"/>
+  <text x="95" y="813" text-anchor="end" fill="#333" font-weight="bold" font-size="14">GND</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MCU CONNECTOR (left side) -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="30" y="280" width="130" height="280" rx="8" fill="#e8eef5" stroke="#1a3a5c" stroke-width="2"/>
+  <text x="95" y="305" text-anchor="middle" fill="#1a3a5c" font-weight="bold" font-size="14">STM32F469</text>
+  <text x="95" y="322" text-anchor="middle" fill="#1a3a5c" font-size="11">(MCU)</text>
+
+  <!-- MCU Pins -->
+  <text x="145" y="370" fill="#1a3a5c" font-size="12" font-weight="bold">PA2 (SC_IO)</text>
+  <line x1="160" y1="365" x2="230" y2="365" stroke="#1a3a5c" stroke-width="2"/>
+  <circle cx="230" cy="365" r="3" fill="#1a3a5c"/>
+
+  <text x="145" y="420" fill="#1a3a5c" font-size="12" font-weight="bold">PA4 (SC_CLK)</text>
+  <line x1="160" y1="415" x2="230" y2="415" stroke="#1a3a5c" stroke-width="2"/>
+  <circle cx="230" cy="415" r="3" fill="#1a3a5c"/>
+
+  <text x="145" y="470" fill="#1a3a5c" font-size="12" font-weight="bold">PG10 (SC_RST)</text>
+  <line x1="160" y1="465" x2="230" y2="465" stroke="#1a3a5c" stroke-width="2"/>
+  <circle cx="230" cy="465" r="3" fill="#1a3a5c"/>
+
+  <text x="145" y="520" fill="#1a3a5c" font-size="12" font-weight="bold">PC5 (SC_PWR)</text>
+  <line x1="160" y1="515" x2="230" y2="515" stroke="#1a3a5c" stroke-width="2"/>
+  <circle cx="230" cy="515" r="3" fill="#1a3a5c"/>
+
+  <!-- Card Detect -->
+  <text x="145" y="540" fill="#1a3a5c" font-size="12" font-weight="bold">PC2 (SC_DET)</text>
+  <line x1="160" y1="535" x2="230" y2="535" stroke="#1a3a5c" stroke-width="2"/>
+  <circle cx="230" cy="535" r="3" fill="#1a3a5c"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SMARTCARD CONNECTOR (right side) -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="870" y="250" width="160" height="340" rx="8" fill="#fff7e0" stroke="#aa7700" stroke-width="2"/>
+  <text x="950" y="275" text-anchor="middle" fill="#aa7700" font-weight="bold" font-size="14">ISO 7816</text>
+  <text x="950" y="292" text-anchor="middle" fill="#aa7700" font-size="11">Smartcard</text>
+  <text x="950" y="306" text-anchor="middle" fill="#aa7700" font-size="11">Connector</text>
+
+  <!-- Card pins -->
+  <text x="885" y="350" fill="#aa7700" font-size="12">C7 — I/O</text>
+  <line x1="870" y1="345" x2="830" y2="345" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="345" r="3" fill="#aa7700"/>
+
+  <text x="885" y="395" fill="#aa7700" font-size="12">C3 — CLK</text>
+  <line x1="870" y1="390" x2="830" y2="390" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="390" r="3" fill="#aa7700"/>
+
+  <text x="885" y="440" fill="#aa7700" font-size="12">C2 — RST</text>
+  <line x1="870" y1="435" x2="830" y2="435" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="435" r="3" fill="#aa7700"/>
+
+  <text x="885" y="485" fill="#aa7700" font-size="12">C1 — VCC</text>
+  <line x1="870" y1="480" x2="830" y2="480" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="480" r="3" fill="#aa7700"/>
+
+  <text x="885" y="530" fill="#aa7700" font-size="12">C5 — GND</text>
+  <line x1="870" y1="525" x2="830" y2="525" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="525" r="3" fill="#aa7700"/>
+
+  <text x="885" y="570" fill="#aa7700" font-size="12">SW — DET</text>
+  <line x1="870" y1="565" x2="830" y2="565" stroke="#aa7700" stroke-width="2"/>
+  <circle cx="830" cy="565" r="3" fill="#aa7700"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SC_IO line: PA2 → R1 pull-up → TVS D1 → Card C7 -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- IO net wire from MCU -->
+  <line x1="230" y1="365" x2="400" y2="365" stroke="#0066cc" stroke-width="1.8"/>
+
+  <!-- R1 pull-up to V3V3 -->
+  <line x1="400" y1="365" x2="400" y2="160" stroke="#0066cc" stroke-width="1.5" stroke-dasharray="none"/>
+  <!-- Resistor symbol R1 -->
+  <rect x="392" y="200" width="16" height="50" fill="white" stroke="#0066cc" stroke-width="1.5"/>
+  <text x="415" y="220" fill="#0066cc" font-size="11" font-weight="bold">R1</text>
+  <text x="415" y="234" fill="#0066cc" font-size="10">10kΩ</text>
+  <text x="415" y="246" fill="#666" font-size="9">0805</text>
+  <!-- connect to V3V3 -->
+  <line x1="400" y1="200" x2="400" y2="100" stroke="#cc0000" stroke-width="1.5"/>
+  <circle cx="400" cy="100" r="3" fill="#cc0000"/>
+
+  <!-- Continue IO line to TVS -->
+  <line x1="400" y1="365" x2="580" y2="365" stroke="#0066cc" stroke-width="1.8"/>
+  <circle cx="400" cy="365" r="3" fill="#0066cc"/>
+
+  <!-- D1 TVS diode on IO (channel 1 of PESD5V0S2BT) -->
+  <!-- TVS symbol: triangle with bar -->
+  <rect x="568" y="340" width="24" height="50" rx="2" fill="#ffe0e0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="580" y="330" text-anchor="middle" fill="#cc0000" font-size="10" font-weight="bold">D1a</text>
+  <!-- TVS to GND -->
+  <line x1="580" y1="390" x2="580" y2="810" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="580" cy="810" r="3" fill="#333"/>
+
+  <!-- Continue IO to card -->
+  <line x1="592" y1="365" x2="830" y2="345" stroke="#0066cc" stroke-width="1.8"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SC_CLK line: PA4 → TVS D1b → Card C3 -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- CLK net wire -->
+  <line x1="230" y1="415" x2="630" y2="415" stroke="#009933" stroke-width="1.8"/>
+
+  <!-- D1b TVS diode on CLK (channel 2 of PESD5V0S2BT) -->
+  <rect x="618" y="390" width="24" height="50" rx="2" fill="#ffe0e0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="630" y="380" text-anchor="middle" fill="#cc0000" font-size="10" font-weight="bold">D1b</text>
+  <!-- TVS to GND -->
+  <line x1="630" y1="440" x2="630" y2="810" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="630" cy="810" r="3" fill="#333"/>
+
+  <!-- Continue CLK to card -->
+  <line x1="642" y1="415" x2="830" y2="390" stroke="#009933" stroke-width="1.8"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- D1 label (shared dual TVS) -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="540" y="450" width="140" height="50" rx="5" fill="#fff0f0" stroke="#cc0000" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="610" y="467" text-anchor="middle" fill="#cc0000" font-size="11" font-weight="bold">D1: PESD5V0S2BT</text>
+  <text x="610" y="481" text-anchor="middle" fill="#cc0000" font-size="9">SOT-23 · Dual TVS</text>
+  <text x="610" y="493" text-anchor="middle" fill="#888" font-size="9">LCSC: C85364</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SC_RST line: PG10 → TVS D2 → Card C2 -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <line x1="230" y1="465" x2="680" y2="465" stroke="#9933cc" stroke-width="1.8"/>
+
+  <!-- D2 TVS on RST -->
+  <rect x="668" y="440" width="24" height="50" rx="2" fill="#ffe0e0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="680" y="430" text-anchor="middle" fill="#cc0000" font-size="10" font-weight="bold">D2</text>
+  <!-- TVS to GND -->
+  <line x1="680" y1="490" x2="680" y2="810" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <circle cx="680" cy="810" r="3" fill="#333"/>
+
+  <!-- Continue RST to card -->
+  <line x1="692" y1="465" x2="830" y2="435" stroke="#9933cc" stroke-width="1.8"/>
+
+  <!-- D2 label -->
+  <rect x="700" y="440" width="120" height="48" rx="5" fill="#fff0f0" stroke="#cc0000" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="760" y="457" text-anchor="middle" fill="#cc0000" font-size="10" font-weight="bold">D2: PESD5V0S2BT</text>
+  <text x="760" y="470" text-anchor="middle" fill="#cc0000" font-size="9">SOT-23 · Ch1 only</text>
+  <text x="760" y="482" text-anchor="middle" fill="#888" font-size="9">LCSC: C85364</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- VCC POWER SWITCH: PC5 → R2 → Q1 (2N7002) → Card VCC -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- PC5 to gate resistor R2 -->
+  <line x1="230" y1="515" x2="330" y2="515" stroke="#cc6600" stroke-width="1.8"/>
+
+  <!-- R2 gate resistor -->
+  <rect x="330" y="507" width="50" height="16" fill="white" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="355" y="500" text-anchor="middle" fill="#cc6600" font-size="10" font-weight="bold">R2 10kΩ</text>
+  <text x="355" y="536" text-anchor="middle" fill="#666" font-size="9">0805</text>
+
+  <!-- R2 to Q1 gate -->
+  <line x1="380" y1="515" x2="430" y2="515" stroke="#cc6600" stroke-width="1.5"/>
+
+  <!-- Q1 PNP high-side switch -->
+  <rect x="420" y="560" width="80" height="80" rx="6" fill="#e8f5e8" stroke="#009933" stroke-width="1.5"/>
+  <text x="460" y="580" text-anchor="middle" fill="#009933" font-weight="bold" font-size="12">Q1</text>
+  <text x="460" y="595" text-anchor="middle" fill="#009933" font-size="10">SS8550</text>
+  <text x="460" y="608" text-anchor="middle" fill="#009933" font-size="10">PNP</text>
+  <text x="460" y="620" text-anchor="middle" fill="#009933" font-size="9">SOT-23</text>
+  <text x="460" y="633" text-anchor="middle" fill="#888" font-size="9">C2149</text>
+
+  <!-- Q1 Emitter to V3V3 -->
+  <line x1="460" y1="560" x2="460" y2="100" stroke="#cc0000" stroke-width="1.5"/>
+  <circle cx="460" cy="100" r="3" fill="#cc0000"/>
+  <text x="470" y="545" fill="#333" font-size="10">E</text>
+
+  <!-- Q1 Collector to Card VCC net -->
+  <line x1="460" y1="640" x2="460" y2="680" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="470" y="660" fill="#333" font-size="10">C</text>
+
+  <!-- SC_VCC net from Q1 collector to card C1 -->
+  <line x1="460" y1="680" x2="750" y2="680" stroke="#cc6600" stroke-width="1.8"/>
+  <line x1="750" y1="680" x2="750" y2="480" stroke="#cc6600" stroke-width="1.8"/>
+  <line x1="750" y1="480" x2="830" y2="480" stroke="#cc6600" stroke-width="1.8"/>
+  <text x="600" y="672" text-anchor="middle" fill="#cc6600" font-size="11" font-weight="bold">SC_VCC</text>
+
+  <!-- Q2: 2N7002 N-FET to invert PC5 signal for PNP base drive -->
+  <!-- PC5 HIGH → Q2 ON → pulls Q1 base LOW → Q1 PNP ON → Card powered -->
+  <rect x="310" y="610" width="80" height="75" rx="6" fill="#e0e8f5" stroke="#1a3a5c" stroke-width="1.5"/>
+  <text x="350" y="628" text-anchor="middle" fill="#1a3a5c" font-weight="bold" font-size="12">Q2</text>
+  <text x="350" y="643" text-anchor="middle" fill="#1a3a5c" font-size="10">2N7002</text>
+  <text x="350" y="656" text-anchor="middle" fill="#1a3a5c" font-size="10">N-FET</text>
+  <text x="350" y="669" text-anchor="middle" fill="#1a3a5c" font-size="9">SOT-23</text>
+  <text x="350" y="680" text-anchor="middle" fill="#888" font-size="9">C8545</text>
+
+  <!-- R2 output to Q2 gate -->
+  <line x1="380" y1="515" x2="390" y2="515" stroke="#cc6600" stroke-width="1.5"/>
+  <line x1="390" y1="515" x2="390" y2="610" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="350" y="608" text-anchor="middle" fill="#333" font-size="10">G</text>
+
+  <!-- Q2 Source to GND -->
+  <line x1="350" y1="685" x2="350" y2="810" stroke="#333" stroke-width="1.5"/>
+  <circle cx="350" cy="810" r="3" fill="#333"/>
+  <text x="335" y="700" fill="#333" font-size="10">S</text>
+
+  <!-- Q2 Drain to Q1 Base -->
+  <line x1="350" y1="610" x2="350" y2="590" stroke="#cc6600" stroke-width="1.5"/>
+  <line x1="350" y1="590" x2="420" y2="590" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="365" y="600" fill="#333" font-size="10">D</text>
+
+  <!-- R3: Pull-up on Q1 base to V3V3 (keeps Q1 OFF when Q2 is OFF) -->
+  <line x1="385" y1="590" x2="385" y2="160" stroke="#cc0000" stroke-width="1"/>
+  <rect x="377" y="250" width="16" height="50" fill="white" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="353" y="270" fill="#cc0000" font-size="10" text-anchor="end" font-weight="bold">R3</text>
+  <text x="353" y="283" fill="#cc0000" font-size="10" text-anchor="end">10kΩ</text>
+  <text x="353" y="295" fill="#666" font-size="9" text-anchor="end">0805</text>
+  <line x1="385" y1="250" x2="385" y2="100" stroke="#cc0000" stroke-width="1"/>
+  <circle cx="385" cy="100" r="3" fill="#cc0000"/>
+  <circle cx="385" cy="590" r="3" fill="#cc6600"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- C1 Decoupling cap on SC_VCC -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="755" y="700" width="16" height="40" fill="white" stroke="#cc6600" stroke-width="1.5"/>
+  <text x="780" y="715" fill="#cc6600" font-size="10" font-weight="bold">C1</text>
+  <text x="780" y="728" fill="#cc6600" font-size="10">100nF</text>
+  <text x="780" y="740" fill="#666" font-size="9">0805</text>
+  <line x1="763" y1="680" x2="763" y2="700" stroke="#cc6600" stroke-width="1.5"/>
+  <circle cx="763" cy="680" r="3" fill="#cc6600"/>
+  <line x1="763" y1="740" x2="763" y2="810" stroke="#333" stroke-width="1.5"/>
+  <circle cx="763" cy="810" r="3" fill="#333"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- D3 TVS on SC_VCC -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="720" y="700" width="24" height="40" rx="2" fill="#ffe0e0" stroke="#cc0000" stroke-width="1.5"/>
+  <text x="710" y="715" text-anchor="end" fill="#cc0000" font-size="10" font-weight="bold">D3</text>
+  <line x1="732" y1="680" x2="732" y2="700" stroke="#cc6600" stroke-width="1.2"/>
+  <circle cx="732" cy="680" r="3" fill="#cc6600"/>
+  <line x1="732" y1="740" x2="732" y2="810" stroke="#333" stroke-width="1.2"/>
+  <circle cx="732" cy="810" r="3" fill="#333"/>
+
+  <!-- D2 channel 2 on VCC -->
+  <text x="710" y="750" text-anchor="end" fill="#888" font-size="9">(D2 Ch2)</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- CARD DETECT: Switch to GND, R4 pull-up -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Card detect line from MCU -->
+  <line x1="230" y1="535" x2="300" y2="535" stroke="#666699" stroke-width="1.8"/>
+
+  <!-- R4 pull-up -->
+  <line x1="300" y1="535" x2="300" y2="200" stroke="#666699" stroke-width="1"/>
+  <rect x="292" y="200" width="16" height="50" fill="white" stroke="#666699" stroke-width="1.5"/>
+  <text x="270" y="220" fill="#666699" font-size="10" text-anchor="end" font-weight="bold">R4</text>
+  <text x="270" y="234" fill="#666699" font-size="10" text-anchor="end">10kΩ</text>
+  <text x="270" y="247" fill="#666" font-size="9" text-anchor="end">0805</text>
+  <line x1="300" y1="200" x2="300" y2="100" stroke="#cc0000" stroke-width="1"/>
+  <circle cx="300" cy="100" r="3" fill="#cc0000"/>
+  <circle cx="300" cy="535" r="3" fill="#666699"/>
+
+  <!-- Card detect net to card connector SW pin -->
+  <line x1="300" y1="535" x2="830" y2="565" stroke="#666699" stroke-width="1.5"/>
+
+  <!-- Card GND connection -->
+  <line x1="830" y1="525" x2="810" y2="525" stroke="#333" stroke-width="1.8"/>
+  <line x1="810" y1="525" x2="810" y2="810" stroke="#333" stroke-width="1.5"/>
+  <circle cx="810" cy="810" r="3" fill="#333"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- NET LABELS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="310" y="358" fill="#0066cc" font-size="11" font-weight="bold">SC_IO</text>
+  <text x="310" y="408" fill="#009933" font-size="11" font-weight="bold">SC_CLK</text>
+  <text x="310" y="458" fill="#9933cc" font-size="11" font-weight="bold">SC_RST</text>
+  <text x="265" y="510" fill="#cc6600" font-size="11" font-weight="bold">SC_PWR</text>
+  <text x="310" y="550" fill="#666699" font-size="11" font-weight="bold">SC_DET</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- BOM TABLE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="960" y="620" width="225" height="265" rx="5" fill="white" stroke="#333" stroke-width="1"/>
+  <text x="1072" y="640" text-anchor="middle" fill="#333" font-weight="bold" font-size="13">BOM (JLCPCB Basic)</text>
+  <line x1="965" y1="645" x2="1180" y2="645" stroke="#ccc" stroke-width="1"/>
+
+  <text x="970" y="662" fill="#333" font-size="10" font-weight="bold">Ref   Value      LCSC</text>
+  <line x1="965" y1="667" x2="1180" y2="667" stroke="#eee" stroke-width="1"/>
+  <text x="970" y="682" fill="#333" font-size="10">R1    10kΩ 0805  C17414</text>
+  <text x="970" y="697" fill="#333" font-size="10">R2    10kΩ 0805  C17414</text>
+  <text x="970" y="712" fill="#333" font-size="10">R3    10kΩ 0805  C17414</text>
+  <text x="970" y="727" fill="#333" font-size="10">R4    10kΩ 0805  C17414</text>
+  <text x="970" y="742" fill="#333" font-size="10">C1    100nF 0805 C49678</text>
+  <text x="970" y="757" fill="#333" font-size="10">Q1    SS8550 PNP C2149</text>
+  <text x="970" y="772" fill="#333" font-size="10">Q2    2N7002 NFT C8545</text>
+  <text x="970" y="787" fill="#333" font-size="10">D1    PESD5V0S2B C85364</text>
+  <text x="970" y="802" fill="#333" font-size="10">D2    PESD5V0S2B C85364</text>
+  <line x1="965" y1="808" x2="1180" y2="808" stroke="#ccc" stroke-width="1"/>
+  <text x="1072" y="822" text-anchor="middle" fill="#666" font-size="10">9 parts · all SOT-23/0805</text>
+  <text x="1072" y="836" text-anchor="middle" fill="#666" font-size="10">Replaces ST8034 + passives</text>
+  <text x="1072" y="855" text-anchor="middle" fill="#999" font-size="9">Total BOM cost &lt; $0.30</text>
+  <text x="1072" y="870" text-anchor="middle" fill="#999" font-size="9">(excl. card connector)</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- NOTES BOX -->
+  <!-- ═══════════════════════════════════════════ -->
+  <rect x="960" y="80" width="225" height="200" rx="5" fill="#f5f5ff" stroke="#666" stroke-width="1"/>
+  <text x="1072" y="100" text-anchor="middle" fill="#333" font-weight="bold" font-size="12">Design Notes</text>
+  <text x="968" y="118" fill="#555" font-size="9.5">• STM32 USART2 in ISO 7816 mode</text>
+  <text x="968" y="132" fill="#555" font-size="9.5">  generates CLK, handles I/O</text>
+  <text x="968" y="148" fill="#555" font-size="9.5">• R1: Open-drain pull-up on I/O</text>
+  <text x="968" y="162" fill="#555" font-size="9.5">  (ISO 7816 bidirectional line)</text>
+  <text x="968" y="178" fill="#555" font-size="9.5">• Q2+Q1: MCU-controlled VCC</text>
+  <text x="968" y="192" fill="#555" font-size="9.5">  PC5 HIGH → Q2 ON → Q1 ON</text>
+  <text x="968" y="208" fill="#555" font-size="9.5">• D1,D2: ESD on CLK/IO/RST/VCC</text>
+  <text x="968" y="224" fill="#555" font-size="9.5">• Card detect: switch to GND</text>
+  <text x="968" y="240" fill="#555" font-size="9.5">  with pull-up (active-low)</text>
+  <text x="968" y="258" fill="#555" font-size="9.5">• 3V class cards only (3.3V)</text>
+  <text x="968" y="272" fill="#555" font-size="9.5">• No firmware changes needed</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SIGNAL FLOW ARROWS -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Bidirectional arrow on IO -->
+  <line x1="255" y1="355" x2="285" y2="355" stroke="#0066cc" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="285" y1="358" x2="255" y2="358" stroke="#0066cc" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Unidirectional arrow on CLK -->
+  <line x1="255" y1="412" x2="285" y2="412" stroke="#009933" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Unidirectional arrow on RST -->
+  <line x1="255" y1="462" x2="285" y2="462" stroke="#9933cc" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Rev info -->
+  <text x="600" y="885" text-anchor="middle" fill="#999" font-size="10">specter-diy/shield/smartcard_minimal/ · Minimal Smartcard Interface · Rev 1.0 · April 2026</text>
+
+</svg>
