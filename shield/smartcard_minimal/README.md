@@ -176,8 +176,10 @@ match all of the ST8034's capabilities:
 shields support firmware-controlled voltage selection:
 - **ST8034HNQR** (Shield v1): VCC_SEL1/VCC_SEL2 pins routed to MCU GPIOs, tied
   high (default 5V). Firmware can select 1.8V/3.0V/5.0V.
-- **ST8034ATDT** (Shield-BE): CMDVCC pin selects 3V (high) or 5V (low); also
-  supports automatic voltage class detection.
+- **ST8034ATDT** (Shield-BE): CMDVCC pin (pin 16) is driven by the MCU to
+  select the card voltage — High selects 3V, Low selects 5V. The "A" in the
+  part name indicates the IC also supports automatic voltage class detection
+  during the card activation sequence.
 
 This matters if future JavaCards require different voltage classes. The current
 cards (J3H145, J3R180) work fine at 3.3V, but the ST8034 provides a path to
@@ -250,8 +252,10 @@ work. However, you're operating outside the GPIO's rated limits:
 - **STM32F469 GPIO max source current: ~25 mA per pin** (absolute maximum from
   datasheet). Typical JavaCards draw **30–60 mA**, which exceeds this.
 - **VCC will sag** under load due to the GPIO's internal Rds_on. Expect
-  **~2.5–3.0V** at the card instead of 3.3V. Most JavaCards tolerate this
-  (ISO 7816 Class C range is 2.7–3.3V), but you're at the edge.
+  **~2.5–3.0V** at the card instead of 3.3V. At 2.5V, this is **below the
+  ISO 7816 Class C minimum of 2.7V** and technically out of spec. Most
+  JavaCards still communicate at this voltage in practice, but reliability
+  is not guaranteed.
 - **No short-circuit protection** — a shorted card slot could damage the MCU pin
   or the 3.3V rail.
 - **No ESD protection** — handle with care on the bench.
