@@ -1,14 +1,28 @@
-# Minimal Smartcard Interface (ST8034 Replacement)
+# Minimal Smartcard Interface (ST8034 Fallback)
 
 ![Schematic Diagram](smartcard_minimal_schematic.png)
 
 ## Overview
 
-This circuit replaces the ST8034 smartcard interface IC with a minimal discrete
-design using only JLCPCB basic parts. It pipes the CLK and data (I/O) lines
-straight through from the STM32F469 MCU to the smartcard, adds ESD/TVS
-protection on every signal line, and powers the card from the 3.3V rail through
-a MCU-controlled switch.
+This circuit provides a **fallback alternative** to the ST8034 smartcard
+interface IC using only JLCPCB basic parts. It is intended for situations where
+ST8034 chips become unavailable or cost-prohibitive. It pipes the CLK and data
+(I/O) lines straight through from the STM32F469 MCU to the smartcard, adds
+ESD/TVS protection on every signal line, and powers the card from the 3.3V rail
+through a MCU-controlled switch.
+
+**The ST8034 remains the preferred smartcard interface** — it provides a more
+robust feature set including integrated TVS/ESD protection, firmware-selectable
+voltage classes (1.8V/3.0V/5.0V), built-in short-circuit protection, and
+automatic activation sequencing. Both the ST8034HNQR (24-pin, Shield v1) and
+ST8034ATDT (16-pin, Shield-BE) support voltage selection via firmware — the
+HNQR uses VCC_SEL1/VCC_SEL2 pins, while the ATDT uses its CMDVCC pin. This
+means if a future card requires a different voltage class (e.g. 1.8V or 5V),
+the ST8034-based shields can adapt via firmware alone.
+
+This discrete design is a useful backup that works well with current JavaCards
+(tested with J3H145 and J3R180), but is limited to a fixed 3.3V (Class C)
+output and cannot negotiate voltage classes.
 
 **No firmware changes are required** — the MCU pin assignments and `uscard`
 driver configuration remain identical to the original ST8034-based shield.
@@ -142,15 +156,32 @@ All components are from the JLCPCB Basic Parts library — no extended part fees
 
 Estimated BOM cost: **< $0.35** (excluding card connector)
 
-## What This Replaces
+## ST8034 Advantages vs This Discrete Design
 
-The ST8034 (LCSC C2674058) is an 8-pin IC that provides:
-- ✅ ESD protection → **replaced by D1, D2 (TVS diodes)**
-- ✅ VCC switching → **replaced by Q1 + Q2**
-- ✅ Level shifting → **not needed** (3.3V MCU → 3V class card, within spec)
-- ✅ Voltage class negotiation → **not needed** (fixed 3.3V, Class C cards)
-- ✅ Short-circuit protection → **R5 + Q3 current limiter (~88mA)**
-- ❌ Automatic activation sequencing → **handled by firmware via `uscard` driver**
+The ST8034 is a purpose-built smartcard interface IC that provides a more robust
+and feature-rich solution. This discrete design covers the basics but cannot
+match all of the ST8034's capabilities:
+
+| Feature | ST8034 | This Discrete Design |
+|---------|--------|---------------------|
+| ESD/TVS protection | ✅ Integrated, rated per ISO 7816 | ✅ D1, D2 (PESD5V0S2BT) — equivalent |
+| VCC switching | ✅ Internal high-side switch | ✅ Q1 + Q2 — equivalent |
+| Level shifting | ✅ Internal, multi-class | ⚠️ Not needed at 3.3V, but no flexibility |
+| **Voltage class selection** | ✅ **1.8V / 3.0V / 5.0V via firmware** | ❌ **Fixed 3.3V only** |
+| Short-circuit protection | ✅ Integrated, auto-shutdown | ✅ R5 + Q3 current limiter (~88mA) |
+| Activation sequencing | ✅ Automatic per ISO 7816-3 | ⚠️ Handled by firmware (`uscard` driver) |
+| Over-temperature protection | ✅ Built-in | ❌ Not available |
+
+**Key difference: voltage flexibility.** Both ST8034 variants used in Specter
+shields support firmware-controlled voltage selection:
+- **ST8034HNQR** (Shield v1): VCC_SEL1/VCC_SEL2 pins routed to MCU GPIOs, tied
+  high (default 5V). Firmware can select 1.8V/3.0V/5.0V.
+- **ST8034ATDT** (Shield-BE): CMDVCC pin selects 3V (high) or 5V (low); also
+  supports automatic voltage class detection.
+
+This matters if future JavaCards require different voltage classes. The current
+cards (J3H145, J3R180) work fine at 3.3V, but the ST8034 provides a path to
+support other cards without hardware changes.
 
 ## Reference: STM32H7 Direct-Connect Design
 
@@ -250,8 +281,11 @@ as a simple on/off pin regardless of what's behind it.
 
 ## Limitations
 
-1. **3V class cards only** — Cards requiring 1.8V or 5V operation will not work.
-   Most modern JavaCards (including those used with Specter) support 3V class.
+1. **Fixed 3.3V output — no voltage class selection** — Unlike the ST8034, this
+   circuit cannot switch between 1.8V, 3.0V, and 5.0V. Cards requiring Class A
+   (5V) or Class B (1.8V) will not work. Current target JavaCards (J3H145,
+   J3R180) support Class C (3V) and work fine, but if future cards need a
+   different voltage, the ST8034-based shields can handle it via firmware.
 
 2. **Current limit has ~±15% tolerance** — The 88mA limit depends on Q3's Vbe
    (which varies with temperature, typically 0.55V–0.65V). In practice this
@@ -288,13 +322,19 @@ transparent, drop-in replacement for the ST8034.
 
 ## Applicability
 
-This discrete design is the recommended smartcard interface for all shield
-variants:
+This discrete design serves as a **fallback smartcard interface** when ST8034
+chips are unavailable or cost-prohibitive:
 
-- **Shield Lite** ([`shield-lite/`](../../shield-lite/)) — directly solves the
-  availability and cost problems that motivated the Shield Lite project. All
-  components meet the Shield Lite design criteria (JLCPCB basic, single-side
-  assembly, hand-solderable with a standard iron).
-- **Shield v1** ([`shield/kicad/`](../kicad/)) — replaces U6 (ST8034 C2674058)
-  and its surrounding passives.
-- **New shield designs** — use this circuit instead of any ST8034 variant.
+- **Shield Lite** ([`shield-lite/`](../../shield-lite/)) — a practical backup
+  when the ST8034ATDT is out of stock. All components meet the Shield Lite
+  design criteria (JLCPCB basic, single-side assembly, hand-solderable).
+- **Shield v1** ([`shield/kicad/`](../kicad/)) — can replace U6 (ST8034
+  C2674058) and its surrounding passives if the IC is unavailable.
+- **New shield designs** — consider this circuit as a backup option. For
+  designs that may need voltage class flexibility in the future, the ST8034
+  (or equivalent) remains the better choice.
+
+**When to prefer the ST8034:** If the ST8034 is available and affordable, it
+is the better option — it provides voltage class selection, integrated
+protection, and automatic activation sequencing that this discrete circuit
+cannot match.

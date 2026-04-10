@@ -21,20 +21,30 @@ Limited availability and high cost have limited the accesibility of the Smartcar
 
 ## Smartcard Interface
 
-The original Shield used an ST8034 IC for the smartcard interface, but availability
-and cost have been persistent problems. Rather than swapping to a different IC package
-(e.g. ST8034ATDT), the recommended approach is now to use a **discrete basic
-components design** that eliminates the smartcard IC entirely.
+The original Shield used an ST8034 IC for the smartcard interface. The ST8034
+remains the **preferred option** as it provides integrated ESD protection,
+firmware-selectable voltage classes (1.8V/3.0V/5.0V via CMDVCC pin on the
+ATDT variant), short-circuit protection, and automatic activation sequencing.
+
+However, availability and cost of the ST8034 can be problematic. As a
+**fallback**, a discrete basic components design is available that eliminates
+the smartcard IC entirely while still working correctly with current JavaCards
+(J3H145, J3R180).
 
 See [`shield/smartcard_minimal/`](../shield/smartcard_minimal/) for the full
 schematic and BOM — 11 JLCPCB basic parts (< $0.35), all 0805/SOT-23, no
-firmware changes required. This directly addresses the Shield Lite's core goals:
+firmware changes required. This addresses the Shield Lite's cost and
+availability goals when the ST8034 is unavailable:
 
 + **Cost** — discrete BOM is cheaper than any ST8034 variant
 + **Availability** — all parts are JLCPCB basic library, always in stock
 + **Hand-solderability** — 0805 resistors/caps + SOT-23 transistors are easy with a standard iron
 + **Assembly cost** — all components are ≤ 3-pin SOT-23 or 0805, cheap to assemble at any fab (JLCPCB, PCBWay, etc.)
 + **Short-circuit protection** — built-in ~88mA current limiter via sense resistor + NPN clamp
+
+**Trade-off:** The discrete design is fixed at 3.3V (Class C) and cannot
+negotiate voltage classes. If a future card requires 1.8V or 5V operation,
+the ST8034-based design would be needed.
 
 ## Future Work
 
