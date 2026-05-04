@@ -154,6 +154,7 @@ class AsyncGUI:
             # LVGL v5 tracks time since last input via lv_disp_get_inactive_time.
             # Fall back to our own timestamp if the binding isn't available.
             try:
+                # DEFAULT_DISPLAY is None, which selects LVGL's default display.
                 inactive_ms = lv.disp_get_inactive_time(DEFAULT_DISPLAY)
             except Exception:
                 inactive_ms = time.ticks_diff(time.ticks_ms(), self._last_activity_ms)
