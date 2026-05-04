@@ -159,4 +159,4 @@ clean:
 		USER_C_MODULES=$(USER_C_MODULES) \
 		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) clean
 
-.PHONY: all clean disco disco-dnd bootloader-build release-binaries
+.PHONY: all clean mpy-cross disco disco-dnd debug unix simulate test bootloader-build release-binaries

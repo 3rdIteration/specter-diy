@@ -146,7 +146,7 @@ make disco disco-dnd
 
 To build a simulator run `make unix` - it will compile a micropython simulator for mac/unix and store it under `bin/micropython_unix`.
 
-To launch a simulator either run `bin/micropython_unix simulate.py` or simly run `make simulate`.
+To launch a simulator either run `bin/micropython_unix simulate.py` or simply run `make simulate`.
 
 If something is not working you can clean up with `make clean`
 
