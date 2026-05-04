@@ -11,9 +11,6 @@ import display
 SCREENSAVER_TIMEOUT_SECONDS = 60
 SCREENSAVER_TIMEOUT_MS = SCREENSAVER_TIMEOUT_SECONDS * 1000
 
-# LVGL uses None to mean the default display for disp_get_inactive_time().
-DEFAULT_DISPLAY = None
-
 # Half-brightness level used while the screensaver is active (0-100)
 SCREENSAVER_BRIGHTNESS = 50
 
@@ -154,8 +151,7 @@ class AsyncGUI:
             # LVGL v5 tracks time since last input via lv_disp_get_inactive_time.
             # Fall back to our own timestamp if the binding isn't available.
             try:
-                # DEFAULT_DISPLAY is None, which selects LVGL's default display.
-                inactive_ms = lv.disp_get_inactive_time(DEFAULT_DISPLAY)
+                inactive_ms = lv.disp_get_inactive_time(lv.disp_get_default())
             except Exception:
                 inactive_ms = time.ticks_diff(time.ticks_ms(), self._last_activity_ms)
             if inactive_ms >= SCREENSAVER_TIMEOUT_MS:
@@ -165,21 +161,23 @@ class AsyncGUI:
         """Dim the backlight, show bouncing logo, restore on touch."""
         self._screensaver_active = True
         _set_backlight(SCREENSAVER_BRIGHTNESS)
-        from .screens.screensaver import ScreenSaver
+        try:
+            from .screens.screensaver import ScreenSaver
 
-        scr = ScreenSaver()
-        # Remember what LVGL is currently displaying so we can restore it.
-        # We deliberately don't touch self.scr / self.background so that the
-        # regular screen management (popups, load_screen, etc.) is unaffected.
-        prev_active = lv.scr_act()
-        lv.scr_load(scr)
-        await scr.result()
-        # Restore the previous screen
-        lv.scr_load(prev_active)
-        scr.del_async()
-        _set_backlight(100)
-        self._last_activity_ms = time.ticks_ms()
-        self._screensaver_active = False
+            scr = ScreenSaver()
+            # Remember what LVGL is currently displaying so we can restore it.
+            # We deliberately don't touch self.scr / self.background so that the
+            # regular screen management (popups, load_screen, etc.) is unaffected.
+            prev_active = lv.scr_act()
+            lv.scr_load(scr)
+            await scr.result()
+            # Restore the previous screen
+            lv.scr_load(prev_active)
+            scr.del_async()
+        finally:
+            _set_backlight(100)
+            self._last_activity_ms = time.ticks_ms()
+            self._screensaver_active = False
 
     async def menu(
         self,

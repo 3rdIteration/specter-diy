@@ -37,15 +37,17 @@ class ScreenSaver(lv.obj):
         self.set_click(True)
         self.set_event_cb(self._on_touch)
 
-        # Build the LVGL image descriptor from compressed logo bytes
-        raw = get_logo_data()
+        # Build the LVGL image descriptor from compressed logo bytes.
+        # self._raw keeps the bytearray alive so the GC does not free it while
+        # LVGL still holds a C pointer into the buffer.
+        self._raw = get_logo_data()
         self._img_dsc = lv.img_dsc_t()
         self._img_dsc.header.always_zero = 0
         self._img_dsc.header.w = LOGO_W
         self._img_dsc.header.h = LOGO_H
         self._img_dsc.header.cf = lv.img.CF.TRUE_COLOR_ALPHA
-        self._img_dsc.data_size = len(raw)
-        self._img_dsc.data = raw
+        self._img_dsc.data_size = len(self._raw)
+        self._img_dsc.data = self._raw
 
         # Image widget
         self._img = lv.img(self)
