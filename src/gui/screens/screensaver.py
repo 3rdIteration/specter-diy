@@ -24,14 +24,14 @@ class ScreenSaver(lv.obj):
         self.waiting = True
 
         # Black background – fill the whole screen
-        _bg_style = lv.style_t()
-        lv.style_copy(_bg_style, lv.style_transp)
-        _bg_style.body.main_color = lv.color_hex(0x000000)
-        _bg_style.body.grad_color = lv.color_hex(0x000000)
-        _bg_style.body.opa = lv.OPA.COVER
-        _bg_style.body.radius = 0
-        _bg_style.body.border.width = 0
-        self.set_style(_bg_style)
+        self._bg_style = lv.style_t()
+        lv.style_copy(self._bg_style, lv.style_transp)
+        self._bg_style.body.main_color = lv.color_hex(0x000000)
+        self._bg_style.body.grad_color = lv.color_hex(0x000000)
+        self._bg_style.body.opa = lv.OPA.COVER
+        self._bg_style.body.radius = 0
+        self._bg_style.body.border.width = 0
+        self.set_style(self._bg_style)
         self.set_size(HOR_RES, VER_RES)
         self.set_pos(0, 0)
         self.set_click(True)
@@ -98,7 +98,6 @@ class ScreenSaver(lv.obj):
     # ------------------------------------------------------------------
 
     async def result(self):
-        self.waiting = True
         while self.waiting:
             self.tick()
             await asyncio.sleep_ms(30)
