@@ -2,9 +2,14 @@ name: Build
 
 on:
   pull_request:
-    branches: [main, master]
   push:
     branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to build'
+        required: false
+        default: 'master'
 
 jobs:
   build:
@@ -13,6 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
           submodules: recursive
       
       - name: Install Nix
@@ -34,10 +40,25 @@ jobs:
       - name: Build STM32F469 Discovery firmware
         run: nix develop -c make disco
 
-      - name: Upload firmware artifacts
+      - name: Build release binaries (ST-Link + drag-and-drop)
+        run: nix develop -c make release-binaries
+
+      - name: Upload development firmware artifacts
         uses: actions/upload-artifact@v4
         with:
           name: firmware-binaries
           path: |
-            bin/specter-diy.bin
             bin/specter-diy.hex
+            bin/specter-diy.bin
+
+      - name: Upload initial-flash binary (bootloader + firmware, for DIS_F469NI or st-flash)
+        uses: actions/upload-artifact@v4
+        with:
+          name: initial-flash-binary
+          path: release/initial_firmware.bin
+
+      - name: Upload SD-card upgrade binary (Specter bootloader upgrade via SD card)
+        uses: actions/upload-artifact@v4
+        with:
+          name: sd-card-upgrade-binary
+          path: release/specter_upgrade.bin
