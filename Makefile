@@ -107,9 +107,13 @@ bootloader-build:
 	$(MAKE) -C $(BOOTLOADER_DIR) stm32f469disco READ_PROTECTION=1 WRITE_PROTECTION=1
 
 # Build firmware with USE_DBOOT=1 and package both release binaries:
-#   release/initial_firmware.bin  — for ST-Link / OpenOCD (startup + bootloader + firmware)
-#   release/specter_upgrade.bin   — for drag-and-drop via Specter bootloader
-release-binaries: $(RELEASE_DIR) $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32 bootloader-build
+#   release/initial_firmware.bin  -- for ST-Link / OpenOCD (startup + bootloader + firmware)
+#   release/specter_upgrade.bin   -- for drag-and-drop via Specter bootloader
+#
+# NOTE: bin/specter-diy.{bin,hex} are intentionally NOT overwritten here; they are
+# the standalone (no-bootloader) drag-and-drop files produced by `make disco`.
+# The DBOOT firmware hex is kept in a separate release/ path to avoid confusion.
+release-binaries: $(RELEASE_DIR) $(TARGET_DIR) mpy-cross bootloader-build
 	@echo Building firmware with bootloader support \(USE_DBOOT=1\)
 	$(MAKE) -C $(MPY_DIR)/ports/stm32 \
         BOARD=$(BOARD) \
@@ -119,24 +123,21 @@ release-binaries: $(RELEASE_DIR) $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32 
         FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) \
         DEBUG=$(DEBUG) \
         CFLAGS_EXTRA="$(MPY_CFLAGS)"
-	arm-none-eabi-objcopy -O binary \
-        $(MPY_DIR)/ports/stm32/build-STM32F469DISC/firmware.elf \
-        $(TARGET_DIR)/specter-diy.bin
 	cp $(MPY_DIR)/ports/stm32/build-STM32F469DISC/firmware.hex \
-        $(TARGET_DIR)/specter-diy.hex
+        $(RELEASE_DIR)/firmware-dboot.hex
 	@echo Assembling ST-Link binary \(startup + bootloader + firmware\)
 	python3 $(BOOTLOADER_DIR)/tools/make-initial-firmware.py \
         -s $(BOOTLOADER_DIR)/build/stm32f469disco/startup/release/startup.hex \
         -b $(BOOTLOADER_DIR)/build/stm32f469disco/bootloader/release/bootloader.hex \
-        -f $(TARGET_DIR)/specter-diy.hex \
+        -f $(RELEASE_DIR)/firmware-dboot.hex \
         -bin $(RELEASE_DIR)/initial_firmware.bin
-	@echo Generating drag-and-drop upgrade file
+	@echo Generating SD-card upgrade file
 	python3 $(BOOTLOADER_DIR)/tools/upgrade-generator.py gen \
-        -f $(TARGET_DIR)/specter-diy.hex \
+        -f $(RELEASE_DIR)/firmware-dboot.hex \
         -p stm32f469disco \
         $(RELEASE_DIR)/specter_upgrade.bin
 	@echo "ST-Link binary:        $(RELEASE_DIR)/initial_firmware.bin"
-	@echo "Drag-and-drop binary:  $(RELEASE_DIR)/specter_upgrade.bin"
+	@echo "SD-card upgrade:       $(RELEASE_DIR)/specter_upgrade.bin"
 
 clean:
 	rm -rf $(TARGET_DIR)

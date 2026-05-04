@@ -144,8 +144,13 @@ This requires the `bootloader` submodule to be initialised. It produces:
 
 | File | Use |
 |------|-----|
-| `release/initial_firmware.bin` | Initial flash: drag onto `DIS_F469NI` **or** `st-flash write ... 0x8000000` |
+| `release/initial_firmware.bin` | Initial flash (includes bootloader): drag onto `DIS_F469NI` **or** `st-flash write ... 0x8000000` |
 | `release/specter_upgrade.bin` | Firmware upgrade: copy to the root of an SD card |
+| `release/firmware-dboot.hex` | Intermediate DBOOT firmware hex (used internally by the above tools) |
+
+> **Note:** `bin/specter-diy.bin` and `bin/specter-diy.hex` are **not** modified by
+> `make release-binaries`.  They remain the standalone (no-bootloader) binaries
+> produced by `make disco` and are safe to use for direct drag-and-drop flashing.
 
 For custom signing keys see the [bootloader self-signed firmware guide](https://github.com/cryptoadvance/specter-bootloader/blob/master/doc/selfsigned.md).
 
