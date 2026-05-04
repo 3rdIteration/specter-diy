@@ -110,39 +110,20 @@ After entering the development shell (either with `nix develop` or via direnv), 
 make disco
 ```
 
-This produces two files for use with ST-Link–based programming tools such as
-STM32CubeProgrammer, OpenOCD, or `st-flash`:
+This produces two files:
 
 | File | Use |
 |------|-----|
 | `bin/specter-diy.hex` | Flash with STM32CubeProgrammer or OpenOCD (sparse Intel HEX, recommended) |
-| `bin/specter-diy.bin` | Flash with `st-flash write bin/specter-diy.bin 0x8000000` |
+| `bin/specter-diy.bin` | Drag onto the `DIS_F469NI` virtual drive **or** flash with `st-flash write bin/specter-diy.bin 0x8000000` |
 
-> **Note:** `bin/specter-diy.bin` contains a 112 KB padding gap between the ISR
-> vector and the application code. This makes it unsuitable for drag-and-drop
-> programming via the board's virtual mass-storage drive.
+Both files use a contiguous flash layout (ISR vector at `0x08000000`, code at
+`0x08008000`) with no padding gap, so `specter-diy.bin` programs cleanly
+via the board's USB mass-storage drive.
 
-### Drag-and-drop onto the virtual drive (DIS_F469NI)
-
-To flash the firmware by dragging a file onto the board's USB mass-storage drive
-(`DIS_F469NI`), build the compact binary instead:
-
-```sh
-make disco-dnd
-```
-
-This uses a contiguous flash layout (ISR at `0x08000000`, code immediately
-following at `0x08008000`) and produces `bin/specter-diy-dnd.bin` — a ~500 KB
-binary with no padding gap that programs cleanly via the ST-LINK mass storage.
-
-To flash, connect the board via the **miniUSB** cable on the top, wait for the
-`DIS_F469NI` disk to appear, and copy `bin/specter-diy-dnd.bin` to its root.
-
-You can build both targets together with:
-
-```sh
-make disco disco-dnd
-```
+To flash via drag-and-drop, connect the board using the **miniUSB** cable on
+the top, wait for the `DIS_F469NI` disk to appear, and copy
+`bin/specter-diy.bin` to its root.
 
 To build a simulator run `make unix` - it will compile a micropython simulator for mac/unix and store it under `bin/micropython_unix`.
 
