@@ -6,10 +6,6 @@ on:
     branches: [main, master]
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to run the workflow from'
-        required: false
-        default: 'master'
       source_branch:
         description: 'Branch of source code to build (defaults to the workflow branch if not set)'
         required: false
@@ -22,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.source_branch || github.event.inputs.branch || github.ref }}
+          ref: ${{ github.event.inputs.source_branch || github.ref }}
           submodules: recursive
       
       - name: Install Nix
@@ -45,7 +41,9 @@ jobs:
         run: nix develop -c make disco
 
       - name: Build release binaries (ST-Link + drag-and-drop)
+        id: release-binaries
         if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: nix develop -c make release-binaries
 
       - name: Upload development firmware artifacts
@@ -57,14 +55,14 @@ jobs:
             bin/specter-diy.bin
 
       - name: Upload initial-flash binary (bootloader + firmware, for DIS_F469NI or st-flash)
-        if: github.event_name == 'workflow_dispatch'
+        if: steps.release-binaries.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: initial-flash-binary
           path: release/initial_firmware.bin
 
       - name: Upload SD-card upgrade binary (Specter bootloader upgrade via SD card)
-        if: github.event_name == 'workflow_dispatch'
+        if: steps.release-binaries.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: sd-card-upgrade-binary
