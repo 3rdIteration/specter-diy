@@ -45,7 +45,9 @@ jobs:
         run: nix develop -c make disco
 
       - name: Build release binaries (ST-Link + drag-and-drop)
-        if: github.event_name == 'workflow_dispatch' && !github.event.inputs.source_branch
+        id: release-binaries
+        if: github.event_name == 'workflow_dispatch'
+        continue-on-error: true
         run: nix develop -c make release-binaries
 
       - name: Upload development firmware artifacts
@@ -57,14 +59,14 @@ jobs:
             bin/specter-diy.bin
 
       - name: Upload initial-flash binary (bootloader + firmware, for DIS_F469NI or st-flash)
-        if: github.event_name == 'workflow_dispatch' && !github.event.inputs.source_branch
+        if: steps.release-binaries.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: initial-flash-binary
           path: release/initial_firmware.bin
 
       - name: Upload SD-card upgrade binary (Specter bootloader upgrade via SD card)
-        if: github.event_name == 'workflow_dispatch' && !github.event.inputs.source_branch
+        if: steps.release-binaries.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: sd-card-upgrade-binary
