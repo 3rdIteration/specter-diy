@@ -7,8 +7,9 @@ from .components.battery import Battery
 import lvgl as lv
 import display
 
-# Inactivity timeout before the screensaver activates (milliseconds)
-SCREENSAVER_TIMEOUT_MS = 60 * 1000
+# Inactivity timeout before the screensaver activates
+SCREENSAVER_TIMEOUT_SECONDS = 60
+SCREENSAVER_TIMEOUT_MS = SCREENSAVER_TIMEOUT_SECONDS * 1000
 
 # LVGL uses None to mean the default display for disp_get_inactive_time().
 DEFAULT_DISPLAY = None

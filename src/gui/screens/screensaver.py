@@ -25,7 +25,7 @@ class ScreenSaver(lv.obj):
 
         # Black background – fill the whole screen
         self._bg_style = lv.style_t()
-        lv.style_copy(self._bg_style, lv.style_transp)
+        lv.style_copy(self._bg_style, lv.style_plain_color)
         self._bg_style.body.main_color = lv.color_hex(0x000000)
         self._bg_style.body.grad_color = lv.color_hex(0x000000)
         self._bg_style.body.opa = lv.OPA.COVER
