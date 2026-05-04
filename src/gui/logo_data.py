@@ -3,7 +3,6 @@
 100x100 pixels, LVGL CF.TRUE_COLOR_ALPHA (RGB565 + A8 = 3 bytes/pixel),
 stored zlib-compressed and base64-encoded to save flash space.
 """
-import zlib
 import binascii
 
 LOGO_W = 100
@@ -128,5 +127,9 @@ _LOGO_DATA_B64 = (
 
 def get_logo_data():
     """Decompress and return raw LVGL pixel bytes."""
+    try:
+        import zlib
+    except ImportError:
+        import uzlib as zlib
     compressed = binascii.a2b_base64(_LOGO_DATA_B64)
     return zlib.decompress(compressed)

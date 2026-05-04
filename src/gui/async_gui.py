@@ -2,7 +2,6 @@ import asyncio
 import time
 from .core import init, update
 from .screens import Menu, Alert, QRAlert, Prompt, InputScreen
-from .screens.screensaver import ScreenSaver
 from .components.modal import Modal
 from .components.battery import Battery
 import lvgl as lv
@@ -162,6 +161,8 @@ class AsyncGUI:
         """Dim the backlight, show bouncing logo, restore on touch."""
         self._screensaver_active = True
         _set_backlight(SCREENSAVER_BRIGHTNESS)
+        from .screens.screensaver import ScreenSaver
+
         scr = ScreenSaver()
         # Remember what LVGL is currently displaying so we can restore it.
         # We deliberately don't touch self.scr / self.background so that the

@@ -8,4 +8,3 @@ from .input import PinScreen, InputScreen, DerivationScreen, NumericScreen
 from .mnemonic import MnemonicScreen, NewMnemonicScreen, RecoverMnemonicScreen
 from .transaction import TransactionScreen
 from .settings import DevSettings
-from .screensaver import ScreenSaver
