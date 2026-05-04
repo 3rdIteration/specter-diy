@@ -1,9 +1,29 @@
 import asyncio
+import time
 from .core import init, update
 from .screens import Menu, Alert, QRAlert, Prompt, InputScreen
+from .screens.screensaver import ScreenSaver
 from .components.modal import Modal
 from .components.battery import Battery
 import lvgl as lv
+import display
+
+# Inactivity timeout before the screensaver activates (milliseconds)
+SCREENSAVER_TIMEOUT_MS = 60_000
+
+# Half-brightness level used while the screensaver is active (0-100)
+SCREENSAVER_BRIGHTNESS = 50
+
+
+def _set_backlight(level):
+    """Set display backlight level (0-100) if the platform supports it."""
+    try:
+        if hasattr(display, "backlight"):
+            display.backlight(level)
+        elif hasattr(display, "set_backlight"):
+            display.set_backlight(level)
+    except Exception:
+        pass
 
 
 class AsyncGUI:
@@ -17,6 +37,9 @@ class AsyncGUI:
         self.scr = None
         self.battery_callback = None
         self.battery_interval = 1000
+        # screensaver state
+        self._screensaver_active = False
+        self._last_activity_ms = time.ticks_ms()
 
     def set_battery_callback(self, cb, dt=1000):
         self.battery_callback = cb
@@ -99,6 +122,7 @@ class AsyncGUI:
     def start(self, rate: int = 30, dark=True):
         init(dark=dark)
         asyncio.create_task(self.update_loop(rate))
+        asyncio.create_task(self._screensaver_loop())
         if self.battery_callback is not None and self.battery_interval is not None:
             asyncio.create_task(self.update_battery(self.battery_interval))
 
@@ -117,6 +141,39 @@ class AsyncGUI:
         while True:
             update(dt)
             await asyncio.sleep_ms(dt)
+
+    async def _screensaver_loop(self):
+        """Check inactivity every second and show the screensaver when idle."""
+        while True:
+            await asyncio.sleep_ms(1000)
+            if self._screensaver_active:
+                continue
+            # LVGL v5 tracks time since last input via lv_disp_get_inactive_time.
+            # Fall back to our own timestamp if the binding isn't available.
+            try:
+                inactive_ms = lv.disp_get_inactive_time(None)
+            except Exception:
+                inactive_ms = time.ticks_diff(time.ticks_ms(), self._last_activity_ms)
+            if inactive_ms >= SCREENSAVER_TIMEOUT_MS:
+                await self._show_screensaver()
+
+    async def _show_screensaver(self):
+        """Dim the backlight, show bouncing logo, restore on touch."""
+        self._screensaver_active = True
+        _set_backlight(SCREENSAVER_BRIGHTNESS)
+        scr = ScreenSaver()
+        # Remember what LVGL is currently displaying so we can restore it.
+        # We deliberately don't touch self.scr / self.background so that the
+        # regular screen management (popups, load_screen, etc.) is unaffected.
+        prev_active = lv.scr_act()
+        lv.scr_load(scr)
+        await scr.result()
+        # Restore the previous screen
+        lv.scr_load(prev_active)
+        scr.del_async()
+        _set_backlight(100)
+        self._last_activity_ms = time.ticks_ms()
+        self._screensaver_active = False
 
     async def menu(
         self,
