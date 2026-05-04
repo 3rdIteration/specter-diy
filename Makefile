@@ -31,6 +31,9 @@ mpy-cross: $(TARGET_DIR) $(MPY_DIR)/mpy-cross/Makefile
 	cp $(MPY_DIR)/mpy-cross/mpy-cross $(TARGET_DIR)
 
 # disco board with bitcoin library
+# Produces specter-diy.hex (for CubeProgrammer / OpenOCD / st-flash) and
+# specter-diy.bin (flat binary with a 112 KB gap at 0x08004000–0x0801FFFF;
+# use specter-diy.hex for ST-Link tools and disco-dnd for drag-and-drop).
 disco: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
 	@echo Building firmware
 	make -C $(MPY_DIR)/ports/stm32 \
@@ -46,6 +49,27 @@ disco: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
         $(TARGET_DIR)/specter-diy.bin && \
         cp $(MPY_DIR)/ports/stm32/build-STM32F469DISC/firmware.hex \
                 $(TARGET_DIR)/specter-diy.hex
+
+# Compact firmware for drag-and-drop onto the board's virtual drive (DIS_F469NI).
+# Uses stm32f469disc.ld so the ISR vector occupies sectors 0-1 (0x08000000, 32 KB)
+# and application code immediately follows at 0x08008000 — no gap, no padding.
+# The resulting binary is ~500 KB and programs cleanly via the ST-LINK mass storage.
+disco-dnd: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
+	@echo Building compact firmware for drag-and-drop
+	make -C $(MPY_DIR)/ports/stm32 \
+        BOARD=$(BOARD) \
+        BUILD=build-$(BOARD)-dnd \
+        FLAVOR=$(FLAVOR) \
+        USER_C_MODULES=$(USER_C_MODULES) \
+        FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) \
+        DEBUG=$(DEBUG) \
+        CFLAGS_EXTRA="$(MPY_CFLAGS)" \
+        LD_FILES="boards/$(BOARD)/stm32f469disc.ld boards/common_ifs.ld" \
+        TEXT0_ADDR=0x08000000 \
+        TEXT1_ADDR= && \
+	arm-none-eabi-objcopy -O binary \
+        $(MPY_DIR)/ports/stm32/build-$(BOARD)-dnd/firmware.elf \
+        $(TARGET_DIR)/specter-diy-dnd.bin
 
 # disco board with bitcoin library
 debug: $(TARGET_DIR) mpy-cross $(MPY_DIR)/ports/stm32
@@ -80,7 +104,7 @@ simulate: unix
 test: unix
 	cd test && ../$(TARGET_DIR)/micropython_unix run_tests.py
 
-all: mpy-cross disco unix
+all: mpy-cross disco disco-dnd unix
 
 # Build the Specter bootloader
 bootloader-build:
@@ -129,5 +153,10 @@ clean:
 		BOARD=$(BOARD) \
 		USER_C_MODULES=$(USER_C_MODULES) \
 		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) clean
+	make -C $(MPY_DIR)/ports/stm32 \
+		BOARD=$(BOARD) \
+		BUILD=build-$(BOARD)-dnd \
+		USER_C_MODULES=$(USER_C_MODULES) \
+		FROZEN_MANIFEST=$(FROZEN_MANIFEST_DISCO) clean
 
-.PHONY: all clean bootloader-build release-binaries
+.PHONY: all clean disco disco-dnd bootloader-build release-binaries

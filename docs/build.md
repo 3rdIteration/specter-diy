@@ -110,18 +110,63 @@ After entering the development shell (either with `nix develop` or via direnv), 
 make disco
 ```
 
-This produces `bin/specter-diy.bin`, which can be flashed by dragging the file onto the board's virtual mass-storage drive or by
-using programming tools such as STM32CubeProgrammer.
+This produces two files for use with ST-Link–based programming tools such as
+STM32CubeProgrammer, OpenOCD, or `st-flash`:
 
-To build custom bootloader and firmware that you will be able to sign check out the bootloader doc on [self-signed firmware](https://github.com/cryptoadvance/specter-bootloader/blob/master/doc/selfsigned.md). To wipe flash and remove protections on the device with the secure bootloader check out [this doc](https://github.com/cryptoadvance/specter-bootloader/blob/master/doc/remove_protection.md).
+| File | Use |
+|------|-----|
+| `bin/specter-diy.hex` | Flash with STM32CubeProgrammer or OpenOCD (sparse Intel HEX, recommended) |
+| `bin/specter-diy.bin` | Flash with `st-flash write bin/specter-diy.bin 0x8000000` |
 
-To build an open firmware (no bootloader and signature verifications) run `make disco`. It also produces the `bin/specter-diy.bin` image ready for flashing via the board's virtual drive or external programming tools.
+> **Note:** `bin/specter-diy.bin` contains a 112 KB padding gap between the ISR
+> vector and the application code. This makes it unsuitable for drag-and-drop
+> programming via the board's virtual mass-storage drive.
+
+### Drag-and-drop onto the virtual drive (DIS_F469NI)
+
+To flash the firmware by dragging a file onto the board's USB mass-storage drive
+(`DIS_F469NI`), build the compact binary instead:
+
+```sh
+make disco-dnd
+```
+
+This uses a contiguous flash layout (ISR at `0x08000000`, code immediately
+following at `0x08008000`) and produces `bin/specter-diy-dnd.bin` — a ~500 KB
+binary with no padding gap that programs cleanly via the ST-LINK mass storage.
+
+To flash, connect the board via the **miniUSB** cable on the top, wait for the
+`DIS_F469NI` disk to appear, and copy `bin/specter-diy-dnd.bin` to its root.
+
+You can build both targets together with:
+
+```sh
+make disco disco-dnd
+```
 
 To build a simulator run `make unix` - it will compile a micropython simulator for mac/unix and store it under `bin/micropython_unix`.
 
 To launch a simulator either run `bin/micropython_unix simulate.py` or simly run `make simulate`.
 
 If something is not working you can clean up with `make clean`
+
+### Bootloader-based release binaries
+
+To build a release package with the secure bootloader (initial installation binary
++ SD-card upgrade binary), run:
+
+```sh
+make release-binaries
+```
+
+This requires the `bootloader` submodule to be initialised. It produces:
+
+| File | Use |
+|------|-----|
+| `release/initial_firmware.bin` | Initial flash: drag onto `DIS_F469NI` **or** `st-flash write ... 0x8000000` |
+| `release/specter_upgrade.bin` | Firmware upgrade: copy to the root of an SD card |
+
+For custom signing keys see the [bootloader self-signed firmware guide](https://github.com/cryptoadvance/specter-bootloader/blob/master/doc/selfsigned.md).
 
 ## Run Unittests
 

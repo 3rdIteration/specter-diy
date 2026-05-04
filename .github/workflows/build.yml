@@ -37,25 +37,31 @@ jobs:
       - name: Build Unix simulator
         run: nix develop -c make unix
 
+      - name: Build STM32F469 Discovery firmware (ST-Link / CubeProgrammer / OpenOCD)
+        run: nix develop -c make disco
+
+      - name: Build compact drag-and-drop firmware (DIS_F469NI virtual drive)
+        run: nix develop -c make disco-dnd
+
       - name: Build release binaries (ST-Link + drag-and-drop)
         run: nix develop -c make release-binaries
 
-      - name: Upload firmware artifacts
+      - name: Upload development firmware artifacts
         uses: actions/upload-artifact@v4
         with:
           name: firmware-binaries
           path: |
-            bin/specter-diy.bin
             bin/specter-diy.hex
+            bin/specter-diy-dnd.bin
 
-      - name: Upload ST-Link binary
+      - name: Upload initial-flash binary (bootloader + firmware, for DIS_F469NI or st-flash)
         uses: actions/upload-artifact@v4
         with:
-          name: stlink-binary
+          name: initial-flash-binary
           path: release/initial_firmware.bin
 
-      - name: Upload drag-and-drop binary
+      - name: Upload SD-card upgrade binary (Specter bootloader upgrade via SD card)
         uses: actions/upload-artifact@v4
         with:
-          name: drag-and-drop-binary
+          name: sd-card-upgrade-binary
           path: release/specter_upgrade.bin
