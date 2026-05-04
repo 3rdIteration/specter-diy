@@ -7,9 +7,13 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: 'Branch to build'
+        description: 'Branch to run the workflow from'
         required: false
         default: 'master'
+      source_branch:
+        description: 'Branch of source code to build (defaults to the workflow branch if not set)'
+        required: false
+        default: ''
 
 jobs:
   build:
@@ -18,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.branch || github.ref }}
+          ref: ${{ github.event.inputs.source_branch || github.event.inputs.branch || github.ref }}
           submodules: recursive
       
       - name: Install Nix
