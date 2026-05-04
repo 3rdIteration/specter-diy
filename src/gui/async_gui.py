@@ -8,7 +8,10 @@ import lvgl as lv
 import display
 
 # Inactivity timeout before the screensaver activates (milliseconds)
-SCREENSAVER_TIMEOUT_MS = 60000
+SCREENSAVER_TIMEOUT_MS = 60 * 1000
+
+# LVGL uses None to mean the default display for disp_get_inactive_time().
+DEFAULT_DISPLAY = None
 
 # Half-brightness level used while the screensaver is active (0-100)
 SCREENSAVER_BRIGHTNESS = 50
@@ -148,10 +151,9 @@ class AsyncGUI:
             if self._screensaver_active:
                 continue
             # LVGL v5 tracks time since last input via lv_disp_get_inactive_time.
-            # Passing None selects the default display.
             # Fall back to our own timestamp if the binding isn't available.
             try:
-                inactive_ms = lv.disp_get_inactive_time(None)  # None = default display
+                inactive_ms = lv.disp_get_inactive_time(DEFAULT_DISPLAY)
             except Exception:
                 inactive_ms = time.ticks_diff(time.ticks_ms(), self._last_activity_ms)
             if inactive_ms >= SCREENSAVER_TIMEOUT_MS:
