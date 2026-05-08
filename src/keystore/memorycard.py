@@ -7,6 +7,7 @@ import platform
 from embit import bip39
 from helpers import tagged_hash, aead_encrypt, aead_decrypt
 import hmac
+import rng
 from gui.screens import Alert, Progress, Menu, Prompt
 import asyncio
 from io import BytesIO
@@ -326,6 +327,12 @@ In this mode device can only operate when the smartcard is inserted!"""
                 raise KeyStoreError("Failed to select the applet")
             self.applet.open_secure_channel()
             self.connected = True
+            # Mix in entropy from the smartcard over the secure channel.
+            # Silently skip if the applet doesn't support it or the card misbehaves.
+            try:
+                rng.feed(self.applet.get_random())
+            except Exception as e:
+                print("Smartcard entropy not available:", e)
         self.applet.get_pin_status()
         if check_pin and self.is_locked:
             pin = await self.get_pin()
