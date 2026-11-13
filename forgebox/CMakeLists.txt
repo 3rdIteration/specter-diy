@@ -56,13 +56,18 @@ foreach(DRIVER ${BOARD_DRIVERS})
     list(APPEND BOARD_SRC ${FB}/src/driver/${DRIVER}.c)
 endforeach()
 set(SPECTER_SPLASH ${CMAKE_CURRENT_SOURCE_DIR}/assets/specter-splash.rgb565)
+set(SPECTER_WAKE_STATUS ${CMAKE_CURRENT_SOURCE_DIR}/assets/specter-wake-status.rgb565)
 file(SIZE "${SPECTER_SPLASH}" SPECTER_SPLASH_SIZE)
 if(NOT SPECTER_SPLASH_SIZE EQUAL 387072)
     message(FATAL_ERROR "Expected the 384-pixel-wide RGB565 splash strips")
 endif()
+file(SIZE "${SPECTER_WAKE_STATUS}" SPECTER_WAKE_STATUS_SIZE)
+if(NOT SPECTER_WAKE_STATUS_SIZE EQUAL 33792)
+    message(FATAL_ERROR "Expected a 384-by-44 RGB565 wake status strip")
+endif()
 configure_file(assets/specter-splash.S.in specter-splash.S @ONLY)
 set_source_files_properties("${CMAKE_CURRENT_BINARY_DIR}/specter-splash.S"
-    PROPERTIES OBJECT_DEPENDS "${SPECTER_SPLASH}")
+    PROPERTIES OBJECT_DEPENDS "${SPECTER_SPLASH};${SPECTER_WAKE_STATUS}")
 add_executable(specter.elf port/board.c port/vm.c port/camera.c port/camera_preview.c port/pin_flash.c
     ${CMAKE_CURRENT_BINARY_DIR}/specter-splash.S
     port/device_diagnostics.c

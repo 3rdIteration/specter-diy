@@ -211,17 +211,19 @@ bool board_sd_io(bool write, uint32_t block, uint8_t *data, size_t len) {
 }
 
 #if !defined(FORGEBOX_SE_PAIRING) && !defined(FORGEBOX_BOOT_PROBE)
-static void show_boot_splash(void) {
+static void show_splash(bool waking) {
     enum { WIDTH = 384, TITLE_HEIGHT = 54, LOGO_HEIGHT = 406, STATUS_HEIGHT = 44, ROWS = 16,
            LEFT = (480 - WIDTH) / 2, LOGO_TOP = (800 - LOGO_HEIGHT) / 2,
            TITLE_TOP = (LOGO_TOP - TITLE_HEIGHT) / 2,
            STATUS_TOP = (800 + LOGO_TOP + LOGO_HEIGHT - STATUS_HEIGHT) / 2 };
     extern const uint8_t specter_splash_pixels[];
+    extern const uint8_t specter_wake_status_pixels[];
     const uint8_t *pixels = specter_splash_pixels;
     const struct { unsigned top, height; } strips[] = {
         {TITLE_TOP, TITLE_HEIGHT}, {LOGO_TOP, LOGO_HEIGHT}, {STATUS_TOP, STATUS_HEIGHT},
     };
     for (unsigned i = 0; i < sizeof(strips) / sizeof(strips[0]); i++) {
+        if (waking && strips[i].top == STATUS_TOP) pixels = specter_wake_status_pixels;
         for (unsigned row = 0; row < strips[i].height; row += ROWS) {
             unsigned remaining = strips[i].height - row;
             unsigned rows = remaining < ROWS ? remaining : ROWS;
@@ -356,12 +358,13 @@ void board_deep_sleep(void) {
     SysTick->VAL = 0;
     SysTick->CTRL = systick;
     __enable_irq();
-    while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14) == Bit_RESET) board_delay(20);
     OpenPower(POWER_TYPE_VCC33);
     board_delay(20);
+    LcdInit();
+    show_splash(true);
+    while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14) == Bit_RESET) board_delay(20);
     PsramOpen();
     sd_ready = false;
-    LcdInit();
     I2cInit();
     Gd25FlashOpen();
 #if defined(FORGEBOX_USB_SERIAL)
@@ -783,7 +786,7 @@ int main(void) {
     PowerInit();
     LcdBacklightOff(); LcdBrightInit(); LcdCheck(); LcdInit();
 #if !defined(FORGEBOX_SE_PAIRING) && !defined(FORGEBOX_BOOT_PROBE)
-    show_boot_splash();
+    show_splash(false);
 #endif
     NvicInit(); PsramInit(); BatteryInit(); Aw32001Init();
     SYSCTRL_APBPeriphClockCmd(SYSCTRL_APBPeriph_TRNG, ENABLE);

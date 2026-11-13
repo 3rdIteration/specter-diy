@@ -5,3 +5,10 @@
 specter_splash_pixels:
     .incbin "@CMAKE_CURRENT_SOURCE_DIR@/assets/specter-splash.rgb565"
     .size specter_splash_pixels, . - specter_splash_pixels
+
+    .balign 4
+    .global specter_wake_status_pixels
+    .type specter_wake_status_pixels, %object
+specter_wake_status_pixels:
+    .incbin "@SPECTER_WAKE_STATUS@"
+    .size specter_wake_status_pixels, . - specter_wake_status_pixels
