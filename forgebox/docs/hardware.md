@@ -20,6 +20,15 @@ The reference unit reports board ADC revision **v3.1**. Its security configurati
 
 Sources for the board implementation are the [ForgeBox example](https://github.com/KeystoneHQ/forgebox-helloworld) and [Keystone 3 firmware](https://github.com/KeystoneHQ/keystone3-firmware). The separate [bootloader analysis](bootloader.md) covers the boot chain, OTA format, verification-failure handoff, PA2 branch, wipe and genuine check.
 
+## Board signals and OTP
+
+- ATECC608B uses a GPIO I²C bus on PG11/PG12. The port reverses SCL and SDA for EVT0 according to the vendor revision check.
+- DS28S60 uses PD8 for clock, PD9 for chip select, PD10 for MOSI, PD11 for MISO and PG0 for power. The driver leaves chip select high between commands and uses the retail 50 ms polling cadence.
+- SPI NOR is on SPIM2, with PB2 clock, PB3 chip select, PB4 MOSI, PB5 MISO, PE1 write protect and PA3 hold.
+- The fingerprint UART is on PD12/PD13. The camera uses PA5 for its clock and PH8/PH9 for reset and power-down. These signal names describe the vendor SDK mappings used by the port.
+- The MCU's OTP supplies ATECC I/O/authentication/transport material in the region starting at `0x40009540`, and DS28S60 pairing data from `0x400095A0`. The bootloader reads the factory marker at `0x40009400` and update public keys from `0x40009C00`. The public docs describe address roles. The port's diagnostics do not export credential bytes.
+- The reference probe reported CPUID `0x410FC241`, vector table `0x01081000`, OTP RO `0xFFFFFFFF`, and OTP ROL `0x00000012`. It observed the pairing page as write-protected and its separate write-lock flag clear. The SHA-256 of the first 128 KiB at address zero was `96fc24b3d8789a5000d9efcc8245d4f12c343faa094792574407c5745b03fa3e`, matching the public MH1903 ROM reference. The matched ROM contains randomized delays and repeated checks, and the device reported the programmed production marker. These observations do not measure glitch resistance or prove that the application fails closed.
+
 ## Flash map
 
 QSPI is the CPU-mapped boot/application flash. The storage chip exposed to Specter is separate **16 MiB SPI NOR**. The tested JEDEC ID was `852018` and the driver also recognizes `C84018`. An erased-sector scan found 2,541 of 4,096 erased sectors, including `0x908000–0xE9FFFF`. Erase state describes the sampled contents. The production layout uses specific checked ranges and leaves the rest of the chip available to factory firmware or other owners.
