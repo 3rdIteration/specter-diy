@@ -22,9 +22,9 @@ Sources for the board implementation are the [ForgeBox example](https://github.c
 
 ## Charging and inactivity lock
 
-USB power can start the ForgeBox even if it was off. After five minutes without a touchscreen press, the Specter port blanks the backlight, disconnects wallet USB, stops camera capture and clears external RAM holding the VM and its wallet session. It then polls for a touch and release. The wake gesture triggers a restart through the factory bootloader and the regular PIN or fingerprint unlock flow. Any unsigned work in RAM is discarded. Explicitly saved seeds, descriptors and settings remain in their persistent stores.
+USB power can start the ForgeBox even if it was off. After five minutes without a touchscreen press, Specter blanks the backlight, disconnects wallet USB, stops camera capture, clears the VM's external RAM, and enters MH1903 deep sleep. The PE14 power button wakes the board. Specter restarts into the normal PIN or fingerprint unlock flow. In-progress work in RAM is discarded. Saved seeds, descriptors and settings remain in their persistent stores.
 
-The screen-off state keeps the MCU, charger and touch controller running. Charging current and battery runtime in this state have not been measured. Keystone 3 has a separate deep-sleep implementation. It closes touch and USB, powers down hardware, and uses PE14 for power-button wake, PF14 for fingerprint wake, and periodic RTC wakes for charge and battery checks. Its recovery path restores clocks, LCD, touch, storage and other peripherals. That path would require dedicated bring-up for this VM and board configuration. [Keystone 3 low-power driver](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/driver/low_power.c) · [Keystone 3 screen manager](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/managers/screen_manager.c)
+The sleep path uses Keystone's MCU power gates and USB shutdown sequence. Specter leaves charging to the AW32001 and restarts after wake so the normal startup code reinitializes all peripherals. Retail Keystone 3 also configures fingerprint wake and periodic RTC wakes for battery management. Current draw and wake behavior on the ForgeBox require an on-device check. [Keystone 3 low-power driver](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/driver/low_power.c)
 
 ## Board signals and OTP
 

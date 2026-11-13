@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "mhscpu.h"
 #include "mhscpu_exti.h"
+#include "mhscpu_rtc.h"
+#include "mhscpu_sysctrl.h"
 #include "mhscpu_wdt.h"
 #include "mhscpu_trng.h"
 #include "cmsis_os.h"
@@ -63,6 +65,7 @@ static bool display_ready;
 #define FORGEBOX_IDLE_LOCK 1
 #define IDLE_LOCK_MS (5u * 60u * 1000u)
 static unsigned last_touch;
+static volatile bool power_button_wake;
 #endif
 static lv_obj_t *splash_placeholder;
 static bool sd_ready;
@@ -251,23 +254,77 @@ static void clear_psram(void) {
 }
 
 #ifdef FORGEBOX_IDLE_LOCK
+// PE14 is also the factory recovery button. Its EXTI records short
+// presses that may have ended before the CPU finishes waking.
+void EXTI4_IRQHandler(void) {
+    power_button_wake = true;
+    EXTI_ClearITPendingBit(EXTI_Line4);
+    __DSB();
+}
+
 static void idle_lock(void) {
     board_backlight(false);
     board_usb_serial_enable(false);
     board_camera_stop();
+    TouchClose();
 
-    // The VM, wallet and RAM filesystem share this task. Never return to
-    // their suspended call stacks after clearing their external RAM.
+    // The VM and wallet share this task. Never return to its suspended
+    // call stacks after clearing the external RAM.
     clear_psram();
-    bool pressed = false;
-    for (;;) {
-        TouchStatus_t status = {0};
-        if (TouchGetStatus(&status) == 0) {
-            if (pressed && !status.touch) board_reset();
-            if (status.touch) pressed = true;
-        }
-        board_delay(20);
+    ClosePower(POWER_TYPE_VCC33);
+    GPIO_ResetBits(GPIOG, GPIO_Pin_0);  // DS28S60 power
+
+    // Shut down the scheduler's wake sources for this terminal sleep.
+    // Wake always restarts the application with normal driver initialization.
+    __disable_irq();
+    SysTick->CTRL = 0;
+    SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk | SCB_ICSR_PENDSVCLR_Msk;
+    unsigned interrupt_banks = (SCnSCB->ICTR & 0xfu) + 1u;
+    for (unsigned bank = 0; bank < interrupt_banks; bank++) {
+        NVIC->ICER[bank] = UINT32_MAX;
+        NVIC->ICPR[bank] = UINT32_MAX;
     }
+    WDT->WDT_CR &= ~WDT_CR_WDT_EN;
+    WDT_ReloadCounter();
+
+    RTC_ITConfig(DISABLE);
+    GPIO->WAKE_P0_EN = 0;
+    GPIO->WAKE_P1_EN = 0;
+    GPIO->WAKE_P2_EN = 0;
+    GPIO->WAKE_P3_EN = 0;
+    GPIO->WAKE_TYPE_EN &= ~BIT(12);  // RTC wake enable
+    GPIO_WakeEvenConfig(GPIO_PortSourceGPIOE, GPIO_Pin_14, ENABLE);
+    GPIO_WakeModeConfig(GPIO_WakeMode_Now);
+    EXTI_LineConfig(EXTI_Line4, EXTI_PinSource14, EXTI_Trigger_Falling);
+    EXTI_ClearITPendingBit(EXTI_Line4);
+    NVIC_ClearPendingIRQ(EXTI4_IRQn);
+    NVIC_EnableIRQ(EXTI4_IRQn);
+
+    // Use the same deep-sleep power gates and USB register values as
+    // Keystone. Preserve the original settings for the reset path.
+    const uint32_t msr = SYSCTRL->MSR_CR1;
+    const uint32_t analog = SYSCTRL->ANA_CTRL;
+    const uint32_t ldo = SYSCTRL->LDO25_CR;
+    const uint32_t clock = SYSCTRL->FREQ_SEL;
+    *(volatile uint32_t *)(USB_BASE + 0x60u) = 0x01;
+    *(volatile uint32_t *)USB_BASE = 0x4100;
+    UserDelayUs(1000);
+    while (!power_button_wake &&
+           !NVIC_GetPendingIRQ(EXTI4_IRQn) &&
+           GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14) != Bit_RESET) {
+        SYSCTRL->MSR_CR1 = msr | BIT(27);
+        SYSCTRL->ANA_CTRL = analog | BIT(7);
+        SYSCTRL->LDO25_CR = ldo | BIT(4) | BIT(5);
+        __DSB();
+        SYSCTRL_EnterSleep(SleepMode_DeepSleep);
+        __disable_irq();
+        SYSCTRL->LDO25_CR = ldo;
+        SYSCTRL->ANA_CTRL = analog;
+        SYSCTRL->MSR_CR1 = msr;
+        SYSCTRL->FREQ_SEL = clock;
+        __DSB();
+    }
+    board_reset();
 }
 #endif
 
