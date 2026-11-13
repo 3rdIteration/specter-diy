@@ -9,6 +9,9 @@
 #include "mhscpu_trng.h"
 #include "cmsis_os.h"
 #include "drv_sys.h"
+#include "drv_i2c.h"
+#include "drv_gd25qxx.h"
+#include "task.h"
 #include "drv_power.h"
 #include "drv_psram.h"
 #include "drv_battery.h"
@@ -110,6 +113,10 @@ bool board_power_off(void) {
     LcdBacklightOff();
     // Remain unavailable if the PMIC does not cut power immediately.
     for (;;) board_delay(100);
+}
+void board_init_scratch(void) {
+    scratch = ExtMalloc(1024 * 1024);
+    if (!scratch) __fatal_error("scratch allocation");
 }
 uintptr_t board_scratch(void) { return (uintptr_t)scratch; }
 void board_backlight(bool on) { SetLcdBright(on ? 80 : 0); }
@@ -247,7 +254,7 @@ static void flush(lv_disp_drv_t *driver, const lv_area_t *area, lv_color_t *colo
     while (LcdBusy()) board_delay(1);
     lv_disp_flush_ready(driver);
 }
-static void clear_psram(void) {
+void board_clear_psram(void) {
     // PSRAM contents can survive a warm reset.
     volatile uint32_t *words = (volatile uint32_t *)GetPsramMappedAddr();
     for (size_t i = 0; i < GetPsramTotalSize() / sizeof(*words); i++) words[i] = 0;
@@ -262,28 +269,39 @@ void EXTI4_IRQHandler(void) {
     __DSB();
 }
 
-static void idle_lock(void) {
+void board_deep_sleep(void) {
+    // All wallet coroutines have exited. Clear the unused portion of the
+    // downward-growing VM stack before putting the CPU to sleep.
+    TaskStatus_t task;
+    vTaskGetInfo(NULL, &task, pdFALSE, eInvalid);
+    uint32_t primask = __get_PRIMASK();
+    __disable_irq();
+    uintptr_t active_stack = __get_PSP();
+    volatile uint32_t *stack = task.pxStackBase;
+    while ((uintptr_t)(stack + 1) <= active_stack) *stack++ = 0;
+    __set_PRIMASK(primask);
     board_backlight(false);
     board_usb_serial_enable(false);
-    board_camera_stop();
     TouchClose();
 
-    // The VM and wallet share this task. Never return to its suspended
-    // call stacks after clearing the external RAM.
-    clear_psram();
     ClosePower(POWER_TYPE_VCC33);
     GPIO_ResetBits(GPIOG, GPIO_Pin_0);  // DS28S60 power
 
-    // Shut down the scheduler's wake sources for this terminal sleep.
-    // Wake always restarts the application with normal driver initialization.
+    // Shut down the scheduler's wake sources until the power button is pressed.
+    // The wallet VM is recreated after wake.
     __disable_irq();
+    uint32_t systick = SysTick->CTRL;
     SysTick->CTRL = 0;
+    power_button_wake = false;
     SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk | SCB_ICSR_PENDSVCLR_Msk;
     unsigned interrupt_banks = (SCnSCB->ICTR & 0xfu) + 1u;
+    uint32_t enabled[8];
     for (unsigned bank = 0; bank < interrupt_banks; bank++) {
+        enabled[bank] = NVIC->ISER[bank];
         NVIC->ICER[bank] = UINT32_MAX;
         NVIC->ICPR[bank] = UINT32_MAX;
     }
+    uint32_t watchdog = WDT->WDT_CR;
     WDT->WDT_CR &= ~WDT_CR_WDT_EN;
     WDT_ReloadCounter();
 
@@ -301,7 +319,7 @@ static void idle_lock(void) {
     NVIC_EnableIRQ(EXTI4_IRQn);
 
     // Use the same deep-sleep power gates and USB register values as
-    // Keystone. Preserve the original settings for the reset path.
+    // Keystone. Preserve the original settings for wake.
     const uint32_t msr = SYSCTRL->MSR_CR1;
     const uint32_t analog = SYSCTRL->ANA_CTRL;
     const uint32_t ldo = SYSCTRL->LDO25_CR;
@@ -324,9 +342,45 @@ static void idle_lock(void) {
         SYSCTRL->FREQ_SEL = clock;
         __DSB();
     }
-    board_reset();
-}
+    GPIO_WakeEvenConfig(GPIO_PortSourceGPIOE, GPIO_Pin_14, DISABLE);
+    EXTI_LineConfig(EXTI_Line4, EXTI_PinSource14, EXTI_Trigger_Off);
+    EXTI_ClearITPendingBit(EXTI_Line4);
+    NVIC_DisableIRQ(EXTI4_IRQn);
+    NVIC_ClearPendingIRQ(EXTI4_IRQn);
+    WDT_ReloadCounter();
+    WDT->WDT_CR = watchdog;
+    for (unsigned bank = 0; bank < interrupt_banks; bank++) {
+        NVIC->ICPR[bank] = UINT32_MAX;
+        NVIC->ISER[bank] = enabled[bank];
+    }
+    SysTick->VAL = 0;
+    SysTick->CTRL = systick;
+    __enable_irq();
+    while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_14) == Bit_RESET) board_delay(20);
+    OpenPower(POWER_TYPE_VCC33);
+    board_delay(20);
+    PsramOpen();
+    sd_ready = false;
+    LcdInit();
+    I2cInit();
+    Gd25FlashOpen();
+#if defined(FORGEBOX_USB_SERIAL)
+    debug_usb_init();
 #endif
+    display_ready = false;
+    splash_placeholder = NULL;
+}
+#else
+void board_deep_sleep(void) { board_reset(); }
+#endif
+
+bool board_idle_timeout(void) {
+#ifdef FORGEBOX_IDLE_LOCK
+    return display_ready && board_ticks() - last_touch >= IDLE_LOCK_MS;
+#else
+    return false;
+#endif
+}
 
 static bool touch(lv_indev_drv_t *driver, lv_indev_data_t *data) {
     (void)driver;
@@ -383,9 +437,6 @@ void board_display_update(unsigned dt) {
     lv_tick_inc(now - last);
     last = now;
     lv_task_handler();
-#ifdef FORGEBOX_IDLE_LOCK
-    if (board_ticks() - last_touch >= IDLE_LOCK_MS) idle_lock();
-#endif
 }
 void board_startup_failed(void) {
     board_display_init();
@@ -698,9 +749,8 @@ static void vm_task(void *arg) {
     }
 #endif
 #else
-    clear_psram();
-    scratch = ExtMalloc(1024 * 1024);
-    if (!scratch) __fatal_error("scratch allocation");
+    board_clear_psram();
+    board_init_scratch();
 #ifdef FORGEBOX_USB_DEBUG
     board_capture_hardware_report();
 #endif

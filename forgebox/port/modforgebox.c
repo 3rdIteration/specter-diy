@@ -388,7 +388,39 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(fb_insert_obj, fb_insert);
 STATIC mp_obj_t fb_writes(void) { return mp_obj_new_int(board_test_sd_writes()); }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(fb_writes_obj, fb_writes);
 #endif
+#if !FORGEBOX_HOST
+STATIC mp_obj_t fb_idle_timeout(void) {
+    return mp_obj_new_bool(board_idle_timeout());
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(fb_idle_timeout_obj, fb_idle_timeout);
+
+STATIC mp_obj_t fb_sleep(mp_obj_t session) {
+    mp_buffer_info_t buffer = {0};
+    if (session != mp_const_none) mp_get_buffer_raise(session, &buffer, MP_BUFFER_READ);
+    if (buffer.len > SLEEP_SESSION_MAX) buffer.len = 0;
+    mp_obj_t exit = mp_obj_new_exception(&mp_type_SystemExit);
+    vm_request_sleep(buffer.buf, buffer.len);
+    nlr_raise(exit);
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_1(fb_sleep_obj, fb_sleep);
+
+STATIC mp_obj_t fb_resume_session(void) {
+    size_t size;
+    const uint8_t *data = vm_sleep_session(&size);
+    if (!size) return mp_const_none;
+    mp_obj_t session = mp_obj_new_bytes(data, size);
+    vm_clear_sleep_session();
+    return session;
+}
+STATIC MP_DEFINE_CONST_FUN_OBJ_0(fb_resume_session_obj, fb_resume_session);
+#endif
+
 STATIC const mp_rom_map_elem_t fb_globals_table[] = {
+#if !FORGEBOX_HOST
+    {MP_ROM_QSTR(MP_QSTR_idle_timeout), MP_ROM_PTR(&fb_idle_timeout_obj)},
+    {MP_ROM_QSTR(MP_QSTR_sleep), MP_ROM_PTR(&fb_sleep_obj)},
+    {MP_ROM_QSTR(MP_QSTR_resume_session), MP_ROM_PTR(&fb_resume_session_obj)},
+#endif
     {MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_forgebox)},
     {MP_ROM_QSTR(MP_QSTR_reset), MP_ROM_PTR(&fb_reset_obj)},
     {MP_ROM_QSTR(MP_QSTR_power_off), MP_ROM_PTR(&fb_power_off_obj)},

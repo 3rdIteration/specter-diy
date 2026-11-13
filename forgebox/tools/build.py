@@ -189,6 +189,15 @@ def prepare():
             target.symlink_to(disco / 'usermods' / name, target_is_directory=True)
     # The pre-generated bindings use LVGL 6's original configuration and fonts.
     graphics = disco / 'usermods/udisplay_f469'
+    lv_obj = (graphics / 'lvgl/src/lv_core/lv_obj.c').read_text()
+    init_flag = 'static bool lv_initialized = false;'
+    if lv_obj.count(init_flag) != 1:
+        raise ValueError('Unexpected LVGL initialization guard')
+    write_if_changed(build / 'lv_obj.c', lv_obj.replace(init_flag, init_flag +
+        '\nvoid forgebox_lv_reinit(void) { lv_initialized = false; lv_disp_set_default(NULL); }'))
+    heap = (ROOT / 'vendor/forgebox/src/ram/psram_heap_4.c').read_text()
+    write_if_changed(build / 'psram_heap_4.c', heap +
+        '\nvoid forgebox_psram_heap_reset(void) { pxEnd = NULL; }\n')
     config = (graphics / 'lv_conf.h').read_text()
     # The standalone C diagnostic has no MicroPython GC heap.
     for define in ('#define LV_MEM_CUSTOM      1', '#define LV_ENABLE_GC 1 /* Enable GC for Micropython */'):

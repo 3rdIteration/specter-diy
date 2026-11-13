@@ -14,6 +14,11 @@ class SecureElementKeyStore(FlashPinKeyStore):
     NAME = 'ForgeBox Gen 1 storage'
     salt = None
     seed_pin_context = None
+    session_passphrase = ""
+
+    def set_mnemonic(self, mnemonic=None, password=""):
+        super().set_mnemonic(mnemonic, password)
+        self.session_passphrase = password
 
     @property
     def is_pin_set(self):
@@ -113,7 +118,12 @@ class SecureElementKeyStore(FlashPinKeyStore):
         self.seed_pin_context = bytearray(hmac.new(
             secret, b'ForgeBox BIP39 PIN context v1\x00' + pin_key, digestmod='sha256').digest())
 
+    def clear_loaded_seed(self):
+        self.mnemonic = self.root = self.fingerprint = self.slip77_key = self.idkey = None
+        self.session_passphrase = ""
+
     def lock(self):
+        self.clear_loaded_seed()
         if self.seed_pin_context is not None:
             for i in range(len(self.seed_pin_context)):
                 self.seed_pin_context[i] = 0

@@ -13,6 +13,14 @@ bool board_sd_present(void);
 bool board_sd_io(bool write, uint32_t block, uint8_t *data, size_t len);
 uint32_t board_sd_blocks(void);
 void board_display_init(void);
+bool board_idle_timeout(void);
+void board_deep_sleep(void);
+#define SLEEP_SESSION_MAX 2048
+void vm_request_sleep(const uint8_t *data, size_t size);
+const uint8_t *vm_sleep_session(size_t *size);
+void vm_clear_sleep_session(void);
+void board_clear_psram(void);
+void board_init_scratch(void);
 void board_display_update(unsigned dt);
 void board_backlight(bool on);
 uintptr_t board_scratch(void);

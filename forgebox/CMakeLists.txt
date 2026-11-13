@@ -35,6 +35,10 @@ add_compile_options(${MCU} -Os -ffunction-sections -fdata-sections -Wall -Wno-fo
 add_compile_definitions(USE_STDPERIPH_DRIVER USE_FULL_ASSERT ARM_MATH_CM4 __TARGET_FPU_VFP NDEBUG)
 file(GLOB MCU_DRIVERS ${FB}/external/mh1903_lib/MHSCPU_Driver/src/*.c)
 file(GLOB_RECURSE LVGL ${GRAPHICS}/lvgl/src/*.c)
+list(REMOVE_ITEM LVGL ${GRAPHICS}/lvgl/src/lv_core/lv_obj.c)
+list(APPEND LVGL ${CMAKE_CURRENT_SOURCE_DIR}/build/lv_obj.c)
+set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/build/lv_obj.c PROPERTIES
+    INCLUDE_DIRECTORIES "${GRAPHICS}/lvgl/src/lv_core")
 file(GLOB FONTS ${GRAPHICS}/fonts/*.c)
 set(RTOS ${FB}/external/FreeRTOS)
 set(RTOS_SRC ${RTOS}/Source/croutine.c ${RTOS}/Source/event_groups.c
@@ -67,7 +71,7 @@ add_executable(specter.elf port/board.c port/vm.c port/camera.c port/camera_prev
     ${CMAKE_CURRENT_SOURCE_DIR}/build/drv_aw32001.c
     ${BOARD_SRC} ${MCU_DRIVERS} ${RTOS_SRC} ${LVGL} ${FONTS}
     ${GRAPHICS}/pixelart/px_img.c
-    ${FB}/src/ram/user_memory.c ${FB}/src/ram/psram_heap_4.c
+    ${FB}/src/ram/user_memory.c ${CMAKE_CURRENT_SOURCE_DIR}/build/psram_heap_4.c
     ${FB}/src/utils/user_delay.c ${FB}/src/utils/user_utils.c
     ${CMAKE_CURRENT_SOURCE_DIR}/build/startup.s)
 target_include_directories(specter.elf PRIVATE port build/vm

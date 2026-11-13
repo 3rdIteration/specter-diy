@@ -22,9 +22,9 @@ Sources for the board implementation are the [ForgeBox example](https://github.c
 
 ## Charging and inactivity lock
 
-USB power can start the ForgeBox even if it was off. After five minutes without a touchscreen press, Specter blanks the backlight, disconnects wallet USB, stops camera capture, clears the VM's external RAM, and enters MH1903 deep sleep. The PE14 power button wakes the board. Specter restarts into the normal PIN or fingerprint unlock flow. In-progress work in RAM is discarded. Saved seeds, descriptors and settings remain in their persistent stores.
+USB power can start the ForgeBox even if it was off. Five minutes without a touchscreen press closes the active wallet session and enters MH1903 deep sleep. The PE14 power button wakes Specter directly into its usual PIN or fingerprint unlock flow. Sleep retains an authenticated encrypted copy of the loaded mnemonic and BIP39 passphrase in MCU RAM. Specter clears the VM heap, RAM filesystem and scratch space, then starts a fresh VM on wake. It restores the wallet only after successful authentication. Power loss or reset discards the snapshot. Pending transaction reviews and other open screens are closed.
 
-The sleep path uses Keystone's MCU power gates and USB shutdown sequence. Specter leaves charging to the AW32001 and restarts after wake so the normal startup code reinitializes all peripherals. Retail Keystone 3 also configures fingerprint wake and periodic RTC wakes for battery management. Current draw and wake behavior on the ForgeBox require an on-device check. [Keystone 3 low-power driver](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/driver/low_power.c)
+The sleep path uses Keystone's MCU power gates and USB shutdown sequence and leaves charging to the AW32001. Specter reinitializes the display, touch, SPI and USB on wake. Retail Keystone 3 also configures fingerprint wake and periodic RTC wakes for battery management. Hardware wake, retention and current draw still require on-device verification. [Keystone 3 low-power driver](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/driver/low_power.c)
 
 ## Board signals and OTP
 

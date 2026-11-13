@@ -733,6 +733,44 @@ assert not gen1_store.is_locked
 assert not list(startup_steps) and not list(scans)
 print('PASS: PIN cancel returns to the startup menu and keeps the fingerprint retry limit')
 
+from forgebox_main import ForgeBoxSpecter
+
+class SleepWallet(ForgeBoxSpecter):
+    def __init__(self, keystore):
+        self.keystore = keystore
+
+    def set_mnemonic(self, mnemonic, password):
+        self.keystore.set_mnemonic(mnemonic, password)
+
+sleep_wallet = SleepWallet(gen1_store)
+sleep_wallet.set_mnemonic(alternate, 'test sleep passphrase')
+sleep_fingerprint = gen1_store.fingerprint
+sealed_session = sleep_wallet.seal_sleep_session()
+assert alternate.encode() not in sealed_session and b'test sleep passphrase' not in sealed_session
+gen1_store.lock()
+sleep_wallet = SleepWallet(gen1_store)
+sleep_wallet.sleep_session = sealed_session
+assert sleep_wallet.seal_sleep_session() == sealed_session
+try:
+    sleep_wallet.restore_sleep_session(sealed_session)
+    assert False, 'Restored a wallet before unlock'
+except ValueError:
+    pass
+startup_steps = iter(((True, 0), ('Enter startup PIN', '123456')))
+asyncio.run(gen1_store.unlock())
+assert gen1_store.mnemonic is None
+tampered_session = sealed_session[:-1] + bytes([sealed_session[-1] ^ 1])
+try:
+    sleep_wallet.restore_sleep_session(tampered_session)
+except Exception as exc:
+    assert str(exc) == 'Invalid HMAC'
+else:
+    assert False, 'Restored a wallet from corrupted ciphertext'
+sleep_wallet.restore_sleep_session(sealed_session)
+assert gen1_store.fingerprint == sleep_fingerprint
+assert gen1_store.mnemonic == alternate and gen1_store.session_passphrase == 'test sleep passphrase'
+print('PASS: sleep preserves the seed and passphrase after unlock and rejects a tampered session')
+
 from forgebox_usb import ForgeBoxUSBHost
 import forgebox_usb
 from io import BytesIO
