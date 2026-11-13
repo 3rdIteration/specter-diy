@@ -1,0 +1,10 @@
+/build/
+/dist/
+/dist-*/
+__pycache__/
+.pytest_cache/
+*.pem
+*.key
+vendor/
+/port/lv_conf.h
+/*.log

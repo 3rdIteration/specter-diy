@@ -1,0 +1,7 @@
+    .section .rodata.specter_splash, "a", %progbits
+    .balign 4
+    .global specter_splash_pixels
+    .type specter_splash_pixels, %object
+specter_splash_pixels:
+    .incbin "@CMAKE_CURRENT_SOURCE_DIR@/assets/specter-splash.rgb565"
+    .size specter_splash_pixels, . - specter_splash_pixels

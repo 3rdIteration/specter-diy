@@ -1,0 +1,37 @@
+name: ForgeBox firmware
+
+on:
+  push:
+    branches: [forgebox]
+  pull_request:
+    branches: [forgebox]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  forgebox:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 forgebox/tools/bootstrap.py
+      - run: docker build -t specter-forgebox-toolchain forgebox
+      - name: Build and check the production image
+        run: |
+          docker run --rm -v "$PWD:/repo" -w /repo/forgebox specter-forgebox-toolchain
+          docker run --rm -v "$PWD:/repo" -w /repo/forgebox specter-forgebox-toolchain python3 -m pytest -q tests/test_image.py
+      - name: Verify storage-v1 state transitions
+        run: |
+          docker run --rm -v "$PWD:/repo" -w /repo/forgebox specter-forgebox-toolchain sh -ec '
+            crypto=vendor/specter/f469-disco/usermods/uhashlib/crypto
+            gcc -DFORGEBOX_PRODUCTION=1 -I "$crypto" tests/test_gen1_storage.c \
+                "$crypto/hmac.c" "$crypto/sha2.c" "$crypto/memzero.c" -o /tmp/forgebox-storage-test
+            /tmp/forgebox-storage-test'
+      - name: Exercise the wallet and transport on the host VM
+        run: docker run --rm -e FORGEBOX_PROFILE=development -v "$PWD:/repo" -w /repo/forgebox specter-forgebox-toolchain python3 tools/test_host.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: specter-forgebox-unsigned
+          path: forgebox/dist/
+          if-no-files-found: error
