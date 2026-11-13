@@ -1,7 +1,7 @@
 import forgebox
 import platform
 from errors import BaseError
-from forgebox_fp_unlock_test import clear, describe
+from forgebox_fp_feedback import clear, describe
 from forgebox_pin import FAILURE_LIMIT, derive_pin_key
 from gui.screens import Alert, Menu, Prompt
 from helpers import tagged_hash
@@ -84,9 +84,26 @@ async def fingerprint_settings(store):
     if state != 0:
         await store.show(Alert('Fingerprint unavailable', 'Fingerprint storage could not be verified.'))
         return
-    if not await store.show(Prompt('Enroll a fingerprint',
+    store.show_backup_status('Checking fingerprint sensor', 'Reading the template count.')
+    count = forgebox.fp_unlock_test(4, None, None)
+    if count < 0:
+        await store.show(Alert('Fingerprint sensor unavailable', describe(count)))
+        return
+    if count > 1:
+        await store.show(Alert('Fingerprint enrollment unavailable',
+                               'The sensor already holds %d templates.' % count))
+        return
+    replace = count == 1
+    if replace:
+        accepted = await store.show(Prompt('Replace old fingerprint?',
+            'The sensor still holds a fingerprint that is not linked to this wallet. '
+            'Enter your startup PIN to remove it and enroll a new finger.',
+            confirm_text='Replace and enroll'))
+    else:
+        accepted = await store.show(Prompt('Enroll a fingerprint',
             'Keep your startup PIN. Either the enrolled finger or the PIN can unlock this wallet.',
-            confirm_text='Enroll')):
+            confirm_text='Enroll'))
+    if not accepted:
         return
     await store.wait_before_attempt()
     pin = await store.enter_pin('Authorize fingerprint enrollment', cancel=True)
@@ -103,7 +120,7 @@ async def fingerprint_settings(store):
 
     try:
         store.show_backup_status('Enrollment 0 / 8', 'Touch and lift the same finger.')
-        status = forgebox.fp_unlock_test(1, pin_key, progress)
+        status = forgebox.fp_unlock_test(5 if replace else 1, pin_key, progress)
     finally:
         clear(pin_key)
     if status == -210:
@@ -114,6 +131,12 @@ async def fingerprint_settings(store):
         store.failures = FAILURE_LIMIT - (-210 - status)
     elif status == 0:
         store.failures = 0
+    if status == -205:
+        await store.show(Alert('Enrollment failed', 'The sensor template count changed. Open fingerprint settings again.'))
+        return
+    if status == -206:
+        await store.show(Alert('Enrollment failed', 'The old template could not be removed. Open fingerprint settings to retry cleanup.'))
+        return
     message = 'Power off and turn the device back on to test fingerprint unlock.' if status == 0 else (
         'The fingerprint module or its storage was unavailable.' if status == -204 else describe(status))
     await store.show(Alert('Fingerprint enrolled' if status == 0 else 'Enrollment failed', message))

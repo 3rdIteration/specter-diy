@@ -253,6 +253,17 @@ int main(void) {
     assert(board_fp_unlock_test(2, NULL, result, NULL) == -204 && gen1_calls == 2);
     puts("PASS: key-bearing match unwraps the Gen 1 credential, rejects mismatch, and cleans up");
 
+    mock_templates = 1;
+    assert(persistent_fingerprint(4, NULL, result, NULL) == 1);
+    assert(persistent_fingerprint(1, test_pin, result, progress) == -205);
+    assert(gen1_calls == 2 && mock_templates == 1);
+    assert(persistent_fingerprint(5, NULL, result, progress) == -204);
+    assert(gen1_calls == 2 && mock_templates == 1);
+    assert(persistent_fingerprint(5, test_pin, result, progress) == 0);
+    assert(mock_templates == 1 && gen1_calls == 3);
+    assert(persistent_fingerprint(3, NULL, result, NULL) == 0 && mock_templates == 0);
+    gen1_calls = 2;
+
     assert(persistent_fingerprint(0, NULL, result, NULL) == FP_EMPTY);
     fingerprint_pages[0][0] = 0x41;
     assert(persistent_fingerprint(1, test_pin, result, progress) == -204 && gen1_calls == 2);

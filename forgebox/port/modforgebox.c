@@ -163,7 +163,7 @@ STATIC void fb_fp_progress(unsigned steps, uint8_t status) {
 STATIC mp_obj_t fb_fp_unlock_test(mp_obj_t action_arg, mp_obj_t pin_arg, mp_obj_t progress_arg) {
     unsigned action = mp_obj_get_int(action_arg);
     mp_buffer_info_t pin = {0};
-    if (action == 1) {
+    if (action == 1 || action == 5) {
         mp_get_buffer_raise(pin_arg, &pin, MP_BUFFER_READ);
         if (pin.len != 32) mp_raise_ValueError("invalid fingerprint test PIN key");
     }

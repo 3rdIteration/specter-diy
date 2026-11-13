@@ -25,6 +25,8 @@ def test_default_image_uses_gen1_storage():
     assert b'ForgeBox Specter Gen 1 storage v1 release' in data
     assert b'FW01 ForgeBox Specter storage' in data
     assert b'Scan SPI flash (read-only)' not in data
+    assert b'forgebox_fp_feedback.py' in data
+    assert b'forgebox_fp_unlock_test.py' not in data
     assert b'ForgeBox BIP39 entropy v1' in data
 
 def test_no_host_fixtures_or_provisioning_linked():

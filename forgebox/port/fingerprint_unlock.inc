@@ -93,13 +93,21 @@ static void fingerprint_wrap_keys(const uint8_t match_key[32], const Gen1Record 
 }
 
 static int fingerprint_enroll_persistent(const Ds28Identity *identity, const Gen1Record *record,
-                                          FingerprintMetadata *meta, const uint8_t *pin_key,
+                                          FingerprintMetadata *meta, const uint8_t *pin_key, bool replace,
                                           void (*progress)(unsigned, uint8_t)) {
     uint8_t root[32], match_key[32], keys[2][32], tag[32], credential[32];
     const uint8_t iv[16] = {0};  // The random nonce derives a fresh encryption key.
     FingerprintMetadata pending = {0}, active = {0};
     int result = -204;
-    if (board_fingerprint_test(FP_TEST_COUNT, NULL) != 0) goto done;
+    int count = board_fingerprint_test(FP_TEST_COUNT, NULL);
+    if (count < 0) {
+        result = count;
+        goto done;
+    }
+    if (count != (replace ? 1 : 0)) {
+        result = -205;
+        goto done;
+    }
     int checked = board_gen1_unlock(pin_key, root);
     if (checked != -2) {
         result = checked < 0 ? -208 : -210 - checked;
@@ -107,6 +115,14 @@ static int fingerprint_enroll_persistent(const Ds28Identity *identity, const Gen
     }
     fingerprint_owner(identity, FP_PENDING, pending.owner);
     if (!gen1_commit(identity, DS28_FP_METADATA_PAGE, meta, &pending)) goto done;
+    if (replace) {
+        // Pending ownership keeps cleanup recoverable across a restart.
+        if (board_fingerprint_test(FP_TEST_REMOVE, NULL) != 0 ||
+            board_fingerprint_test(FP_TEST_COUNT, NULL) != 0) {
+            result = -206;
+            goto done;
+        }
+    }
     result = fingerprint_test_action(FP_TEST_ENROLL, progress, match_key);
     if (result) goto done;
     result = -204;
@@ -184,12 +200,17 @@ int board_fp_unlock_test(unsigned action, const uint8_t *pin_key, uint8_t *outpu
     switch (action) {
         case 0: result = state; break;
         case 1:
-            if (state == FP_EMPTY)
-                result = fingerprint_enroll_persistent(&identity, &record, &meta, pin_key, progress);
+        case 5:
+            if (state == FP_EMPTY && pin_key)
+                result = fingerprint_enroll_persistent(&identity, &record, &meta, pin_key,
+                                                       action == 5, progress);
             break;
         case 2:
             if (state == FP_ACTIVE)
                 result = fingerprint_unlock_persistent(&record, &meta, credential, output, progress);
+            break;
+        case 4:
+            if (state == FP_EMPTY) result = board_fingerprint_test(FP_TEST_COUNT, NULL);
             break;
         case 3:
             result = fingerprint_revoke(&identity, &meta, credential, state) ? 0 : -204;
