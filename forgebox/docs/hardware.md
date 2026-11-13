@@ -20,6 +20,12 @@ The reference unit reports board ADC revision **v3.1**. Its security configurati
 
 Sources for the board implementation are the [ForgeBox example](https://github.com/KeystoneHQ/forgebox-helloworld) and [Keystone 3 firmware](https://github.com/KeystoneHQ/keystone3-firmware). The separate [bootloader analysis](bootloader.md) covers the boot chain, OTA format, verification-failure handoff, PA2 branch, wipe and genuine check.
 
+## Charging and inactivity lock
+
+USB power can start the ForgeBox even if it was off. After five minutes without a touchscreen press, the Specter port blanks the backlight, disconnects wallet USB, stops camera capture and clears external RAM holding the VM and its wallet session. It then polls for a touch and release. The wake gesture triggers a restart through the factory bootloader and the regular PIN or fingerprint unlock flow. Any unsigned work in RAM is discarded. Explicitly saved seeds, descriptors and settings remain in their persistent stores.
+
+The screen-off state keeps the MCU, charger and touch controller running. Charging current and battery runtime in this state have not been measured. Keystone 3 has a separate deep-sleep implementation. It closes touch and USB, powers down hardware, and uses PE14 for power-button wake, PF14 for fingerprint wake, and periodic RTC wakes for charge and battery checks. Its recovery path restores clocks, LCD, touch, storage and other peripherals. That path would require dedicated bring-up for this VM and board configuration. [Keystone 3 low-power driver](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/driver/low_power.c) · [Keystone 3 screen manager](https://github.com/KeystoneHQ/keystone3-firmware/blob/master/src/managers/screen_manager.c)
+
 ## Board signals and OTP
 
 - ATECC608B uses a GPIO I²C bus on PG11/PG12. The port reverses SCL and SDA for EVT0 according to the vendor revision check.

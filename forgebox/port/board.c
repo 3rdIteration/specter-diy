@@ -20,6 +20,7 @@
 #include "user_memory.h"
 #include "lvgl.h"
 #include "board_api.h"
+#include "camera.h"
 #ifdef FORGEBOX_USB_DEBUG
 #include "device_diagnostics.h"
 #endif
@@ -58,6 +59,11 @@ static uint16_t wire_pixels[480 * 16] __attribute__((aligned(4)));
 static uint32_t sd_bounce[128];
 static uint8_t *scratch;
 static bool display_ready;
+#if !defined(FORGEBOX_SE_PAIRING) && !defined(FORGEBOX_BOOT_PROBE) && !defined(FORGEBOX_USB_DEBUG)
+#define FORGEBOX_IDLE_LOCK 1
+#define IDLE_LOCK_MS (5u * 60u * 1000u)
+static unsigned last_touch;
+#endif
 static lv_obj_t *splash_placeholder;
 static bool sd_ready;
 static bool rng_previous_valid;
@@ -238,11 +244,43 @@ static void flush(lv_disp_drv_t *driver, const lv_area_t *area, lv_color_t *colo
     while (LcdBusy()) board_delay(1);
     lv_disp_flush_ready(driver);
 }
+static void clear_psram(void) {
+    // PSRAM contents can survive a warm reset.
+    volatile uint32_t *words = (volatile uint32_t *)GetPsramMappedAddr();
+    for (size_t i = 0; i < GetPsramTotalSize() / sizeof(*words); i++) words[i] = 0;
+}
+
+#ifdef FORGEBOX_IDLE_LOCK
+static void idle_lock(void) {
+    board_backlight(false);
+    board_usb_serial_enable(false);
+    board_camera_stop();
+
+    // The VM, wallet and RAM filesystem share this task. Never return to
+    // their suspended call stacks after clearing their external RAM.
+    clear_psram();
+    bool pressed = false;
+    for (;;) {
+        TouchStatus_t status = {0};
+        if (TouchGetStatus(&status) == 0) {
+            if (pressed && !status.touch) board_reset();
+            if (status.touch) pressed = true;
+        }
+        board_delay(20);
+    }
+}
+#endif
+
 static bool touch(lv_indev_drv_t *driver, lv_indev_data_t *data) {
     (void)driver;
     static TouchStatus_t status;
     TouchStatus_t next = {0};
-    if (TouchGetStatus(&next) == 0) status = next;
+    if (TouchGetStatus(&next) == 0) {
+        status = next;
+#ifdef FORGEBOX_IDLE_LOCK
+        if (status.touch) last_touch = board_ticks();
+#endif
+    }
     data->point.x = status.x < 480 ? status.x : 479;
     data->point.y = status.y < 800 ? status.y : 799;
     data->state = status.touch ? LV_INDEV_STATE_PR : LV_INDEV_STATE_REL;
@@ -275,6 +313,9 @@ void board_display_init(void) {
     lv_indev_drv_register(&input);
 #endif
     display_ready = true;
+#ifdef FORGEBOX_IDLE_LOCK
+    last_touch = board_ticks();
+#endif
     board_backlight(true);
 }
 void board_display_update(unsigned dt) {
@@ -285,6 +326,9 @@ void board_display_update(unsigned dt) {
     lv_tick_inc(now - last);
     last = now;
     lv_task_handler();
+#ifdef FORGEBOX_IDLE_LOCK
+    if (board_ticks() - last_touch >= IDLE_LOCK_MS) idle_lock();
+#endif
 }
 void board_startup_failed(void) {
     board_display_init();
@@ -597,9 +641,7 @@ static void vm_task(void *arg) {
     }
 #endif
 #else
-    // PSRAM contents can survive a warm reset. Clear before allocating anything.
-    volatile uint32_t *p = (volatile uint32_t *)GetPsramMappedAddr();
-    for (size_t i = 0; i < GetPsramTotalSize() / 4; ++i) p[i] = 0;
+    clear_psram();
     scratch = ExtMalloc(1024 * 1024);
     if (!scratch) __fatal_error("scratch allocation");
 #ifdef FORGEBOX_USB_DEBUG
